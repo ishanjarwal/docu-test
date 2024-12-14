@@ -1,0 +1,16 @@
+.navlinks_container > * {
+  @apply text-sm duration-150;
+}
+
+.navlinks_container > *:hover {
+  @apply font-bold;
+}
+
+.mobile_navlinks_container > * {
+  @apply flex w-full items-center justify-start space-x-2 rounded-md text-start font-bold;
+}
+
+.mobile_navlinks_container > *:hover,
+.mobile_navlinks_container > *:active {
+  @apply space-x-4 text-green-500 underline;
+}
