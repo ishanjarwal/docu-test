@@ -35,12 +35,12 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 flex items-center justify-center p-2 lg:p-4">
+    <header className="fixed top-0 z-50 flex w-full items-center justify-center p-2 lg:p-4">
       <div
         className={clsx(
           { "rounded-t-lg shadow-none": open },
           { "rounded-lg shadow-lg lg:rounded-xl": !open },
-          "relative flex w-full max-w-7xl items-center justify-between bg-white/85 px-4 py-4 backdrop-blur-sm md:px-6",
+          "max-w-limit relative flex w-full items-center justify-between bg-white/85 px-4 py-4 backdrop-blur-sm md:px-6",
         )}
       >
         {/* mobile menu */}
