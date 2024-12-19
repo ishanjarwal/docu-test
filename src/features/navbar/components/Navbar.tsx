@@ -12,6 +12,7 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import navlinks from "@/constants/navlinks";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -107,7 +108,11 @@ const Navbar = () => {
             ))}
           </nav>
         </div>
-        <div className="flex items-center justify-end space-x-2">
+        <div className="flex items-center justify-end space-x-2 md:space-x-4">
+          <div>
+            {/* theme toggle  */}
+            <ThemeToggleButton />
+          </div>
           <SignedIn>
             <div className="flex items-center">
               <UserButton
@@ -119,29 +124,27 @@ const Navbar = () => {
               />
             </div>
           </SignedIn>
-          <div className="flex items-center justify-end space-x-2 md:space-x-4">
-            <SignedOut>
-              <Button
-                className={"hidden text-xs md:flex lg:text-sm"}
-                variant={"outline"}
-              >
-                <SignInButton />
-              </Button>
-              <Button className={"hidden text-xs sm:flex lg:text-sm"}>
-                <span>Try it out</span>
-                <span>
-                  <FaArrowRight />
-                </span>
-              </Button>
-            </SignedOut>
+          <SignedOut>
             <Button
-              onClick={toggleOpen}
-              variant={"ghost"}
-              className={"block px-3 md:hidden"}
+              className={"hidden text-xs md:flex lg:text-sm"}
+              variant={"outline"}
             >
-              {open ? <IoCloseOutline /> : <HiOutlineMenuAlt4 />}
+              <SignInButton />
             </Button>
-          </div>
+            <Button className={"hidden text-xs sm:flex lg:text-sm"}>
+              <span>Try it out</span>
+              <span>
+                <FaArrowRight />
+              </span>
+            </Button>
+          </SignedOut>
+          <Button
+            onClick={toggleOpen}
+            variant={"ghost"}
+            className={"block px-2 md:hidden"}
+          >
+            {open ? <IoCloseOutline /> : <HiOutlineMenuAlt4 />}
+          </Button>
         </div>
       </div>
     </header>
