@@ -13,8 +13,12 @@ import { IoCloseOutline } from "react-icons/io5";
 import navlinks from "@/constants/navlinks";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
+import { useTheme } from "next-themes";
+import { dark } from "@clerk/themes";
 
 const Navbar = () => {
+  const { theme, systemTheme } = useTheme();
+
   const [open, setOpen] = useState<boolean>(false);
   const toggleOpen = () => {
     setOpen(!open);
@@ -117,6 +121,11 @@ const Navbar = () => {
             <div className="flex items-center">
               <UserButton
                 appearance={{
+                  baseTheme:
+                    theme === "dark" ||
+                    (systemTheme === "dark" && theme === "system")
+                      ? dark
+                      : undefined,
                   elements: {
                     avatarBox: "w-8 h-8",
                   },
