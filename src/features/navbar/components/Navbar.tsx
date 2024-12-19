@@ -11,6 +11,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import navlinks from "@/constants/navlinks";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -61,17 +62,19 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
-            <div className="mt-8 flex items-center justify-start space-x-2">
-              <Button className={"text-xs"} variant={"outline"}>
-                Login
-              </Button>
-              <Button className={"text-xs"}>
-                <span>Try it out</span>
-                <span>
-                  <FaArrowRight />
-                </span>
-              </Button>
-            </div>
+            <SignedOut>
+              <div className="mt-8 flex items-center justify-start space-x-2">
+                <Button className={"text-xs"} variant={"outline"}>
+                  <SignInButton />
+                </Button>
+                <Button className={"text-xs"}>
+                  <span>Try it out</span>
+                  <span>
+                    <FaArrowRight />
+                  </span>
+                </Button>
+              </div>
+            </SignedOut>
           </div>
         )}
 
@@ -104,21 +107,33 @@ const Navbar = () => {
             ))}
           </nav>
         </div>
-        <div>
+        <div className="flex items-center justify-end space-x-2">
+          <SignedIn>
+            <div className="flex items-center">
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8",
+                  },
+                }}
+              />
+            </div>
+          </SignedIn>
           <div className="flex items-center justify-end space-x-2 md:space-x-4">
-            <Button
-              className={"hidden text-xs md:flex lg:text-sm"}
-              variant={"outline"}
-            >
-              Login
-            </Button>
-            <Button className={"hidden text-xs sm:flex lg:text-sm"}>
-              <span>Try it out</span>
-              <span>
-                <FaArrowRight />
-              </span>
-            </Button>
-
+            <SignedOut>
+              <Button
+                className={"hidden text-xs md:flex lg:text-sm"}
+                variant={"outline"}
+              >
+                <SignInButton />
+              </Button>
+              <Button className={"hidden text-xs sm:flex lg:text-sm"}>
+                <span>Try it out</span>
+                <span>
+                  <FaArrowRight />
+                </span>
+              </Button>
+            </SignedOut>
             <Button
               onClick={toggleOpen}
               variant={"ghost"}

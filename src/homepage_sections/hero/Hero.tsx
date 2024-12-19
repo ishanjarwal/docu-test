@@ -18,7 +18,7 @@ const Hero = () => {
       <div className="max-w-limit relative left-0 top-0 w-full">
         <div className="limit:px-0 flex flex-col items-center justify-between px-4 pt-32 lg:flex-row lg:items-start lg:pt-36">
           <div className="lg:flex-1">
-            <p className="mb-4 text-center lg:text-start">
+            <div className="mb-4 text-center lg:text-start">
               <Badge
                 className={
                   "gap-1 rounded-full border-green-500 bg-white px-3 py-1 text-green-500"
@@ -31,7 +31,7 @@ const Hero = () => {
                 &nbsp;
                 <span>First resume is free to try, Hurry Up ! !</span>
               </Badge>
-            </p>
+            </div>
             <h1 className="mb-4 text-center text-3xl font-bold md:text-5xl lg:text-start lg:text-6xl">
               Create a
               <span className="text-green-500">
