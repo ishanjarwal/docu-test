@@ -46,12 +46,12 @@ const Navbar = () => {
         className={clsx(
           { "rounded-t-lg shadow-none": open },
           { "rounded-lg shadow-lg lg:rounded-xl": !open },
-          "max-w-limit relative flex w-full items-center justify-between bg-white/85 px-4 py-4 backdrop-blur-sm md:px-6",
+          "relative flex w-full max-w-limit items-center justify-between bg-card px-4 py-4 backdrop-blur-sm md:px-6",
         )}
       >
         {/* mobile menu */}
         {open && (
-          <div className="absolute left-0 top-full w-full rounded-b-lg bg-white/85 p-8 shadow-lg backdrop-blur-sm">
+          <div className="absolute left-0 top-full w-full rounded-b-lg bg-card/85 p-8 shadow-lg backdrop-blur-sm">
             <nav
               className={clsx(
                 styles.mobile_navlinks_container,
@@ -72,7 +72,9 @@ const Navbar = () => {
                 <Button className={"text-xs"} variant={"outline"}>
                   <SignInButton />
                 </Button>
-                <Button className={"text-xs"}>
+                <Button
+                  className={"bg-foreground text-xs hover:bg-foreground/90"}
+                >
                   <span>Try it out</span>
                   <span>
                     <FaArrowRight />
@@ -94,7 +96,7 @@ const Navbar = () => {
           <div>
             <h1 className="text-xl font-bold lg:text-2xl">
               <span>Resume</span>
-              <span className="text-green-500">Buildr</span>
+              <span className="text-primary">Buildr</span>
             </h1>
           </div>
         </div>
@@ -140,7 +142,11 @@ const Navbar = () => {
             >
               <SignInButton />
             </Button>
-            <Button className={"hidden text-xs sm:flex lg:text-sm"}>
+            <Button
+              className={
+                "hidden bg-foreground text-xs hover:bg-foreground/90 sm:flex lg:text-sm"
+              }
+            >
               <span>Try it out</span>
               <span>
                 <FaArrowRight />

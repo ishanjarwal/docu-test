@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev-host": "next dev --hostname 192.168.1.10"
+    "dev-host": "next dev --hostname 192.168.1.6"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.8.0",
