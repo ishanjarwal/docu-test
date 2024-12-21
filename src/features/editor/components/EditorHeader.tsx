@@ -9,13 +9,17 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import React from "react";
 import { TiPencil } from "react-icons/ti";
+import { IoIosArrowBack } from "react-icons/io";
 
 const EditorHeader = () => {
   const { theme, systemTheme } = useTheme();
 
   return (
     <header className="flex w-full items-center justify-between border-b p-2">
-      <div className="flex basis-3/12 items-center">
+      <div className="flex basis-3/12 items-center justify-start space-x-2">
+        <Button variant={"ghost"}>
+          <IoIosArrowBack />
+        </Button>
         <div className="relative aspect-square w-6 lg:w-12">
           <Image
             src={images.logo}
