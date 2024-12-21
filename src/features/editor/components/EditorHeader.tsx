@@ -1,5 +1,4 @@
 "use client";
-import CustomTooltip from "@/components/custom/CustomTooltip";
 import { Button } from "@/components/ui/button";
 import { images } from "@/constants/images";
 import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
@@ -8,8 +7,8 @@ import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import React from "react";
-import { TiPencil } from "react-icons/ti";
 import { IoIosArrowBack } from "react-icons/io";
+import TitleForm from "../forms/TitleForm";
 
 const EditorHeader = () => {
   const { theme, systemTheme } = useTheme();
@@ -36,14 +35,7 @@ const EditorHeader = () => {
       </div>
       <div className="basis-3/4">
         {/* for title of the current resume (editable) */}
-        <h2 className="flex items-center justify-center space-x-2 lg:text-lg">
-          <CustomTooltip text="Edit the Title">
-            <Button variant={"ghost"}>
-              <TiPencil />
-            </Button>
-          </CustomTooltip>
-          <span>Untitled</span>
-        </h2>
+        <TitleForm />
       </div>
       <div className="flex basis-3/12 items-center justify-end space-x-4">
         <ThemeToggleButton />
