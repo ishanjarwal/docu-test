@@ -6,7 +6,7 @@ import { IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
 import { PreviewToggleContext } from "../providers/PreviewToggle";
 
 const EditorFooter = () => {
-  const { previewOpen, setPreviewOpen } = useContext(PreviewToggleContext);
+  const { setPreviewOpen } = useContext(PreviewToggleContext);
 
   return (
     <div className="flex w-full items-center justify-between border-t p-4">
@@ -26,18 +26,18 @@ const EditorFooter = () => {
       <div className="flex items-center justify-start space-x-2">
         <Button
           className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
-          variant={"outline"}
+          variant={"destructive"}
         >
           Cancel
         </Button>
         <Button
           onClick={() => setPreviewOpen((prev: boolean) => !prev)}
-          className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
+          className="py-1 text-xs lg:hidden lg:px-4 lg:py-2 lg:text-sm"
           variant={"secondary"}
         >
-          {!previewOpen ? "Preview" : "Close"}
+          Preview
         </Button>
-        <p>Saving . . .</p>
+        {/* <p>Saving . . .</p> */}
       </div>
     </div>
   );
