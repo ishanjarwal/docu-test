@@ -12,7 +12,7 @@ const page = () => {
       <main className="flex max-h-screen min-h-screen w-full">
         <div className="relative mx-auto flex w-full max-w-[1600px] grow bg-card">
           <div className="absolute bottom-0 top-0 flex w-full">
-            <div className="relative flex flex-1 flex-col bg-card">
+            <div className="relative flex min-w-0 flex-1 flex-col bg-card">
               <EditorHeader />
               <div
                 className={clsx(
@@ -28,7 +28,10 @@ const page = () => {
             </div>
             <Separator orientation="vertical" className="ms-1" />
             <Preview />
-            <Separator orientation="vertical" className="ms-1" />
+            <Separator
+              orientation="vertical"
+              className="ms-1 hidden lg:block"
+            />
           </div>
         </div>
       </main>

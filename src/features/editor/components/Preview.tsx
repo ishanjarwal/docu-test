@@ -6,7 +6,7 @@ const Preview = () => {
   return (
     <div
       className={clsx(
-        "h-screen w-full flex-1 overflow-y-auto bg-card",
+        "hidden h-screen w-full flex-1 overflow-y-auto bg-card lg:flex",
         "scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
       )}
     >
