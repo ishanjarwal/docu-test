@@ -17,7 +17,7 @@ const Preview = () => {
       }
     };
 
-    // handleResize();
+    handleResize();
 
     window.addEventListener("resize", handleResize);
 
