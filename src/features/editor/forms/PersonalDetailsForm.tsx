@@ -84,6 +84,26 @@ const PersonalDetailsForm = ({
                 control={form.control}
               />
             </div>
+            <div className="grid grid-cols-1 gap-x-2 gap-y-8 sm:grid-cols-2">
+              <CustomFormField
+                props={{
+                  form: form,
+                  name: "country",
+                  fieldType: "country",
+                  label: "Country",
+                }}
+                control={form.control}
+              />
+              <CustomFormField
+                props={{
+                  name: "city",
+                  fieldType: "text",
+                  label: "City",
+                  placeholder: "Your City",
+                }}
+                control={form.control}
+              />
+            </div>
             <CustomFormField
               props={{
                 name: "Bio",

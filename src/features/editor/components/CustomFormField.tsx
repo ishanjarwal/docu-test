@@ -1,4 +1,14 @@
+"use client";
 import { PhoneInput } from "@/components/custom/phone-input";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   FormControl,
   FormField,
@@ -7,11 +17,27 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import React, { ReactNode } from "react";
-import { Control, ControllerRenderProps, FieldValues } from "react-hook-form";
+import React, { ReactNode, useState } from "react";
+import {
+  Control,
+  ControllerRenderProps,
+  FieldValues,
+  UseFormReturn,
+} from "react-hook-form";
+import { Country } from "country-state-city";
+import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
+import clsx from "clsx";
 
 type FieldType =
   | "text"
@@ -20,15 +46,19 @@ type FieldType =
   | "password"
   | "radio"
   | "textarea"
-  | "phone";
+  | "phone"
+  | "date"
+  | "country";
 
 interface CustomFormFieldType {
+  form?: UseFormReturn;
   name: string;
   fieldType: FieldType;
   label: string;
   icon?: ReactNode;
-  placeholder: string;
+  placeholder?: string;
   options?: { label: string; value: string }[];
+  disabled?: boolean;
 }
 const RenderInput = ({
   field,
@@ -40,7 +70,7 @@ const RenderInput = ({
   switch (props.fieldType) {
     case "text":
       return (
-        <div className="flex items-center rounded-lg border border-border py-1 ring-ring focus-within:ring-1">
+        <div className="flex items-center rounded-lg border border-border bg-foreground/5 py-1 ring-ring focus-within:ring-1">
           {props.icon && (
             <span className="ms-3 dark:text-white">{props.icon}</span>
           )}
@@ -49,6 +79,7 @@ const RenderInput = ({
               placeholder={props.placeholder}
               {...field}
               className="mt-0 rounded-none border-0 shadow-none focus-visible:ring-0"
+              disabled={props.disabled}
             />
           </FormControl>
         </div>
@@ -85,7 +116,7 @@ const RenderInput = ({
         <FormControl>
           <Textarea
             placeholder={props.placeholder}
-            className="min-h-32 resize-none"
+            className="min-h-32 resize-none bg-foreground/5"
             {...field}
           />
         </FormControl>
@@ -94,13 +125,107 @@ const RenderInput = ({
     case "phone":
       return (
         <FormControl>
-          <PhoneInput defaultCountry="IN" {...field} />
+          <PhoneInput
+            className="rounded-lg bg-foreground/5"
+            defaultCountry="IN"
+            {...field}
+          />
         </FormControl>
       );
+
+    case "date":
+      return (
+        <FormControl>
+          <Input
+            type="date"
+            placeholder={props.placeholder}
+            {...field}
+            className="block w-full bg-foreground/5 py-[22px]"
+            disabled={props.disabled}
+          />
+        </FormControl>
+      );
+
+    case "checkbox":
+      return (
+        <FormControl>
+          <Checkbox
+            checked={field.value}
+            onCheckedChange={field.onChange}
+            disabled={props.disabled}
+          />
+        </FormControl>
+      );
+
+    case "country":
+      return <CountryInput form={props.form} field={field} />;
 
     default:
       return null;
   }
+};
+
+const CountryInput = ({
+  field,
+  form,
+}: {
+  field: ControllerRenderProps<FieldValues, string>;
+  form: UseFormReturn | undefined;
+}) => {
+  const [open, setOpen] = useState(false);
+  const countries = Country.getAllCountries();
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="flex w-full justify-between bg-foreground/5 py-[22px] shadow-none"
+          >
+            {field.value
+              ? countries.find((country) => country.name === field.value)?.name
+              : "Select country..."}
+            <ChevronsUpDown className="opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContent className="p-0">
+        <Command>
+          <CommandInput placeholder="Search country..." />
+          <CommandList>
+            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandGroup>
+              {countries.map((country) => (
+                <CommandItem
+                  key={country.isoCode}
+                  value={country.name}
+                  onSelect={() => {
+                    if (form) {
+                      form.setValue("country", country.name);
+                    }
+                    setOpen(false);
+                  }}
+                >
+                  {country.name}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      field.value === country.name
+                        ? "opacity-100"
+                        : "opacity-0",
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 };
 
 const CustomFormField = ({
@@ -115,9 +240,18 @@ const CustomFormField = ({
       control={control}
       name={props.name}
       render={({ field }) => (
-        <FormItem className="flex-1 space-y-1">
-          {props.label && props.fieldType != "checkbox" && (
-            <FormLabel className="shad-input-label dark:text-white">
+        <FormItem
+          className={clsx("flex-1 items-center space-y-1", {
+            "flex items-center justify-end gap-x-2 space-y-0":
+              props.fieldType === "checkbox",
+          })}
+        >
+          {props.label && (
+            <FormLabel
+              className={clsx("shad-input-label dark:text-white", {
+                "cursor-pointer": props.fieldType === "checkbox",
+              })}
+            >
               {props.label}
             </FormLabel>
           )}

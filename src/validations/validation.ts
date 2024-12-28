@@ -1,5 +1,5 @@
 import { isValidPhoneNumber } from "react-phone-number-input";
-import { z } from "zod";
+import { boolean, z } from "zod";
 
 const optionalString = z.string().trim().optional().or(z.literal(""));
 const validPhone = z
@@ -54,9 +54,27 @@ export const personalDetailsDefValues = {
 
 export type personalDetailsType = z.infer<typeof personalDetailsSchema>;
 
+export const EducationDetailsSchema = z.object({
+  educationDetails: z
+    .array(
+      z.object({
+        institution: optionalString,
+        degree: optionalString,
+        gpa: optionalString,
+        startDate: optionalString,
+        endDate: optionalString,
+        current: z.boolean().optional(),
+      }),
+    )
+    .optional(),
+});
+
+export type EducationDetailsType = z.infer<typeof EducationDetailsSchema>;
+
 export const resumeSchema = z.object({
   ...projectTitleSchema.shape,
   ...personalDetailsSchema.shape,
+  ...EducationDetailsSchema.shape,
 });
 export type resumeSchemaType = Omit<
   z.infer<typeof resumeSchema>,
