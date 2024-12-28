@@ -4,6 +4,7 @@ import React from "react";
 import PersonalDetailsForm from "../forms/PersonalDetailsForm";
 import EducationForm from "../forms/EducationForm";
 import { EditorFormProps } from "./types";
+import WorkExperienceForm from "../forms/WorkExperienceForm";
 
 export const steps: {
   title: string;
@@ -19,5 +20,10 @@ export const steps: {
     title: "Educational Details",
     component: EducationForm,
     key: "education-details",
+  },
+  {
+    title: "Work Experiences",
+    component: WorkExperienceForm,
+    key: "work-experiences",
   },
 ];

@@ -99,7 +99,7 @@ const RenderInput = ({
                   key={"radio-form-item-" + idx}
                   className="flex items-center space-x-3 space-y-0"
                 >
-                  <FormLabel className="flex cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md bg-card-foreground/10 px-3 py-3 duration-100 hover:bg-card-foreground/15 active:scale-90">
+                  <FormLabel className="flex cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md bg-card-foreground/5 px-3 py-3 duration-100 hover:bg-card-foreground/10 active:scale-90">
                     <FormControl>
                       <RadioGroupItem value={option.value} />
                     </FormControl>

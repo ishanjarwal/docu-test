@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { EditorFormProps } from "../constants/types";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import {
-  EducationDetailsSchema,
-  EducationDetailsType,
+  WorkExperienceSchema,
+  WorkExperienceType,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
@@ -13,11 +13,11 @@ import CustomFormField from "../components/CustomFormField";
 import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator, MdOutlineDeleteOutline } from "react-icons/md";
 
-const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<EducationDetailsType>({
-    resolver: zodResolver(EducationDetailsSchema),
+const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const form = useForm<WorkExperienceType>({
+    resolver: zodResolver(WorkExperienceSchema),
     defaultValues: {
-      educationDetails: resumeData.educationDetails || [{}],
+      workExperiences: resumeData.workExperiences || [{}],
     },
   });
 
@@ -27,8 +27,8 @@ const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       if (!isValid) return;
       setResumeData({
         ...resumeData,
-        educationDetails:
-          values.educationDetails?.filter((edu) => edu !== undefined) || [],
+        workExperiences:
+          values.workExperiences?.filter((edu) => edu !== undefined) || [],
       });
     });
 
@@ -36,19 +36,19 @@ const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   }, [form, resumeData, setResumeData]);
 
   const { fields, append, remove } = useFieldArray({
-    name: "educationDetails",
+    name: "workExperiences",
     control: form.control,
   });
 
   return (
     <div className="p-4 sm:p-8">
-      <h1 className="text-xl font-bold">Educational Details</h1>
-      <p className="mt-2">Add your educational qualifications</p>
+      <h1 className="text-xl font-bold">Work Experiences</h1>
+      <p className="mt-2">Add your work history</p>
       <div className="mt-8">
         <Form {...form}>
           <div className="flex flex-col gap-y-8">
             {fields.map((field, index) => (
-              <EducationItem
+              <WorkExperienceItem
                 index={index}
                 form={form}
                 remove={remove}
@@ -66,36 +66,40 @@ const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   );
 };
 
-interface EducationItemProps {
-  form: UseFormReturn<EducationDetailsType>;
+interface WorkExperienceItemProps {
+  form: UseFormReturn<WorkExperienceType>;
   index: number;
   remove: (index: number) => void;
 }
 
-const EducationItem = ({ form, index, remove }: EducationItemProps) => {
+const WorkExperienceItem = ({
+  form,
+  index,
+  remove,
+}: WorkExperienceItemProps) => {
   return (
     <div className="relative flex flex-col items-stretch rounded-xl border border-input md:flex-row">
       <div className="absolute right-0 top-0 flex items-center px-4 pt-4 md:relative md:right-auto md:top-auto">
         <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
       </div>
       <div className="flex-1 p-4">
-        <h2 className="text-xl font-semibold">Degree {index + 1}</h2>
+        <h2 className="text-xl font-semibold">Work Experience {index + 1}</h2>
         <div className="mt-4 grid grid-cols-1 gap-y-4">
           <CustomFormField
             props={{
-              name: `educationDetails.${index}.degree`,
+              name: `workExperiences.${index}.position`,
               fieldType: "text",
-              label: "Degree",
-              placeholder: "Degree name",
+              label: "Job Title",
+              placeholder: "Your position at this job",
             }}
             control={form.control}
           />
           <CustomFormField
             props={{
-              name: `educationDetails.${index}.institution`,
+              name: `workExperiences.${index}.employer`,
               fieldType: "text",
-              label: "Institution",
-              placeholder: "Institution Name",
+              label: "Employer",
+              placeholder: "Employer Name",
             }}
             control={form.control}
           />
@@ -103,10 +107,15 @@ const EducationItem = ({ form, index, remove }: EducationItemProps) => {
             <div className="col-span-12 md:col-span-4">
               <CustomFormField
                 props={{
-                  name: `educationDetails.${index}.gpa`,
+                  name: `workExperiences.${index}.location`,
                   fieldType: "text",
-                  label: "Grade/GPA",
-                  placeholder: "Your Score",
+                  label: "Location",
+                  placeholder: "Your job location",
+                  disabled:
+                    form.watch("workExperiences")?.[index]?.jobType ===
+                    "on-site"
+                      ? false
+                      : true,
                 }}
                 control={form.control}
               />
@@ -114,7 +123,7 @@ const EducationItem = ({ form, index, remove }: EducationItemProps) => {
             <div className="col-span-6 md:col-span-4">
               <CustomFormField
                 props={{
-                  name: `educationDetails.${index}.startDate`,
+                  name: `workExperiences.${index}.startDate`,
                   fieldType: "date",
                   label: "Start Date",
                 }}
@@ -124,10 +133,10 @@ const EducationItem = ({ form, index, remove }: EducationItemProps) => {
             <div className="col-span-6 md:col-span-4">
               <CustomFormField
                 props={{
-                  name: `educationDetails.${index}.endDate`,
+                  name: `workExperiences.${index}.endDate`,
                   fieldType: "date",
                   label: "End Date",
-                  disabled: form.watch("educationDetails")?.[index].current
+                  disabled: form.watch("workExperiences")?.[index].current
                     ? true
                     : false,
                 }}
@@ -135,12 +144,27 @@ const EducationItem = ({ form, index, remove }: EducationItemProps) => {
               />
             </div>
           </div>
+          <div>
+            <CustomFormField
+              props={{
+                name: `workExperiences.${index}.jobType`,
+                fieldType: "radio",
+                label: "Job Type",
+                options: [
+                  { label: "On-site", value: "on-site" },
+                  { label: "Remote", value: "remote" },
+                  { label: "Hybrid", value: "hybrid" },
+                ],
+              }}
+              control={form.control}
+            />
+          </div>
           <div className="flex items-center justify-end space-x-2 px-2 py-2">
             <CustomFormField
               props={{
-                name: `educationDetails.${index}.current`,
+                name: `workExperiences.${index}.current`,
                 fieldType: "checkbox",
-                label: "Currently studying here",
+                label: "Currently working here",
               }}
               control={form.control}
             />
@@ -159,4 +183,4 @@ const EducationItem = ({ form, index, remove }: EducationItemProps) => {
   );
 };
 
-export default EducationForm;
+export default WorkExperienceForm;

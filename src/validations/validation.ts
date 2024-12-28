@@ -71,11 +71,32 @@ export const EducationDetailsSchema = z.object({
 
 export type EducationDetailsType = z.infer<typeof EducationDetailsSchema>;
 
+export const WorkExperienceSchema = z.object({
+  workExperiences: z
+    .array(
+      z.object({
+        position: optionalString,
+        employer: optionalString,
+        description: optionalString,
+        jobType: z.enum(["on-site", "remote", "hybrid"]).optional(),
+        location: optionalString,
+        startDate: optionalString,
+        endDate: optionalString,
+        current: z.boolean().optional(),
+      }),
+    )
+    .optional(),
+});
+
+export type WorkExperienceType = z.infer<typeof WorkExperienceSchema>;
+
 export const resumeSchema = z.object({
   ...projectTitleSchema.shape,
   ...personalDetailsSchema.shape,
   ...EducationDetailsSchema.shape,
+  ...WorkExperienceSchema.shape,
 });
+
 export type resumeSchemaType = Omit<
   z.infer<typeof resumeSchema>,
   "profilePicture"
