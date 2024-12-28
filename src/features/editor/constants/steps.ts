@@ -3,10 +3,11 @@
 import React from "react";
 import PersonalDetailsForm from "../forms/PersonalDetailsForm";
 import EducationForm from "../forms/EducationForm";
+import { EditorFormProps } from "./types";
 
 export const steps: {
   title: string;
-  component: React.ComponentType;
+  component: React.ComponentType<EditorFormProps>;
   key: string;
 }[] = [
   {

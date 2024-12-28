@@ -1,15 +1,18 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import EditorHeader from "./EditorHeader";
 import EditorFooter from "./EditorFooter";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import { steps } from "../constants/steps";
 import BreadCrumbs from "./BreadCrumbs";
+import { ResumeDataContext } from "../providers/ResumeData";
 
 const Editor = () => {
   const searchParams = useSearchParams();
   const currStep = searchParams.get("step") || steps[0].key;
+
+  const { resumeData, setResumeData } = useContext(ResumeDataContext);
 
   const setStep = (key: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -31,7 +34,12 @@ const Editor = () => {
         )}
       >
         <BreadCrumbs currStep={currStep} setCurrStep={setStep} />
-        {FormComponent && <FormComponent />}
+        {FormComponent && (
+          <FormComponent
+            resumeData={resumeData}
+            setResumeData={setResumeData}
+          />
+        )}
       </div>
       <EditorFooter currStep={currStep} setCurrStep={setStep} />
     </>

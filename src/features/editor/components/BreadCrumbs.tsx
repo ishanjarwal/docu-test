@@ -20,7 +20,7 @@ const BreadCrumbs = ({ currStep, setCurrStep }: BreadCrumbProps) => {
     <div
       className={clsx(
         "scrollbar-thin scrollbar-h-1",
-        "max-w-full overflow-auto bg-card-foreground/5 p-4",
+        "sticky top-0 z-50 max-w-full overflow-auto bg-card-foreground/5 p-4 backdrop-blur-md",
       )}
     >
       <Breadcrumb>

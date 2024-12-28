@@ -1,6 +1,6 @@
 "use client";
 import CustomTooltip from "@/components/custom/CustomTooltip";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,25 +12,27 @@ import {
 } from "@/components/ui/form";
 
 import { GoPencil } from "react-icons/go";
-import {
-  projectTitleDefValues,
-  projectTitleSchema,
-  projectTitleType,
-} from "@/validations/validation";
+import { projectTitleSchema, projectTitleType } from "@/validations/validation";
+import { ResumeDataContext } from "../providers/ResumeData";
 
 const TitleForm = () => {
+  const { resumeData, setResumeData } = useContext(ResumeDataContext);
+
   const form = useForm<projectTitleType>({
     resolver: zodResolver(projectTitleSchema),
-    defaultValues: projectTitleDefValues,
+    defaultValues: {
+      title: resumeData.title || "",
+    },
   });
 
   useEffect(() => {
-    const { unsubscribe } = form.watch(async () => {
+    const { unsubscribe } = form.watch(async (values) => {
       const isValid = await form.trigger();
       if (!isValid) return;
+      setResumeData({ ...resumeData, ...values });
     });
     return unsubscribe;
-  }, [form]);
+  }, [form, resumeData, setResumeData]);
 
   return (
     <div className="flex items-center justify-center">

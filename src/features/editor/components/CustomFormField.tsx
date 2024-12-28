@@ -1,3 +1,4 @@
+import { PhoneInput } from "@/components/custom/phone-input";
 import {
   FormControl,
   FormField,
@@ -7,11 +8,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 
 import React, { ReactNode } from "react";
 import { Control, ControllerRenderProps, FieldValues } from "react-hook-form";
 
-type FieldType = "text" | "checkbox" | "select" | "password" | "radio";
+type FieldType =
+  | "text"
+  | "checkbox"
+  | "select"
+  | "password"
+  | "radio"
+  | "textarea"
+  | "phone";
 
 interface CustomFormFieldType {
   name: string;
@@ -39,7 +48,7 @@ const RenderInput = ({
             <Input
               placeholder={props.placeholder}
               {...field}
-              className="mt-0 rounded-none border-0 focus-visible:ring-0"
+              className="mt-0 rounded-none border-0 shadow-none focus-visible:ring-0"
             />
           </FormControl>
         </div>
@@ -71,6 +80,24 @@ const RenderInput = ({
         </FormControl>
       );
 
+    case "textarea":
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={props.placeholder}
+            className="min-h-32 resize-none"
+            {...field}
+          />
+        </FormControl>
+      );
+
+    case "phone":
+      return (
+        <FormControl>
+          <PhoneInput defaultCountry="IN" {...field} />
+        </FormControl>
+      );
+
     default:
       return null;
   }
@@ -88,7 +115,7 @@ const CustomFormField = ({
       control={control}
       name={props.name}
       render={({ field }) => (
-        <FormItem className="flex-1">
+        <FormItem className="flex-1 space-y-1">
           {props.label && props.fieldType != "checkbox" && (
             <FormLabel className="shad-input-label dark:text-white">
               {props.label}
