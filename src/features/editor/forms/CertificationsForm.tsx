@@ -11,12 +11,21 @@ import {
   useFieldArray,
   UseFieldArrayRemove,
   useForm,
+  UseFormReturn,
 } from "react-hook-form";
 import { EditorFormProps } from "../constants/types";
 import { MdDragIndicator, MdOutlineDeleteOutline } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import { IoMdAdd } from "react-icons/io";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { FaChevronDown } from "react-icons/fa6";
+import { FiTrash } from "react-icons/fi";
 
 const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CertificationType>({
@@ -54,6 +63,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           <div className="flex flex-col gap-y-8">
             {fields.map((field, index) => (
               <CertificationItem
+                form={form}
                 key={field.id}
                 index={index}
                 remove={remove}
@@ -75,79 +85,102 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 };
 
 interface CertificationItemProps {
+  form: UseFormReturn<CertificationType>;
   index: number;
   remove: UseFieldArrayRemove;
   control: Control<CertificationType>;
 }
 
 const CertificationItem = ({
+  form,
   index,
   remove,
   control,
 }: CertificationItemProps) => {
   return (
-    <div className="relative flex flex-col items-stretch rounded-xl border border-input md:flex-row">
-      <div className="absolute right-0 top-0 flex items-center px-4 pt-4 md:relative md:right-auto md:top-auto">
-        <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
-      </div>
-      <div className="flex-1 p-4">
-        <h2 className="text-xl font-semibold">Work Experience {index + 1}</h2>
-        <div className="mt-4 grid grid-cols-2 gap-x-2 gap-y-4">
-          <div className="col-span-2">
-            <CustomFormField
-              props={{
-                name: `certifications.${index}.title`,
-                fieldType: "text",
-                label: "Certificate title",
-                placeholder: "The title of your certifciate",
-              }}
-              control={control}
-            />
+    <Accordion
+      type="single"
+      className="rounded-lg border border-border px-4 py-4 pe-2"
+      collapsible
+      defaultValue={"item-1"}
+    >
+      <AccordionItem value="item-1" className="border-b-0">
+        <AccordionTrigger className="truncate py-0 outline-none">
+          <div className="flex w-full items-center justify-between gap-x-4">
+            <div>
+              <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
+            </div>
+            <div className="flex w-full items-center justify-between truncate">
+              <p className="truncate text-lg font-semibold">
+                {form.watch("certifications")?.[index]?.title || "untitled"}
+              </p>
+              <span>
+                <FaChevronDown />
+              </span>
+            </div>
+            <div>
+              <Button
+                className="px-3 text-destructive hover:text-destructive"
+                variant={"ghost"}
+                onClick={() => remove(index)}
+              >
+                <FiTrash className="text-2xl" />
+              </Button>
+            </div>
           </div>
-          <div className="col-span-2 md:col-span-1">
-            <CustomFormField
-              props={{
-                name: `certifications.${index}.organization`,
-                fieldType: "text",
-                label: "Organization",
-                placeholder: "Certificate issuer",
-              }}
-              control={control}
-            />
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="flex-1 p-4">
+            <div className="mt-4 grid grid-cols-2 gap-x-2 gap-y-4">
+              <div className="col-span-2">
+                <CustomFormField
+                  props={{
+                    name: `certifications.${index}.title`,
+                    fieldType: "text",
+                    label: "Certificate title",
+                    placeholder: "The title of your certifciate",
+                  }}
+                  control={control}
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <CustomFormField
+                  props={{
+                    name: `certifications.${index}.organization`,
+                    fieldType: "text",
+                    label: "Organization",
+                    placeholder: "Certificate issuer",
+                  }}
+                  control={control}
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <CustomFormField
+                  props={{
+                    name: `certifications.${index}.link`,
+                    fieldType: "text",
+                    label: "Link",
+                    placeholder: "Link to your certificate",
+                  }}
+                  control={control}
+                />
+              </div>
+              <div className="col-span-2">
+                <CustomFormField
+                  props={{
+                    name: `certifications.${index}.description`,
+                    fieldType: "textarea",
+                    label: "Description",
+                    placeholder: "Describe your experience/learnings",
+                  }}
+                  control={control}
+                />
+              </div>
+            </div>
           </div>
-          <div className="col-span-2 md:col-span-1">
-            <CustomFormField
-              props={{
-                name: `certifications.${index}.link`,
-                fieldType: "text",
-                label: "Link",
-                placeholder: "Link to your certificate",
-              }}
-              control={control}
-            />
-          </div>
-          <div className="col-span-2">
-            <CustomFormField
-              props={{
-                name: `certifications.${index}.description`,
-                fieldType: "textarea",
-                label: "Description",
-                placeholder: "Describe your experience/learnings",
-              }}
-              control={control}
-            />
-          </div>
-          <Button
-            className="col-span-2 ms-auto w-max border-destructive px-3 text-destructive hover:text-destructive"
-            variant={"outline"}
-            onClick={() => remove(index)}
-          >
-            <MdOutlineDeleteOutline className="text-xl" />
-            Remove
-          </Button>
-        </div>
-      </div>
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 

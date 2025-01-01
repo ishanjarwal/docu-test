@@ -14,6 +14,14 @@ import CustomFormField from "../components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator, MdOutlineDeleteOutline } from "react-icons/md";
+import { FiTrash } from "react-icons/fi";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { FaChevronDown } from "react-icons/fa6";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<SkillType>({
@@ -136,60 +144,86 @@ const SkillItem = ({
   remove,
 }: SkillItemProps) => {
   return (
-    <div className="flex items-center rounded-lg border border-border">
-      <div className="flex-1 px-4">
-        <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
-      </div>
-      <div className="flex w-full flex-col p-4">
-        <div className="flex w-full items-start justify-center gap-4">
-          <div className="flex-1">
-            <CustomFormField
-              props={{
-                fieldType: "text",
-                label: "Skill Name",
-                name: `${arrayName}.${index}.name`,
-                placeholder: "Skill name",
-              }}
-              control={control}
-            />
-          </div>
-          <div className="flex-1">
-            <CustomFormField
-              props={{
-                fieldType: "range",
-                label: "Skill Level",
-                name: `${arrayName}.${index}.level`,
-                rangeLabels: ["1", "2", "3", "4", "5"],
-                rangeMax: 4,
-                rangeStep: 1,
-                disabled: form.watch(
-                  arrayName as "hardSkills" | "softSkills",
-                )?.[index]?.levelDisabled,
-              }}
-              control={control}
-            />
-            <div className="mt-4">
-              <CustomFormField
-                props={{
-                  fieldType: "checkbox",
-                  label: "Disable Level",
-                  name: `${arrayName}.${index}.levelDisabled`,
-                }}
-                control={control}
-              />
+    <Accordion
+      type="single"
+      className="rounded-lg border border-border px-4 py-4 pe-2"
+      collapsible
+      defaultValue={"item-1"}
+    >
+      <AccordionItem value="item-1" className="border-b-0">
+        <AccordionTrigger className="truncate py-0 outline-none">
+          <div className="flex w-full items-center justify-between gap-x-4">
+            <div>
+              <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
+            </div>
+            <div className="flex w-full items-center justify-between truncate">
+              <p className="truncate text-lg font-semibold">
+                {form.watch((arrayName as "hardSkills") || "softSkills")?.[
+                  index
+                ]?.name || "Untitled"}
+              </p>
+              <span>
+                <FaChevronDown />
+              </span>
+            </div>
+            <div>
+              <Button
+                className="px-3 text-destructive hover:text-destructive"
+                variant={"ghost"}
+                onClick={() => remove(index)}
+              >
+                <FiTrash className="text-2xl" />
+              </Button>
             </div>
           </div>
-        </div>
-        <Button
-          className="ms-auto mt-8 w-max border-destructive px-3 text-destructive hover:text-destructive"
-          variant={"outline"}
-          onClick={() => remove(index)}
-        >
-          <MdOutlineDeleteOutline className="text-xl" />
-          Remove
-        </Button>
-      </div>
-    </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="relative flex flex-col items-stretch md:flex-row">
+            <div className="flex w-full flex-col p-4">
+              <div className="flex w-full items-start justify-center gap-4">
+                <div className="flex-1">
+                  <CustomFormField
+                    props={{
+                      fieldType: "text",
+                      label: "Skill Name",
+                      name: `${arrayName}.${index}.name`,
+                      placeholder: "Skill name",
+                    }}
+                    control={control}
+                  />
+                </div>
+                <div className="flex-1">
+                  <CustomFormField
+                    props={{
+                      fieldType: "range",
+                      label: "Skill Level",
+                      name: `${arrayName}.${index}.level`,
+                      rangeLabels: ["1", "2", "3", "4", "5"],
+                      rangeMax: 4,
+                      rangeStep: 1,
+                      disabled: form.watch(
+                        arrayName as "hardSkills" | "softSkills",
+                      )?.[index]?.levelDisabled,
+                    }}
+                    control={control}
+                  />
+                  <div className="mt-4">
+                    <CustomFormField
+                      props={{
+                        fieldType: "checkbox",
+                        label: "Disable Level",
+                        name: `${arrayName}.${index}.levelDisabled`,
+                      }}
+                      control={control}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 

@@ -11,7 +11,17 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import CustomFormField from "../components/CustomFormField";
 import { IoMdAdd } from "react-icons/io";
-import { MdDragIndicator, MdOutlineDeleteOutline } from "react-icons/md";
+import { MdDragIndicator } from "react-icons/md";
+import { FiTrash } from "react-icons/fi";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { FaChevronDown } from "react-icons/fa6";
+import clsx from "clsx";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<EducationDetailsType>({
@@ -74,88 +84,112 @@ interface EducationItemProps {
 
 const EducationItem = ({ form, index, remove }: EducationItemProps) => {
   return (
-    <div className="relative flex flex-col items-stretch rounded-xl border border-input md:flex-row">
-      <div className="absolute right-0 top-0 flex items-center px-4 pt-4 md:relative md:right-auto md:top-auto">
-        <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
-      </div>
-      <div className="flex-1 p-4">
-        <h2 className="text-xl font-semibold">Degree {index + 1}</h2>
-        <div className="mt-4 grid grid-cols-1 gap-y-4">
-          <CustomFormField
-            props={{
-              name: `educationDetails.${index}.degree`,
-              fieldType: "text",
-              label: "Degree",
-              placeholder: "Degree name",
-            }}
-            control={form.control}
-          />
-          <CustomFormField
-            props={{
-              name: `educationDetails.${index}.institution`,
-              fieldType: "text",
-              label: "Institution",
-              placeholder: "Institution Name",
-            }}
-            control={form.control}
-          />
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-12 md:col-span-4">
-              <CustomFormField
-                props={{
-                  name: `educationDetails.${index}.gpa`,
-                  fieldType: "text",
-                  label: "Grade/GPA",
-                  placeholder: "Your Score",
-                }}
-                control={form.control}
-              />
+    <Accordion
+      type="single"
+      className="rounded-lg border border-border px-4 py-4 pe-2"
+      collapsible
+      defaultValue={"item-1"}
+    >
+      <AccordionItem value="item-1" className="border-b-0">
+        <AccordionTrigger className="truncate py-0 outline-none">
+          <div className="flex w-full items-center justify-between gap-x-4">
+            <div>
+              <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
             </div>
-            <div className="col-span-6 md:col-span-4">
-              <CustomFormField
-                props={{
-                  name: `educationDetails.${index}.startDate`,
-                  fieldType: "date",
-                  label: "Start Date",
-                }}
-                control={form.control}
-              />
+            <div className="flex w-full items-center justify-between truncate">
+              <p className="truncate text-lg font-semibold">
+                {form.watch("educationDetails")?.[index]?.degree || "Untitled"}
+              </p>
+              <span>
+                <FaChevronDown />
+              </span>
             </div>
-            <div className="col-span-6 md:col-span-4">
-              <CustomFormField
-                props={{
-                  name: `educationDetails.${index}.endDate`,
-                  fieldType: "date",
-                  label: "End Date",
-                  disabled: form.watch("educationDetails")?.[index].current
-                    ? true
-                    : false,
-                }}
-                control={form.control}
-              />
+            <div>
+              <Button
+                className="px-3 text-destructive hover:text-destructive"
+                variant={"ghost"}
+                onClick={() => remove(index)}
+              >
+                <FiTrash className="text-2xl" />
+              </Button>
             </div>
           </div>
-          <div className="flex items-center justify-end space-x-2 px-2 py-2">
-            <CustomFormField
-              props={{
-                name: `educationDetails.${index}.current`,
-                fieldType: "checkbox",
-                label: "Currently studying here",
-              }}
-              control={form.control}
-            />
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="relative flex flex-col items-stretch md:flex-row">
+            <div className="flex-1 px-2 py-4 md:px-4">
+              <div className="mt-4 grid grid-cols-1 gap-y-4">
+                <CustomFormField
+                  props={{
+                    name: `educationDetails.${index}.degree`,
+                    fieldType: "text",
+                    label: "Degree",
+                    placeholder: "Degree name",
+                  }}
+                  control={form.control}
+                />
+                <CustomFormField
+                  props={{
+                    name: `educationDetails.${index}.institution`,
+                    fieldType: "text",
+                    label: "Institution",
+                    placeholder: "Institution Name",
+                  }}
+                  control={form.control}
+                />
+                <div className="grid grid-cols-12 gap-4">
+                  <div className="col-span-12 md:col-span-4">
+                    <CustomFormField
+                      props={{
+                        name: `educationDetails.${index}.gpa`,
+                        fieldType: "text",
+                        label: "Grade/GPA",
+                        placeholder: "Your Score",
+                      }}
+                      control={form.control}
+                    />
+                  </div>
+                  <div className="col-span-6 md:col-span-4">
+                    <CustomFormField
+                      props={{
+                        name: `educationDetails.${index}.startDate`,
+                        fieldType: "date",
+                        label: "Start Date",
+                      }}
+                      control={form.control}
+                    />
+                  </div>
+                  <div className="col-span-6 md:col-span-4">
+                    <CustomFormField
+                      props={{
+                        name: `educationDetails.${index}.endDate`,
+                        fieldType: "date",
+                        label: "End Date",
+                        disabled: form.watch("educationDetails")?.[index]
+                          .current
+                          ? true
+                          : false,
+                      }}
+                      control={form.control}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-end space-x-2 px-2 py-2">
+                  <CustomFormField
+                    props={{
+                      name: `educationDetails.${index}.current`,
+                      fieldType: "checkbox",
+                      label: "Currently studying here",
+                    }}
+                    control={form.control}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          <Button
-            className="ms-auto w-max border-destructive px-3 text-destructive hover:text-destructive"
-            variant={"outline"}
-            onClick={() => remove(index)}
-          >
-            <MdOutlineDeleteOutline className="text-xl" />
-            Remove
-          </Button>
-        </div>
-      </div>
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
