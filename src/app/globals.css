@@ -64,4 +64,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  .custom_range_thumb {
+    @apply !h-6 !w-6 !cursor-grab duration-100 active:scale-125;
+  }
 }

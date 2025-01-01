@@ -1,5 +1,5 @@
 import { isValidPhoneNumber } from "react-phone-number-input";
-import { boolean, z } from "zod";
+import { z } from "zod";
 
 const optionalString = z.string().trim().optional().or(z.literal(""));
 const validPhone = z
@@ -78,7 +78,7 @@ export const WorkExperienceSchema = z.object({
         position: optionalString,
         employer: optionalString,
         description: optionalString,
-        jobType: z.enum(["on-site", "remote", "hybrid"]).optional(),
+        jobType: z.enum(["on-site", "remote", "hybrid", ""]).optional(),
         location: optionalString,
         startDate: optionalString,
         endDate: optionalString,
@@ -90,11 +90,51 @@ export const WorkExperienceSchema = z.object({
 
 export type WorkExperienceType = z.infer<typeof WorkExperienceSchema>;
 
+export const SkillSchema = z.object({
+  hardSkills: z
+    .array(
+      z.object({
+        name: optionalString,
+        level: z.number().min(0).max(100).optional(),
+        levelDisabled: z.boolean().optional(),
+      }),
+    )
+    .optional(),
+  softSkills: z
+    .array(
+      z.object({
+        name: optionalString,
+        level: z.number().min(0).max(100).optional(),
+        levelDisabled: z.boolean().optional(),
+      }),
+    )
+    .optional(),
+});
+
+export type SkillType = z.infer<typeof SkillSchema>;
+
+export const CerificationsSchema = z.object({
+  certifications: z
+    .array(
+      z.object({
+        title: optionalString,
+        organization: optionalString,
+        link: optionalString,
+        description: z.string().max(300).optional(),
+      }),
+    )
+    .optional(),
+});
+
+export type CertificationType = z.infer<typeof CerificationsSchema>;
+
 export const resumeSchema = z.object({
   ...projectTitleSchema.shape,
   ...personalDetailsSchema.shape,
   ...EducationDetailsSchema.shape,
   ...WorkExperienceSchema.shape,
+  ...SkillSchema.shape,
+  ...CerificationsSchema.shape,
 });
 
 export type resumeSchemaType = Omit<

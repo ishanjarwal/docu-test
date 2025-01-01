@@ -28,7 +28,7 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       setResumeData({
         ...resumeData,
         workExperiences:
-          values.workExperiences?.filter((edu) => edu !== undefined) || [],
+          values.workExperiences?.filter((item) => item !== undefined) || [],
       });
     });
 

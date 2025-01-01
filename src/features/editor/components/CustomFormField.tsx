@@ -35,9 +35,9 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 import { Country } from "country-state-city";
-import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import clsx from "clsx";
+import { Slider } from "@/components/ui/slider";
 
 type FieldType =
   | "text"
@@ -48,7 +48,8 @@ type FieldType =
   | "textarea"
   | "phone"
   | "date"
-  | "country";
+  | "country"
+  | "range";
 
 interface CustomFormFieldType {
   form?: UseFormReturn;
@@ -59,6 +60,9 @@ interface CustomFormFieldType {
   placeholder?: string;
   options?: { label: string; value: string }[];
   disabled?: boolean;
+  rangeLabels?: string[];
+  rangeMax?: number;
+  rangeStep?: number;
 }
 const RenderInput = ({
   field,
@@ -70,7 +74,7 @@ const RenderInput = ({
   switch (props.fieldType) {
     case "text":
       return (
-        <div className="flex items-center rounded-lg border border-border bg-foreground/5 py-1 ring-ring focus-within:ring-1">
+        <div className="flex items-center rounded-lg border border-border bg-foreground/5 py-1 ring-ring focus-within:ring-1 focus-within:ring-primary">
           {props.icon && (
             <span className="ms-3 dark:text-white">{props.icon}</span>
           )}
@@ -89,6 +93,7 @@ const RenderInput = ({
       return (
         <FormControl>
           <RadioGroup
+            value={field.value || ""}
             onValueChange={field.onChange}
             defaultValue={field.value}
             className="flex flex-wrap gap-2"
@@ -101,7 +106,14 @@ const RenderInput = ({
                 >
                   <FormLabel className="flex cursor-pointer items-center justify-center gap-x-2 whitespace-nowrap rounded-md bg-card-foreground/5 px-3 py-3 duration-100 hover:bg-card-foreground/10 active:scale-90">
                     <FormControl>
-                      <RadioGroupItem value={option.value} />
+                      <RadioGroupItem
+                        onClick={() => {
+                          if (field.value === option.value) {
+                            field.onChange("");
+                          }
+                        }}
+                        value={option.value}
+                      />
                     </FormControl>
                     <span>{option.label}</span>
                   </FormLabel>
@@ -116,7 +128,7 @@ const RenderInput = ({
         <FormControl>
           <Textarea
             placeholder={props.placeholder}
-            className="min-h-32 resize-none bg-foreground/5"
+            className="min-h-32 resize-none bg-foreground/5 focus-visible:ring-1 focus-visible:ring-primary"
             {...field}
           />
         </FormControl>
@@ -126,7 +138,7 @@ const RenderInput = ({
       return (
         <FormControl>
           <PhoneInput
-            className="rounded-lg bg-foreground/5"
+            className="rounded-lg bg-foreground/5 focus-within:ring-1 focus-within:ring-primary"
             defaultCountry="IN"
             {...field}
           />
@@ -140,7 +152,7 @@ const RenderInput = ({
             type="date"
             placeholder={props.placeholder}
             {...field}
-            className="block w-full bg-foreground/5 py-[22px]"
+            className="block w-full bg-foreground/5 py-[22px] focus-visible:ring-1 focus-visible:ring-primary"
             disabled={props.disabled}
           />
         </FormControl>
@@ -159,6 +171,33 @@ const RenderInput = ({
 
     case "country":
       return <CountryInput form={props.form} field={field} />;
+
+    case "range":
+      return (
+        <div
+          className={clsx("rounded-md bg-foreground/5 px-4 py-2", {
+            "bg-transparent": props.disabled,
+          })}
+        >
+          <Slider
+            value={[field.value]} // ShadCN Slider expects an array
+            onValueChange={(value) => field.onChange(value[0])}
+            defaultValue={[50]}
+            max={props.rangeMax}
+            step={props.rangeStep}
+            className={clsx("mt-4 w-full cursor-pointer accent-primary", {
+              "pointer-events-none opacity-25": props.disabled,
+            })}
+            disabled={props.disabled}
+            onChange={field.onChange}
+          />
+          <div className="mt-4 flex items-center justify-between text-xs">
+            {props.rangeLabels?.map((label) => (
+              <span key={label}>{label}</span>
+            ))}
+          </div>
+        </div>
+      );
 
     default:
       return null;
