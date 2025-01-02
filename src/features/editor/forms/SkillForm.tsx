@@ -5,7 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import {
   Control,
+  FieldArrayWithId,
   useFieldArray,
+  UseFieldArrayMove,
   useForm,
   UseFormReturn,
 } from "react-hook-form";
@@ -22,6 +24,27 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { FaChevronDown } from "react-icons/fa6";
+
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import clsx from "clsx";
+import { CSS } from "@dnd-kit/utilities";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<SkillType>({
@@ -50,6 +73,7 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     fields: hardSkillsfields,
     append: hardSkillappend,
     remove: hardSkillremove,
+    move: hardSkillMove,
   } = useFieldArray({
     name: "hardSkills",
     control: form.control,
@@ -59,10 +83,34 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     fields: softSkillsfields,
     append: softSkillappend,
     remove: softSkillremove,
+    move: softSkillMove,
   } = useFieldArray({
     name: "softSkills",
     control: form.control,
   });
+
+  const sensors = useSensors(
+    useSensor(TouchSensor),
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  function handleDragEnd(
+    event: DragEndEvent,
+    fields: FieldArrayWithId<any>[],
+    move: UseFieldArrayMove,
+  ) {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = fields.findIndex((field) => field.id === active.id);
+      const newIndex = fields.findIndex((field) => field.id === over.id);
+      move(oldIndex, newIndex);
+      return arrayMove(fields, oldIndex, newIndex);
+    }
+  }
 
   return (
     <div className="p-4 sm:p-8">
@@ -73,16 +121,31 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           <div className="mt-8">
             <div>
               <div className="flex flex-col gap-y-8">
-                {hardSkillsfields.map((field, index) => (
-                  <SkillItem
-                    key={field.id}
-                    index={index}
-                    control={form.control}
-                    arrayName="hardSkills"
-                    remove={hardSkillremove}
-                    form={form}
-                  />
-                ))}
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={(e) => {
+                    handleDragEnd(e, hardSkillsfields, hardSkillMove);
+                  }}
+                  modifiers={[restrictToVerticalAxis]}
+                >
+                  <SortableContext
+                    items={hardSkillsfields}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {hardSkillsfields.map((field, index) => (
+                      <SkillItem
+                        id={field.id}
+                        key={field.id}
+                        index={index}
+                        control={form.control}
+                        arrayName="hardSkills"
+                        remove={hardSkillremove}
+                        form={form}
+                      />
+                    ))}
+                  </SortableContext>
+                </DndContext>
                 <Button
                   className="py-6 text-foreground"
                   onClick={() => hardSkillappend({ name: "", level: 0 })}
@@ -102,16 +165,31 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           <div className="mt-8">
             <div>
               <div className="flex flex-col gap-y-8">
-                {softSkillsfields.map((field, index) => (
-                  <SkillItem
-                    key={field.id}
-                    index={index}
-                    control={form.control}
-                    arrayName="softSkills"
-                    remove={softSkillremove}
-                    form={form}
-                  />
-                ))}
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={(e) => {
+                    handleDragEnd(e, softSkillsfields, softSkillMove);
+                  }}
+                  modifiers={[restrictToVerticalAxis]}
+                >
+                  <SortableContext
+                    items={softSkillsfields}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {softSkillsfields.map((field, index) => (
+                      <SkillItem
+                        id={field.id}
+                        key={field.id}
+                        index={index}
+                        control={form.control}
+                        arrayName="softSkills"
+                        remove={softSkillremove}
+                        form={form}
+                      />
+                    ))}
+                  </SortableContext>
+                </DndContext>
                 <Button
                   className="py-6 text-foreground"
                   onClick={() => softSkillappend({ name: "", level: 0 })}
@@ -129,6 +207,7 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 };
 
 interface SkillItemProps {
+  id: string;
   form: UseFormReturn<SkillType>;
   index: number;
   control: Control<SkillType>;
@@ -137,93 +216,119 @@ interface SkillItemProps {
 }
 
 const SkillItem = ({
+  id,
   form,
   index,
   control,
   arrayName,
   remove,
 }: SkillItemProps) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
   return (
-    <Accordion
-      type="single"
-      className="rounded-lg border border-border px-4 py-4 pe-2"
-      collapsible
-      defaultValue={"item-1"}
+    <div
+      className={clsx(
+        "!touch-none rounded-lg duration-75",
+        isDragging && "relative z-50 cursor-grab shadow-xl",
+      )}
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
     >
-      <AccordionItem value="item-1" className="border-b-0">
-        <AccordionTrigger className="truncate py-0 outline-none">
-          <div className="flex w-full items-center justify-between gap-x-4">
-            <div>
-              <MdDragIndicator className="rotate-90 cursor-grab text-xl" />
+      <Accordion
+        type="single"
+        className="rounded-lg border border-border bg-background px-2 py-4 md:px-4"
+        collapsible
+        defaultValue={"item-1"}
+      >
+        <AccordionItem value="item-1" className="border-b-0">
+          <AccordionTrigger className="truncate py-0 outline-none">
+            <div className="flex w-full items-center justify-between gap-x-4">
+              <div>
+                <MdDragIndicator
+                  {...listeners}
+                  {...attributes}
+                  className="rotate-90 cursor-grab text-xl focus:outline-none"
+                />
+              </div>
+              <div className="flex w-full items-center justify-between truncate">
+                <p className="truncate text-lg font-semibold">
+                  {form.watch((arrayName as "hardSkills") || "softSkills")?.[
+                    index
+                  ]?.name || "Untitled"}
+                </p>
+                <span>
+                  <FaChevronDown />
+                </span>
+              </div>
+              <div>
+                <Button
+                  className="px-3 text-destructive hover:text-destructive"
+                  variant={"ghost"}
+                  onClick={() => remove(index)}
+                >
+                  <FiTrash className="text-2xl" />
+                </Button>
+              </div>
             </div>
-            <div className="flex w-full items-center justify-between truncate">
-              <p className="truncate text-lg font-semibold">
-                {form.watch((arrayName as "hardSkills") || "softSkills")?.[
-                  index
-                ]?.name || "Untitled"}
-              </p>
-              <span>
-                <FaChevronDown />
-              </span>
-            </div>
-            <div>
-              <Button
-                className="px-3 text-destructive hover:text-destructive"
-                variant={"ghost"}
-                onClick={() => remove(index)}
-              >
-                <FiTrash className="text-2xl" />
-              </Button>
-            </div>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="relative flex flex-col items-stretch md:flex-row">
-            <div className="flex w-full flex-col p-4">
-              <div className="flex w-full items-start justify-center gap-4">
-                <div className="flex-1">
-                  <CustomFormField
-                    props={{
-                      fieldType: "text",
-                      label: "Skill Name",
-                      name: `${arrayName}.${index}.name`,
-                      placeholder: "Skill name",
-                    }}
-                    control={control}
-                  />
-                </div>
-                <div className="flex-1">
-                  <CustomFormField
-                    props={{
-                      fieldType: "range",
-                      label: "Skill Level",
-                      name: `${arrayName}.${index}.level`,
-                      rangeLabels: ["1", "2", "3", "4", "5"],
-                      rangeMax: 4,
-                      rangeStep: 1,
-                      disabled: form.watch(
-                        arrayName as "hardSkills" | "softSkills",
-                      )?.[index]?.levelDisabled,
-                    }}
-                    control={control}
-                  />
-                  <div className="mt-4">
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="relative flex flex-col items-stretch md:flex-row">
+              <div className="flex w-full flex-col px-2 py-4 md:px-4">
+                <div className="flex w-full flex-col items-start justify-center gap-4 md:flex-row">
+                  <div className="w-full flex-1">
                     <CustomFormField
                       props={{
-                        fieldType: "checkbox",
-                        label: "Disable Level",
-                        name: `${arrayName}.${index}.levelDisabled`,
+                        fieldType: "text",
+                        label: "Skill Name",
+                        name: `${arrayName}.${index}.name`,
+                        placeholder: "Skill name",
                       }}
                       control={control}
                     />
                   </div>
+                  <div className="w-full flex-1">
+                    <CustomFormField
+                      props={{
+                        fieldType: "range",
+                        label: "Skill Level",
+                        name: `${arrayName}.${index}.level`,
+                        rangeLabels: ["1", "2", "3", "4", "5"],
+                        rangeMax: 4,
+                        rangeStep: 1,
+                        disabled: form.watch(
+                          arrayName as "hardSkills" | "softSkills",
+                        )?.[index]?.levelDisabled,
+                      }}
+                      control={control}
+                    />
+                    <div className="mt-4">
+                      <CustomFormField
+                        props={{
+                          fieldType: "checkbox",
+                          label: "Disable Level",
+                          name: `${arrayName}.${index}.levelDisabled`,
+                        }}
+                        control={control}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
   );
 };
 
