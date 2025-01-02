@@ -23,7 +23,7 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
   )?.key;
 
   return (
-    <div className="flex w-full items-center justify-between border-t p-4">
+    <div className="fixed bottom-0 flex w-full items-center justify-between border-t bg-background p-4 lg:relative lg:bottom-auto">
       <div className="flex items-center justify-start space-x-2">
         {prevStep && (
           <Button

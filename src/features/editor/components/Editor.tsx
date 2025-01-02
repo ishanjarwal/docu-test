@@ -30,7 +30,7 @@ const Editor = () => {
       <div
         className={clsx(
           "grow overflow-y-auto",
-          "scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
+          "pb-16 scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50 lg:pb-0",
         )}
       >
         <BreadCrumbs currStep={currStep} setCurrStep={setStep} />

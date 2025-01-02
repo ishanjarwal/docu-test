@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { steps } from "../constants/steps";
 import clsx from "clsx";
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 interface BreadCrumbProps {
   currStep: string;
@@ -16,10 +17,12 @@ interface BreadCrumbProps {
 }
 
 const BreadCrumbs = ({ currStep, setCurrStep }: BreadCrumbProps) => {
+  const { isDesktop } = useDeviceType();
+
   return (
     <div
       className={clsx(
-        "scrollbar-thin scrollbar-h-1",
+        { "scrollbar-thin scrollbar-h-1": isDesktop },
         "sticky top-0 z-50 max-w-full overflow-auto bg-card-foreground/5 p-4 backdrop-blur-md",
       )}
     >

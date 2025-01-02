@@ -148,7 +148,7 @@ const EducationItem = ({ id, form, index, remove }: EducationItemProps) => {
   return (
     <div
       className={clsx(
-        "!touch-none rounded-lg duration-75",
+        "rounded-lg duration-75",
         isDragging && "relative z-50 cursor-grab shadow-xl",
       )}
       ref={setNodeRef}
@@ -173,7 +173,7 @@ const EducationItem = ({ id, form, index, remove }: EducationItemProps) => {
                 <MdDragIndicator
                   {...attributes}
                   {...listeners}
-                  className="rotate-90 cursor-grab text-xl focus:outline-none"
+                  className="rotate-90 cursor-grab !touch-none text-xl focus:outline-none"
                 />
               </div>
               <div className="flex w-full items-center justify-between truncate">

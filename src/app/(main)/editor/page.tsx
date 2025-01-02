@@ -9,13 +9,16 @@ const page = () => {
   return (
     <ResumeData>
       <PreviewToggle>
-        <main className="flex max-h-screen min-h-screen w-full">
+        <main className="flex min-h-screen w-full lg:max-h-screen">
           <div className="relative mx-auto flex w-full max-w-[1600px] grow bg-card">
-            <div className="absolute bottom-0 top-0 flex w-full">
+            <div className="flex w-full lg:absolute lg:bottom-0 lg:top-0">
               <div className="relative flex min-w-0 flex-1 flex-col bg-card">
                 <Editor />
               </div>
-              <Separator orientation="vertical" className="ms-1" />
+              <Separator
+                orientation="vertical"
+                className="ms-1 hidden lg:block"
+              />
               <Preview />
               <Separator
                 orientation="vertical"
