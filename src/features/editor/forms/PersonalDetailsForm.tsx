@@ -7,9 +7,22 @@ import {
   personalDetailsType,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { EditorFormProps } from "../constants/types";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
+import { useDropzone } from "react-dropzone";
+import usePhotoURL from "@/hooks/usePhotoURL";
+import Image from "next/image";
+import { CiImageOn } from "react-icons/ci";
+import clsx from "clsx";
+import { Button } from "@/components/ui/button";
 
 const PersonalDetailsForm = ({
   resumeData,
@@ -34,6 +47,24 @@ const PersonalDetailsForm = ({
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
+  const onDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      form.setValue("profilePicture", acceptedFiles[0], {
+        shouldValidate: true,
+      });
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [],
+    }, // Accept only images
+  });
+
+  const photo = form.watch("profilePicture");
+  const photoURL = usePhotoURL(photo);
+
   return (
     <div className="p-4 sm:p-8">
       <h1 className="text-xl font-bold">Personal Details</h1>
@@ -41,6 +72,64 @@ const PersonalDetailsForm = ({
         <Form {...form}>
           <div className="flex flex-col gap-y-8">
             <div className="grid grid-cols-1 gap-x-2 gap-y-8 sm:grid-cols-2">
+              {/* profile image input */}
+              <div className="col-span-1 sm:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="profilePicture"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel className="shad-input-label dark:text-white">
+                        Upload your profile picture
+                      </FormLabel>
+                      <FormControl>
+                        <div className="flex items-center justify-start space-x-4">
+                          <div
+                            {...getRootProps()}
+                            className="group relative aspect-square w-32 cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-foreground/25"
+                          >
+                            <input {...getInputProps()} />
+                            {photoURL && (
+                              <Image
+                                alt="profile image"
+                                src={photoURL}
+                                fill
+                                className="h-full w-full object-cover object-center"
+                              />
+                            )}
+                            <div
+                              className={clsx(
+                                "pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center bg-background/25 opacity-0 backdrop-blur-sm duration-150 group-hover:opacity-100",
+                                !photo && "opacity-100",
+                              )}
+                            >
+                              <p className="flex items-center justify-center space-x-1 text-xs">
+                                <CiImageOn className="size-4" />
+                                <span>
+                                  {photo ? "Change photo" : "Upload photo"}
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                          {photo && (
+                            <div>
+                              <Button
+                                variant={"destructive"}
+                                onClick={() => {
+                                  form.setValue("profilePicture", null);
+                                }}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </FormControl>
+                      <FormMessage className="shad-error" />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <CustomFormField
                 props={{
                   name: "firstName",

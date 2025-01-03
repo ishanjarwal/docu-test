@@ -20,7 +20,7 @@ export type projectTitleType = z.infer<typeof projectTitleSchema>;
 
 export const personalDetailsSchema = z.object({
   profilePicture: z
-    .custom<File | undefined>()
+    .custom<File | undefined | null>()
     .refine(
       (file) =>
         !file || (file instanceof File && file.type.startsWith("image/")),
@@ -34,6 +34,13 @@ export const personalDetailsSchema = z.object({
   lastName: optionalString,
   gender: optionalString,
   phone: validPhone,
+  email: optionalString,
+  country: optionalString,
+  city: optionalString,
+  bio: optionalString,
+  linkedin: optionalString,
+  instagram: optionalString,
+  github: optionalString,
 });
 
 export const personalDetailsDefValues = {
