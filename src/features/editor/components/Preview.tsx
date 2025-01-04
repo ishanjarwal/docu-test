@@ -1,54 +1,47 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import React from "react";
+// import { ResumeDataContext } from "../providers/ResumeData";
+// import ATSTemplate1 from "@/features/templates/ats/ATSTemplate1";
+
+import useDimensions from "@/hooks/useDimensions";
 import clsx from "clsx";
-import React, { useContext, useEffect } from "react";
-import { IoMdClose } from "react-icons/io";
-import { PreviewToggleContext } from "../providers/PreviewToggle";
-import { ResumeDataContext } from "../providers/ResumeData";
 
-const Preview = () => {
-  const { resumeData } = useContext(ResumeDataContext);
-  const { previewOpen, setPreviewOpen } = useContext(PreviewToggleContext);
+const Preview = ({ className }: { className?: string }) => {
+  // const { resumeData, setResumeData } = useContext(ResumeDataContext);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1024) {
-        setPreviewOpen(true);
-      } else {
-        setPreviewOpen(false);
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [setPreviewOpen]);
+  const containerRef = React.useRef<HTMLDivElement>(
+    null,
+  ) as React.RefObject<HTMLElement>;
+  const { width } = useDimensions(containerRef);
 
   return (
-    <>
-      {previewOpen ? (
+    <div
+      className={clsx(
+        "bg-background-muted h-full overflow-y-auto scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
+        className,
+      )}
+    >
+      <div className="h-fit px-4 pb-4 pt-8">
         <div
-          className={clsx(
-            "fixed z-[100] w-full flex-1 overflow-y-auto bg-card/50 backdrop-blur-sm lg:relative lg:bg-card",
-            "h-full scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50 lg:h-full",
-          )}
+          ref={containerRef as React.RefObject<HTMLDivElement>}
+          className="mx-auto aspect-[210/297] max-w-xl bg-white shadow-lg"
         >
-          <Button
-            onClick={() => setPreviewOpen(false)}
-            variant={"secondary"}
-            className="sticky left-full top-2 me-2 flex lg:hidden"
+          <div
+            style={{
+              zoom: (1 / 794) * width,
+            }}
           >
-            Close
-            <IoMdClose />
-          </Button>
-          <pre>{JSON.stringify(resumeData, null, 2)}</pre>
+            <h1 className="text-3xl">Hello World</h1>
+            {/* <ATSTemplate1
+                  resumeData={resumeData}
+                  setResumeData={setResumeData}
+                /> */}
+          </div>
         </div>
-      ) : null}
-    </>
+      </div>
+
+      {/* <pre>{JSON.stringify(resumeData, null, 2)}</pre> */}
+    </div>
   );
 };
 

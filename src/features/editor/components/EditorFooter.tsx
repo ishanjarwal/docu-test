@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useContext } from "react";
+import React from "react";
 
 import { IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
-import { PreviewToggleContext } from "../providers/PreviewToggle";
 import { steps } from "../constants/steps";
 
 interface FooterProps {
@@ -12,7 +11,11 @@ interface FooterProps {
 }
 
 const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
-  const { setPreviewOpen } = useContext(PreviewToggleContext);
+  const addPreviewParam = () => {
+    const newSearchParams = new URLSearchParams(window.location.search);
+    newSearchParams.set("preview", "true");
+    window.history.pushState(null, "", `?${newSearchParams.toString()}`);
+  };
 
   const prevStep = steps.find(
     (_, idx) => steps[idx + 1]?.key === currStep,
@@ -65,7 +68,7 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
           Cancel
         </Button>
         <Button
-          onClick={() => setPreviewOpen((prev: boolean) => !prev)}
+          onClick={addPreviewParam}
           className="py-1 text-xs lg:hidden lg:px-4 lg:py-2 lg:text-sm"
           variant={"secondary"}
         >
