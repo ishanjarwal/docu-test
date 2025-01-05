@@ -218,13 +218,22 @@ const EducationItem = ({ id, form, index, remove }: EducationItemProps) => {
                     }}
                     control={form.control}
                   />
+                  <CustomFormField
+                    props={{
+                      name: `educationDetails.${index}.description`,
+                      fieldType: "textarea",
+                      label: "Description",
+                      placeholder: "Describe your experience/learnings",
+                    }}
+                    control={form.control}
+                  />
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-12 md:col-span-4">
                       <CustomFormField
                         props={{
-                          name: `educationDetails.${index}.gpa`,
+                          name: `educationDetails.${index}.score`,
                           fieldType: "text",
-                          label: "Grade/GPA",
+                          label: "Score/GPA",
                           placeholder: "Your Score",
                         }}
                         control={form.control}

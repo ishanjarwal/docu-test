@@ -15,7 +15,7 @@ import { EditorFormProps } from "../constants/types";
 import CustomFormField from "../components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import { IoMdAdd } from "react-icons/io";
-import { MdDragIndicator, MdOutlineDeleteOutline } from "react-icons/md";
+import { MdDragIndicator } from "react-icons/md";
 import { FiTrash } from "react-icons/fi";
 import {
   Accordion,
@@ -148,7 +148,9 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 </DndContext>
                 <Button
                   className="py-6 text-foreground"
-                  onClick={() => hardSkillappend({ name: "", level: 0 })}
+                  onClick={() =>
+                    hardSkillappend({ name: "", level: 0, levelDisabled: true })
+                  }
                 >
                   Add More
                   <IoMdAdd />
@@ -192,7 +194,9 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 </DndContext>
                 <Button
                   className="py-6 text-foreground"
-                  onClick={() => softSkillappend({ name: "", level: 0 })}
+                  onClick={() =>
+                    softSkillappend({ name: "", level: 0, levelDisabled: true })
+                  }
                 >
                   Add More
                   <IoMdAdd />

@@ -218,6 +218,15 @@ const WorkExperienceItem = ({
                     }}
                     control={form.control}
                   />
+                  <CustomFormField
+                    props={{
+                      name: `workExperiences.${index}.description`,
+                      fieldType: "textarea",
+                      label: "Description",
+                      placeholder: "Describe your experience",
+                    }}
+                    control={form.control}
+                  />
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-12 md:col-span-4">
                       <CustomFormField

@@ -1,13 +1,13 @@
 "use client";
-import React from "react";
-// import { ResumeDataContext } from "../providers/ResumeData";
-// import ATSTemplate1 from "@/features/templates/ats/ATSTemplate1";
+import React, { useContext } from "react";
+import { ResumeDataContext } from "../providers/ResumeData";
+import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 
 import useDimensions from "@/hooks/useDimensions";
 import clsx from "clsx";
 
 const Preview = ({ className }: { className?: string }) => {
-  // const { resumeData, setResumeData } = useContext(ResumeDataContext);
+  const { resumeData, setResumeData } = useContext(ResumeDataContext);
 
   const containerRef = React.useRef<HTMLDivElement>(
     null,
@@ -17,7 +17,7 @@ const Preview = ({ className }: { className?: string }) => {
   return (
     <div
       className={clsx(
-        "bg-background-muted h-full overflow-y-auto scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
+        "h-full overflow-y-auto bg-background-muted scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
         className,
       )}
     >
@@ -31,11 +31,10 @@ const Preview = ({ className }: { className?: string }) => {
               zoom: (1 / 794) * width,
             }}
           >
-            <h1 className="text-3xl">Hello World</h1>
-            {/* <ATSTemplate1
-                  resumeData={resumeData}
-                  setResumeData={setResumeData}
-                /> */}
+            <ATSTemplate1
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+            />
           </div>
         </div>
       </div>

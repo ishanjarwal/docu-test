@@ -4,8 +4,12 @@ import { z } from "zod";
 const optionalString = z.string().trim().optional().or(z.literal(""));
 const validPhone = z
   .string()
-  .refine(isValidPhoneNumber, { message: "Invalid phone number" })
-  .optional();
+  .optional()
+  .refine(
+    (value) => !value || isValidPhoneNumber(value), // Only validate if value is not empty
+    { message: "Invalid phone number" },
+  );
+
 export const projectTitleSchema = z.object({
   title: optionalString,
 });
@@ -32,6 +36,7 @@ export const personalDetailsSchema = z.object({
     ),
   firstName: optionalString,
   lastName: optionalString,
+  jobTitle: optionalString,
   gender: optionalString,
   phone: validPhone,
   email: optionalString,
@@ -67,10 +72,11 @@ export const EducationDetailsSchema = z.object({
       z.object({
         institution: optionalString,
         degree: optionalString,
-        gpa: optionalString,
+        score: optionalString,
         startDate: optionalString,
         endDate: optionalString,
         current: z.boolean().optional(),
+        description: optionalString,
       }),
     )
     .optional(),

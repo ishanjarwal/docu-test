@@ -69,7 +69,7 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
         </Button>
         <Button
           onClick={addPreviewParam}
-          className="py-1 text-xs lg:hidden lg:px-4 lg:py-2 lg:text-sm"
+          className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
           variant={"secondary"}
         >
           Preview

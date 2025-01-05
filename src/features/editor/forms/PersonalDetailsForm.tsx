@@ -29,6 +29,7 @@ const PersonalDetailsForm = ({
   setResumeData,
 }: EditorFormProps) => {
   const form = useForm<personalDetailsType>({
+    mode: "onChange",
     resolver: zodResolver(personalDetailsSchema),
     defaultValues: {
       firstName: resumeData.firstName || "",
@@ -47,7 +48,7 @@ const PersonalDetailsForm = ({
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
       form.setValue("profilePicture", acceptedFiles[0], {
         shouldValidate: true,
@@ -151,6 +152,18 @@ const PersonalDetailsForm = ({
                 control={form.control}
               />
             </div>
+            <div>
+              <CustomFormField
+                props={{
+                  name: "jobTitle",
+                  fieldType: "text",
+                  label: "Job title",
+                  icon: null,
+                  placeholder: "You are applying for . . .",
+                }}
+                control={form.control}
+              />
+            </div>
             <div className="grid grid-cols-1 gap-x-2 gap-y-8 sm:grid-cols-2">
               <CustomFormField
                 props={{
@@ -195,7 +208,7 @@ const PersonalDetailsForm = ({
             </div>
             <CustomFormField
               props={{
-                name: "Bio",
+                name: "bio",
                 fieldType: "textarea",
                 label: "Short Bio",
                 placeholder: "A Brief about you",
