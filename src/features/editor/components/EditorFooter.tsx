@@ -74,7 +74,6 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
         >
           Preview
         </Button>
-        {/* <p>Saving . . .</p> */}
       </div>
     </div>
   );

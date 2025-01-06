@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import EditorHeader from "./EditorHeader";
 import EditorFooter from "./EditorFooter";
 import clsx from "clsx";
@@ -7,6 +7,9 @@ import { useSearchParams } from "next/navigation";
 import { steps } from "../constants/steps";
 import BreadCrumbs from "./BreadCrumbs";
 import { ResumeDataContext } from "../providers/ResumeData";
+import useUnloadWarning from "@/hooks/useUnloadWarning";
+import useAutoSaveResume from "../hooks/useAutoSaveResume";
+import toast, { Toaster } from "react-hot-toast";
 
 const Editor = () => {
   const searchParams = useSearchParams();
@@ -24,9 +27,30 @@ const Editor = () => {
 
   const FormComponent = steps.find((el) => el.key === currStep)?.component;
 
+  const { isSaving, hasUnsavedChanges } = useAutoSaveResume(resumeData);
+  useUnloadWarning(hasUnsavedChanges);
+
+  useEffect(() => {
+    const toastId: string = "saving-toast";
+    if (isSaving) {
+      toast.loading("Saving . . .", {
+        duration: Infinity,
+        position: "bottom-center",
+        id: toastId,
+      });
+    } else {
+      toast.dismiss(toastId);
+    }
+
+    return () => {
+      toast.dismiss(toastId);
+    };
+  }, [isSaving]);
+
   return (
     <>
       <EditorHeader />
+      <Toaster />
       <div
         className={clsx(
           "grow overflow-y-auto",
