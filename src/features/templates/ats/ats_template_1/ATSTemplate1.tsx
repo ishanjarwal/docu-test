@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { TemplateProps } from "../../types";
 import Image from "next/image";
@@ -7,9 +8,24 @@ import { cn } from "@/lib/utils";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
+  const { textHex, backdropHex, borderStyle } = resumeData;
+
+  const borderRadiusValue =
+    borderStyle == "circle"
+      ? "9999px"
+      : borderStyle == "square"
+        ? "0px"
+        : "10%";
+
   return (
-    <div className="flex flex-col space-y-8 p-8">
-      <Header resumeData={resumeData} />
+    <div
+      className="flex h-full flex-col space-y-8 p-8"
+      style={{
+        color: textHex,
+        backgroundColor: backdropHex,
+      }}
+    >
+      <Header resumeData={resumeData} borderRadiusValue={borderRadiusValue} />
       <div className="grid grid-cols-4 gap-8">
         <div className="col-span-3">
           <div className="flex flex-col space-y-4">
@@ -22,8 +38,8 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
             <Educations resumeData={resumeData} />
           </div>
         </div>
-        <div className="col-span-1 h-full bg-background-muted p-4">
-          <Skills resumeData={resumeData} />
+        <div className="col-span-1 h-full p-4">
+          <Skills resumeData={resumeData} textHex={textHex} />
           <SocialLinks resumeData={resumeData} />
         </div>
       </div>
@@ -31,7 +47,7 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
   );
 };
 
-const Header = ({ resumeData }: TemplateProps) => {
+const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
   const {
     firstName,
     lastName,
@@ -49,7 +65,10 @@ const Header = ({ resumeData }: TemplateProps) => {
     <div>
       <div className="flex items-start justify-start space-x-8">
         {photoURL && (
-          <div className="relative aspect-square w-24 overflow-hidden">
+          <div
+            className="relative aspect-square w-24 overflow-hidden"
+            style={{ borderRadius: borderRadiusValue }}
+          >
             <Image
               src={photoURL}
               alt="Profile Picture"
@@ -189,7 +208,7 @@ const Educations = ({ resumeData }: TemplateProps) => {
   ) : null;
 };
 
-const Skills = ({ resumeData }: TemplateProps) => {
+const Skills = ({ resumeData, textHex }: TemplateProps) => {
   const { hardSkills, softSkills } = resumeData;
   return (
     <div className="flex flex-col space-y-4">
@@ -202,11 +221,20 @@ const Skills = ({ resumeData }: TemplateProps) => {
                 <p className={styles.para}>{item.name}</p>
                 {item.level != undefined && !item.levelDisabled && (
                   <div>
-                    <span className="relative block h-1 w-full overflow-hidden rounded-full bg-background/75">
-                      {" "}
+                    <span className="relative block h-1 w-full overflow-hidden rounded-full">
                       <span
-                        className="absolute left-0 top-0 h-full bg-primary"
-                        style={{ width: (item.level + 1) * 20 + "%" }}
+                        className="absolute left-0 top-0 h-full w-full rounded-full"
+                        style={{
+                          backgroundColor: textHex || "hsl(var(--primary))",
+                          opacity: "25%",
+                        }}
+                      ></span>
+                      <span
+                        className="absolute left-0 top-0 h-full"
+                        style={{
+                          width: (item.level + 1) * 20 + "%",
+                          backgroundColor: textHex || "hsl(var(--primary))",
+                        }}
                       ></span>
                     </span>
                   </div>
@@ -226,10 +254,20 @@ const Skills = ({ resumeData }: TemplateProps) => {
                 <p className={styles.para}>{item.name}</p>
                 {item.level != undefined && !item.levelDisabled && (
                   <div>
-                    <span className="relative block h-1 w-full overflow-hidden rounded-full bg-background/75">
+                    <span className="relative block h-1 w-full overflow-hidden rounded-full">
                       <span
-                        className="absolute left-0 top-0 h-full bg-primary"
-                        style={{ width: (item.level + 1) * 20 + "%" }}
+                        className="absolute left-0 top-0 h-full w-full rounded-full"
+                        style={{
+                          backgroundColor: textHex || "hsl(var(--primary))",
+                          opacity: "25%",
+                        }}
+                      ></span>
+                      <span
+                        className="absolute left-0 top-0 h-full"
+                        style={{
+                          width: (item.level + 1) * 20 + "%",
+                          backgroundColor: textHex || "hsl(var(--primary))",
+                        }}
                       ></span>
                     </span>
                   </div>

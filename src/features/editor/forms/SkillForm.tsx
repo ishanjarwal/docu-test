@@ -50,8 +50,12 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<SkillType>({
     resolver: zodResolver(SkillSchema),
     defaultValues: {
-      hardSkills: resumeData.hardSkills || [{ name: "", level: 0 }],
-      softSkills: resumeData.softSkills || [{ name: "", level: 0 }],
+      hardSkills: resumeData.hardSkills || [
+        { name: "", level: 0, levelDisabled: true },
+      ],
+      softSkills: resumeData.softSkills || [
+        { name: "", level: 0, levelDisabled: true },
+      ],
     },
   });
 

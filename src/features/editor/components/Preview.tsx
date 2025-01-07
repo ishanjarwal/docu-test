@@ -5,6 +5,7 @@ import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 
 import useDimensions from "@/hooks/useDimensions";
 import clsx from "clsx";
+import ThemeBar from "./ThemeBar";
 
 const Preview = ({ className }: { className?: string }) => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
@@ -17,16 +18,18 @@ const Preview = ({ className }: { className?: string }) => {
   return (
     <div
       className={clsx(
-        "h-full overflow-y-auto bg-background-muted scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
+        "relative h-full overflow-y-auto bg-background-muted scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
         className,
       )}
     >
-      <div className="h-fit px-4 pb-4 pt-8">
+      <ThemeBar />
+      <div className="h-fit px-4 pb-4 pt-16">
         <div
           ref={containerRef as React.RefObject<HTMLDivElement>}
           className="mx-auto aspect-[210/297] max-w-xl bg-white shadow-lg"
         >
           <div
+            className="h-full"
             style={{
               zoom: (1 / 794) * width,
             }}

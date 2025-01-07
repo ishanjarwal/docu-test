@@ -17,7 +17,7 @@ const PreviewModal = () => {
       <Button
         onClick={removePreviewParam}
         variant={"secondary"}
-        className="absolute right-4 top-4"
+        className="absolute right-2 top-2"
       >
         Close
         <IoMdClose />

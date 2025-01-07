@@ -141,6 +141,17 @@ export const CerificationsSchema = z.object({
 
 export type CertificationType = z.infer<typeof CerificationsSchema>;
 
+export const TemplateSchema = z.object({
+  templateId: optionalString,
+  textHex: optionalString,
+  backdropHex: optionalString,
+  borderStyle: z.enum(["circle", "square", "squircle"]).optional(),
+  fontFace: optionalString,
+  // more values for font, colors etc.
+});
+
+export type TemplateValues = z.infer<typeof TemplateSchema>;
+
 export const resumeSchema = z.object({
   ...projectTitleSchema.shape,
   ...personalDetailsSchema.shape,
@@ -148,6 +159,7 @@ export const resumeSchema = z.object({
   ...WorkExperienceSchema.shape,
   ...SkillSchema.shape,
   ...CerificationsSchema.shape,
+  ...TemplateSchema.shape,
 });
 
 export type resumeSchemaType = Omit<

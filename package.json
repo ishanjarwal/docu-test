@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev-host": "next dev --hostname 192.168.1.5 --port 8080"
+    "dev-host": "next dev --hostname 192.168.1.7 --port 8080"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.8.0",
@@ -25,6 +25,7 @@
     "@radix-ui/react-popover": "^1.1.4",
     "@radix-ui/react-radio-group": "^1.2.2",
     "@radix-ui/react-scroll-area": "^1.2.2",
+    "@radix-ui/react-select": "^2.1.4",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slider": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.1",
