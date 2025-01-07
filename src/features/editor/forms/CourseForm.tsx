@@ -1,9 +1,6 @@
 "use client";
 import { Form } from "@/components/ui/form";
-import {
-  CerificationsSchema,
-  CertificationType,
-} from "@/validations/validation";
+import { CourseSchema, CourseValues } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import {
@@ -48,16 +45,16 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
 
-const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<CertificationType>({
-    resolver: zodResolver(CerificationsSchema),
+const CourseForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const form = useForm<CourseValues>({
+    resolver: zodResolver(CourseSchema),
     defaultValues: {
-      certifications: resumeData.certifications || [{}],
+      courses: resumeData.courses || [{}],
     },
   });
 
   const { append, remove, fields, move } = useFieldArray({
-    name: "certifications",
+    name: "courses",
     control: form.control,
   });
 
@@ -67,8 +64,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       if (!isValid) return;
       setResumeData({
         ...resumeData,
-        certifications:
-          values.certifications?.filter((item) => item !== undefined) || [],
+        courses: values.courses?.filter((item) => item !== undefined) || [],
       });
     });
 
@@ -96,8 +92,8 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
   return (
     <div className="p-4 sm:p-8">
-      <h1 className="text-xl font-bold">Certifications</h1>
-      <p className="mt-2">Add your certificates</p>
+      <h1 className="text-xl font-bold">Courses</h1>
+      <p className="mt-2">Add your courses</p>
       <div className="mt-8">
         <Form {...form}>
           <div className="flex flex-col gap-y-8">
@@ -112,7 +108,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 strategy={verticalListSortingStrategy}
               >
                 {fields.map((field, index) => (
-                  <CertificationItem
+                  <CourseItem
                     id={field.id}
                     form={form}
                     key={field.id}
@@ -137,21 +133,15 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   );
 };
 
-interface CertificationItemProps {
+interface CourseItemProps {
   id: string;
-  form: UseFormReturn<CertificationType>;
+  form: UseFormReturn<CourseValues>;
   index: number;
   remove: UseFieldArrayRemove;
-  control: Control<CertificationType>;
+  control: Control<CourseValues>;
 }
 
-const CertificationItem = ({
-  id,
-  form,
-  index,
-  remove,
-  control,
-}: CertificationItemProps) => {
+const CourseItem = ({ id, form, index, remove, control }: CourseItemProps) => {
   const {
     attributes,
     listeners,
@@ -191,7 +181,7 @@ const CertificationItem = ({
               </div>
               <div className="flex w-full items-center justify-between truncate">
                 <p className="truncate text-lg font-semibold">
-                  {form.watch("certifications")?.[index]?.title || "untitled"}
+                  {form.watch("courses")?.[index]?.title || "untitled"}
                 </p>
                 <span>
                   <FaChevronDown />
@@ -214,10 +204,10 @@ const CertificationItem = ({
                 <div className="col-span-2">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.title`,
+                      name: `courses.${index}.title`,
                       fieldType: "text",
-                      label: "Certificate title",
-                      placeholder: "The title of your certifciate",
+                      label: "Course title",
+                      placeholder: "The title of your course",
                     }}
                     control={control}
                   />
@@ -225,10 +215,10 @@ const CertificationItem = ({
                 <div className="col-span-2 md:col-span-1">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.organization`,
+                      name: `courses.${index}.organization`,
                       fieldType: "text",
                       label: "Organization",
-                      placeholder: "Certificate issuer",
+                      placeholder: "Course provider organization",
                     }}
                     control={control}
                   />
@@ -236,10 +226,10 @@ const CertificationItem = ({
                 <div className="col-span-2 md:col-span-1">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.link`,
+                      name: `courses.${index}.link`,
                       fieldType: "text",
-                      label: "Link to your certificate",
-                      placeholder: "Link to your certificate",
+                      label: "Link your course completion",
+                      placeholder: "Link your course completion",
                     }}
                     control={control}
                   />
@@ -247,7 +237,7 @@ const CertificationItem = ({
                 <div className="col-span-2">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.description`,
+                      name: `courses.${index}.description`,
                       fieldType: "textarea",
                       label: "Description",
                       placeholder: "Describe your experience/learnings",
@@ -258,7 +248,7 @@ const CertificationItem = ({
                 <div className="col-span-2">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.score`,
+                      name: `courses.${index}.score`,
                       fieldType: "text",
                       label: "Score",
                       placeholder: "Your score",
@@ -275,4 +265,4 @@ const CertificationItem = ({
   );
 };
 
-export default CertificationsForm;
+export default CourseForm;

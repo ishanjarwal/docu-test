@@ -7,6 +7,8 @@ import { EditorFormProps } from "./types";
 import WorkExperienceForm from "../forms/WorkExperienceForm";
 import SkillForm from "../forms/SkillForm";
 import CertificationsForm from "../forms/CertificationsForm";
+import CourseForm from "../forms/CourseForm";
+import HobbyForm from "../forms/HobbyForm";
 
 export const steps: {
   title: string;
@@ -37,5 +39,15 @@ export const steps: {
     title: "Certifications",
     component: CertificationsForm,
     key: "certifications",
+  },
+  {
+    title: "Courses",
+    component: CourseForm,
+    key: "courses",
+  },
+  {
+    title: "Hobbies",
+    component: HobbyForm,
+    key: "hobbies",
   },
 ];

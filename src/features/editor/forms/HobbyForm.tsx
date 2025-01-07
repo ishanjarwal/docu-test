@@ -1,9 +1,6 @@
 "use client";
 import { Form } from "@/components/ui/form";
-import {
-  CerificationsSchema,
-  CertificationType,
-} from "@/validations/validation";
+import { HobbySchema, HobbyValues } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import {
@@ -48,16 +45,16 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
 
-const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<CertificationType>({
-    resolver: zodResolver(CerificationsSchema),
+const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const form = useForm<HobbyValues>({
+    resolver: zodResolver(HobbySchema),
     defaultValues: {
-      certifications: resumeData.certifications || [{}],
+      hobbies: resumeData.hobbies || [{}],
     },
   });
 
   const { append, remove, fields, move } = useFieldArray({
-    name: "certifications",
+    name: "hobbies",
     control: form.control,
   });
 
@@ -67,8 +64,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       if (!isValid) return;
       setResumeData({
         ...resumeData,
-        certifications:
-          values.certifications?.filter((item) => item !== undefined) || [],
+        hobbies: values.hobbies?.filter((item) => item !== undefined) || [],
       });
     });
 
@@ -96,8 +92,10 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
   return (
     <div className="p-4 sm:p-8">
-      <h1 className="text-xl font-bold">Certifications</h1>
-      <p className="mt-2">Add your certificates</p>
+      <h1 className="text-xl font-bold">Hobbies</h1>
+      <p className="mt-2">
+        Add your hobbies (not recommended for professional resumes)
+      </p>
       <div className="mt-8">
         <Form {...form}>
           <div className="flex flex-col gap-y-8">
@@ -112,7 +110,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 strategy={verticalListSortingStrategy}
               >
                 {fields.map((field, index) => (
-                  <CertificationItem
+                  <HobbyItem
                     id={field.id}
                     form={form}
                     key={field.id}
@@ -137,21 +135,15 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   );
 };
 
-interface CertificationItemProps {
+interface HobbyItemProps {
   id: string;
-  form: UseFormReturn<CertificationType>;
+  form: UseFormReturn<HobbyValues>;
   index: number;
   remove: UseFieldArrayRemove;
-  control: Control<CertificationType>;
+  control: Control<HobbyValues>;
 }
 
-const CertificationItem = ({
-  id,
-  form,
-  index,
-  remove,
-  control,
-}: CertificationItemProps) => {
+const HobbyItem = ({ id, form, index, remove, control }: HobbyItemProps) => {
   const {
     attributes,
     listeners,
@@ -191,7 +183,7 @@ const CertificationItem = ({
               </div>
               <div className="flex w-full items-center justify-between truncate">
                 <p className="truncate text-lg font-semibold">
-                  {form.watch("certifications")?.[index]?.title || "untitled"}
+                  {form.watch("hobbies")?.[index]?.name || "untitled"}
                 </p>
                 <span>
                   <FaChevronDown />
@@ -214,32 +206,10 @@ const CertificationItem = ({
                 <div className="col-span-2">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.title`,
+                      name: `hobbies.${index}.name`,
                       fieldType: "text",
-                      label: "Certificate title",
-                      placeholder: "The title of your certifciate",
-                    }}
-                    control={control}
-                  />
-                </div>
-                <div className="col-span-2 md:col-span-1">
-                  <CustomFormField
-                    props={{
-                      name: `certifications.${index}.organization`,
-                      fieldType: "text",
-                      label: "Organization",
-                      placeholder: "Certificate issuer",
-                    }}
-                    control={control}
-                  />
-                </div>
-                <div className="col-span-2 md:col-span-1">
-                  <CustomFormField
-                    props={{
-                      name: `certifications.${index}.link`,
-                      fieldType: "text",
-                      label: "Link to your certificate",
-                      placeholder: "Link to your certificate",
+                      label: "Hobby name",
+                      placeholder: "The name of your hobby",
                     }}
                     control={control}
                   />
@@ -247,21 +217,10 @@ const CertificationItem = ({
                 <div className="col-span-2">
                   <CustomFormField
                     props={{
-                      name: `certifications.${index}.description`,
+                      name: `hobbies.${index}.description`,
                       fieldType: "textarea",
                       label: "Description",
-                      placeholder: "Describe your experience/learnings",
-                    }}
-                    control={control}
-                  />
-                </div>
-                <div className="col-span-2">
-                  <CustomFormField
-                    props={{
-                      name: `certifications.${index}.score`,
-                      fieldType: "text",
-                      label: "Score",
-                      placeholder: "Your score",
+                      placeholder: "Describe your hobby",
                     }}
                     control={control}
                   />
@@ -275,4 +234,4 @@ const CertificationItem = ({
   );
 };
 
-export default CertificationsForm;
+export default HobbyForm;

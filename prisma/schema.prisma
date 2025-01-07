@@ -13,32 +13,123 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum theme{
-  LIGHT
-  DARK
-}
 enum borderStyles {
-  CIRCLE
-  SQUARE
-  SQUIRCLE
+  circle
+  square
+  squircle
 }
 
-model Resume{
-  id String @id @map("_id")
+enum jobType {
+  onSite
+  remote
+  hybrid
+}
+
+type CustomSocialLink {
+  label String
+  link  String
+}
+
+type SocialLinks {
+  linkedin  String?
+  instagram String?
+  github    String?
+  website   String?
+  twitter   String?
+  threads   String?
+  custom    CustomSocialLink[]
+}
+
+type PersonalDetails {
+  profilePictureURL String?
+  firstName         String?
+  lastName          String?
+  jobTitle          String?
+  gender            String?
+  phone             String?
+  email             String?
+  country           String?
+  city              String?
+  bio               String?
+}
+
+type Educations {
+  institution String?
+  degree      String?
+  score       String?
+  startDate   String?
+  endDate     String?
+  current     Boolean? @default(false)
+  description String?
+}
+
+type WorkExperience {
+  position    String?
+  employer    String?
+  description String?
+  jobType     jobType
+  location    String?
+  startDate   String?
+  endDate     String?
+  current     Boolean? @default(false)
+}
+
+type SkillItem {
+  name          String?
+  level         Int?
+  levelDisabled Boolean? @default(true)
+}
+
+type Certification {
+  title        String?
+  organization String?
+  link         String?
+  score        String?
+  description  String?
+}
+
+type Course {
+  title        String?
+  organization String?
+  link         String?
+  score        String?
+  description  String?
+}
+
+type Hobby {
+  name        String?
+  description String?
+}
+
+type TemplateDetails {
+  templateId  String?      @default("ats-template-1")
+  textHex     String       @default("#000000")
+  backdropHex String?      @default("#FFFFFF")
+  fontFace    String?
+  borderStyle borderStyles @default(squircle)
+}
+
+model Resume {
+  id     String @id @map("_id")
   userId String
 
-  title String?
+  title       String? @default("Untitled")
   description String?
 
-  themeColorHex String @default("#000000") // green is default
-  colorTheme theme @default(LIGHT)
-  borderStyle borderStyles @default(SQUIRCLE)
+  personalDetails PersonalDetails
+  socialLinks     SocialLinks
+  educations      Educations[]
+  workExperiences WorkExperience[]
+  hardSkills      SkillItem[]
+  softSkills      SkillItem[]
+  certifications  Certification[]
+  courses         Course[]
+  hobbies         Hobby[]
+
+  template TemplateDetails
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profilePictureURL String?
-
   @@map("resumes")
-
 }

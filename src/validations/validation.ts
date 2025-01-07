@@ -66,6 +66,25 @@ export const personalDetailsDefValues = {
 
 export type personalDetailsType = z.infer<typeof personalDetailsSchema>;
 
+export const SocialLinksSchema = z.object({
+  linkedin: optionalString,
+  instagram: optionalString,
+  github: optionalString,
+  website: optionalString,
+  twitter: optionalString,
+  threads: optionalString,
+  custom: z
+    .array(
+      z.object({
+        label: optionalString,
+        link: optionalString,
+      }),
+    )
+    .optional(),
+});
+
+export type SocialLinksValues = z.infer<typeof SocialLinksSchema>;
+
 export const EducationDetailsSchema = z.object({
   educationDetails: z
     .array(
@@ -133,6 +152,7 @@ export const CerificationsSchema = z.object({
         title: optionalString,
         organization: optionalString,
         link: optionalString,
+        score: optionalString,
         description: z.string().max(300).optional(),
       }),
     )
@@ -140,6 +160,35 @@ export const CerificationsSchema = z.object({
 });
 
 export type CertificationType = z.infer<typeof CerificationsSchema>;
+
+export const CourseSchema = z.object({
+  courses: z
+    .array(
+      z.object({
+        title: optionalString,
+        organization: optionalString,
+        link: optionalString,
+        score: optionalString,
+        description: z.string().max(300).optional(),
+      }),
+    )
+    .optional(),
+});
+
+export type CourseValues = z.infer<typeof CourseSchema>;
+
+export const HobbySchema = z.object({
+  hobbies: z
+    .array(
+      z.object({
+        name: optionalString,
+        description: optionalString,
+      }),
+    )
+    .optional(),
+});
+
+export type HobbyValues = z.infer<typeof HobbySchema>;
 
 export const TemplateSchema = z.object({
   templateId: optionalString,
@@ -159,6 +208,8 @@ export const resumeSchema = z.object({
   ...WorkExperienceSchema.shape,
   ...SkillSchema.shape,
   ...CerificationsSchema.shape,
+  ...CourseSchema.shape,
+  ...HobbySchema.shape,
   ...TemplateSchema.shape,
 });
 
