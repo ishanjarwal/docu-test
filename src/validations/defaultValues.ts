@@ -1,3 +1,5 @@
+import { SocialLinksValues } from "./validation";
+
 export const projectTitleDefValues = {
   title: "Untitled",
 };
@@ -15,14 +17,14 @@ export const personalDetailsDefValues = {
   bio: "",
 };
 
-export const socialLinksDefValues = {
+export const socialLinksDefValues: SocialLinksValues = {
   linkedin: "",
   instagram: "",
   github: "",
   website: "",
   twitter: "",
   threads: "",
-  custom: [],
+  customSocialLinks: [],
 };
 
 export const educationDetailsDefValues = {

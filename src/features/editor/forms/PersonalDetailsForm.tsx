@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { EditorFormProps } from "../constants/types";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 import { useDropzone } from "react-dropzone";
 import usePhotoURL from "@/hooks/usePhotoURL";
 import Image from "next/image";
@@ -251,38 +250,6 @@ const PersonalDetailsForm = ({
                     { label: "Male", value: "male" },
                     { label: "Female", value: "female" },
                   ],
-                }}
-                control={form.control}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-x-2 gap-y-8">
-              <CustomFormField
-                props={{
-                  name: "linkedin",
-                  fieldType: "text",
-                  label: "Linkedin Profile Link",
-                  icon: <FaLinkedin />,
-                  placeholder: "Your Linkedin profile link",
-                }}
-                control={form.control}
-              />
-              <CustomFormField
-                props={{
-                  name: "github",
-                  fieldType: "text",
-                  label: "Github Profile Link",
-                  icon: <FaGithub />,
-                  placeholder: "Your Github profile link",
-                }}
-                control={form.control}
-              />
-              <CustomFormField
-                props={{
-                  name: "instagram",
-                  fieldType: "text",
-                  label: "Instagram Profile Link",
-                  icon: <FaInstagram />,
-                  placeholder: "Your Instagram profile link",
                 }}
                 control={form.control}
               />

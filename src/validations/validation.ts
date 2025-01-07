@@ -20,8 +20,6 @@ export const projectTitleDefValues = {
 
 export type projectTitleType = z.infer<typeof projectTitleSchema>;
 
-// Personal Details
-
 export const personalDetailsSchema = z.object({
   profilePicture: z
     .custom<File | undefined | null>()
@@ -43,26 +41,7 @@ export const personalDetailsSchema = z.object({
   country: optionalString,
   city: optionalString,
   bio: optionalString,
-  linkedin: optionalString,
-  instagram: optionalString,
-  github: optionalString,
 });
-
-export const personalDetailsDefValues = {
-  profilePicture: null,
-  firstName: "",
-  lastName: "",
-  gender: undefined,
-  dob: null,
-  phone: "",
-  email: null,
-  linkedin: null,
-  portfolio: null,
-  instagram: null,
-  github: null,
-  bio: "",
-  nationality: null,
-};
 
 export type personalDetailsType = z.infer<typeof personalDetailsSchema>;
 
@@ -73,12 +52,14 @@ export const SocialLinksSchema = z.object({
   website: optionalString,
   twitter: optionalString,
   threads: optionalString,
-  custom: z
+  customSocialLinks: z
     .array(
-      z.object({
-        label: optionalString,
-        link: optionalString,
-      }),
+      z
+        .object({
+          label: optionalString,
+          link: optionalString,
+        })
+        .optional(),
     )
     .optional(),
 });
@@ -210,6 +191,7 @@ export const resumeSchema = z.object({
   ...CerificationsSchema.shape,
   ...CourseSchema.shape,
   ...HobbySchema.shape,
+  ...SocialLinksSchema.shape,
   ...TemplateSchema.shape,
 });
 
