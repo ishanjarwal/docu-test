@@ -23,6 +23,7 @@ import Image from "next/image";
 import { CiImageOn } from "react-icons/ci";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 const PersonalDetailsForm = ({
   resumeData,
@@ -37,6 +38,8 @@ const PersonalDetailsForm = ({
       phone: resumeData.phone || "",
     },
   });
+
+  const { isDesktop } = useDeviceType();
 
   useEffect(() => {
     const { unsubscribe } = form.watch(async (values) => {
@@ -56,7 +59,7 @@ const PersonalDetailsForm = ({
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     onDrop,
     accept: {
       "image/*": [],
@@ -90,6 +93,19 @@ const PersonalDetailsForm = ({
                             className="group relative aspect-square w-32 cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-foreground/25"
                           >
                             <input {...getInputProps()} />
+                            <div
+                              className={clsx(
+                                "pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center bg-background",
+                              )}
+                            >
+                              <p className="flex flex-col items-center justify-center space-y-1 px-2 text-xs">
+                                <CiImageOn className="size-8" />
+                                <span className="text-center">
+                                  Drag and drop or select a photo
+                                </span>
+                              </p>
+                            </div>
+
                             {photoURL && (
                               <Image
                                 alt="profile image"
@@ -98,22 +114,27 @@ const PersonalDetailsForm = ({
                                 className="h-full w-full object-cover object-center"
                               />
                             )}
-                            <div
-                              className={clsx(
-                                "pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center bg-background/25 opacity-0 backdrop-blur-sm duration-150 group-hover:opacity-100",
-                                !photo && "opacity-100",
-                              )}
-                            >
-                              <p className="flex items-center justify-center space-x-1 text-xs">
-                                <CiImageOn className="size-4" />
-                                <span>
-                                  {photo ? "Change photo" : "Upload photo"}
-                                </span>
-                              </p>
-                            </div>
+                            {isDesktop && (
+                              <div
+                                className={clsx(
+                                  "pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center bg-background opacity-0 backdrop-blur-sm duration-150 group-hover:opacity-100",
+                                  !photo && "opacity-100",
+                                  photo && "bg-background/25",
+                                )}
+                              >
+                                <p className="flex flex-col items-center justify-center space-y-1 px-2 text-xs">
+                                  <CiImageOn className="size-8" />
+                                  <span className="text-center">
+                                    {photo
+                                      ? "Change photo"
+                                      : "Drag and drop or select a photo"}
+                                  </span>
+                                </p>
+                              </div>
+                            )}
                           </div>
                           {photo && (
-                            <div>
+                            <div className="flex flex-col items-center justify-start gap-2 sm:flex-row">
                               <Button
                                 variant={"destructive"}
                                 onClick={() => {
@@ -121,6 +142,9 @@ const PersonalDetailsForm = ({
                                 }}
                               >
                                 Remove
+                              </Button>
+                              <Button variant={"secondary"} onClick={open}>
+                                Change
                               </Button>
                             </div>
                           )}
