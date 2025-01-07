@@ -1,5 +1,6 @@
 import useDebounce from "@/hooks/useDebounce";
 import { resumeSchemaType } from "@/validations/validation";
+import isEqual from "lodash.isequal";
 import { useEffect, useState } from "react";
 
 const useAutoSaveResume = (resumeData: resumeSchemaType) => {
@@ -14,12 +15,11 @@ const useAutoSaveResume = (resumeData: resumeSchemaType) => {
       // mimicking the save
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      setLastSaved(debouncedData);
+      setLastSaved(structuredClone(debouncedData));
       setIsSaving(false);
     };
 
-    const hasUnsavedChanges =
-      JSON.stringify(debouncedData) != JSON.stringify(lastSaved);
+    const hasUnsavedChanges = !isEqual(debouncedData, lastSaved);
 
     if (hasUnsavedChanges && debouncedData && !isSaving) {
       save();
@@ -28,7 +28,7 @@ const useAutoSaveResume = (resumeData: resumeSchemaType) => {
 
   return {
     isSaving,
-    hasUnsavedChanges: JSON.stringify(resumeData) != JSON.stringify(lastSaved),
+    hasUnsavedChanges: !isEqual(resumeData, lastSaved),
   };
 };
 

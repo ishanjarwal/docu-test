@@ -42,12 +42,15 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { educationDetailsDefValues } from "@/validations/defaultValues";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<EducationDetailsType>({
     resolver: zodResolver(EducationDetailsSchema),
     defaultValues: {
-      educationDetails: resumeData.educationDetails || [{}],
+      educationDetails: resumeData.educationDetails || [
+        educationDetailsDefValues,
+      ],
     },
   });
 
@@ -117,7 +120,10 @@ const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 ))}
               </SortableContext>
             </DndContext>
-            <Button className="py-6 text-foreground" onClick={() => append({})}>
+            <Button
+              className="py-6 text-foreground"
+              onClick={() => append(educationDetailsDefValues)}
+            >
               Add More
               <IoMdAdd />
             </Button>
