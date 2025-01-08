@@ -6,9 +6,22 @@ import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 import useDimensions from "@/hooks/useDimensions";
 import clsx from "clsx";
 import ThemeBar from "./ThemeBar";
+import { Button } from "@/components/ui/button";
+import { IoMdClose } from "react-icons/io";
+import { useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const Preview = ({ className }: { className?: string }) => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
+
+  const searchParams = useSearchParams();
+  const isPreviewOpen = searchParams.get("preview") == "true";
+
+  const removePreviewParam = () => {
+    const newSearchParams = new URLSearchParams(window.location.search);
+    newSearchParams.delete("preview");
+    window.history.pushState(null, "", `?${newSearchParams.toString()}`);
+  };
 
   const containerRef = React.useRef<HTMLDivElement>(
     null,
@@ -18,15 +31,31 @@ const Preview = ({ className }: { className?: string }) => {
   return (
     <div
       className={clsx(
-        "relative h-full overflow-y-auto bg-background-muted scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
+        "h-full overflow-y-auto bg-background-muted scrollbar-thin scrollbar-track-card scrollbar-thumb-card-foreground/25 scrollbar-thumb-rounded-lg hover:scrollbar-thumb-card-foreground/50",
         className,
       )}
     >
-      <ThemeBar />
-      <div className="h-fit px-4 pb-4 pt-16">
+      <nav
+        className={cn(
+          "flex h-16 items-center justify-between border-b border-border bg-background-muted px-4",
+          isPreviewOpen && "fixed top-0 w-full",
+        )}
+      >
+        <ThemeBar />
+        {isPreviewOpen && (
+          <Button
+            onClick={removePreviewParam}
+            variant={"outline"}
+            size={"icon"}
+          >
+            <IoMdClose />
+          </Button>
+        )}
+      </nav>
+      <div className={cn("h-fit px-4 pb-4 pt-8", isPreviewOpen && "pt-24")}>
         <div
           ref={containerRef as React.RefObject<HTMLDivElement>}
-          className="mx-auto aspect-[210/297] max-w-xl bg-white shadow-lg"
+          className="mx-auto aspect-[210/297] max-w-xl bg-white shadow-2xl"
         >
           <div
             className="h-full"

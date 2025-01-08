@@ -41,7 +41,19 @@ const SocialLinksForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       console.log(values);
       const isValid = await form.trigger();
       if (!isValid) return;
-      setResumeData({ ...resumeData, ...values });
+      setResumeData({
+        ...resumeData,
+        ...{
+          linkedin: values.linkedin,
+          instagram: values.instagram,
+          twitter: values.twitter,
+          threads: values.threads,
+          github: values.github,
+          website: values.website,
+          customSocialLinks:
+            values.customSocialLinks?.filter((item) => item != undefined) || [],
+        },
+      });
     });
 
     return unsubscribe;

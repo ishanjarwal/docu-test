@@ -54,12 +54,10 @@ export const SocialLinksSchema = z.object({
   threads: optionalString,
   customSocialLinks: z
     .array(
-      z
-        .object({
-          label: optionalString,
-          link: optionalString,
-        })
-        .optional(),
+      z.object({
+        label: optionalString,
+        link: optionalString,
+      }),
     )
     .optional(),
 });

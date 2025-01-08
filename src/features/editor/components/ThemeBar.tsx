@@ -19,6 +19,7 @@ import { TemplateSchema, TemplateValues } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField, FormItem } from "@/components/ui/form";
 import CustomTooltip from "@/components/custom/CustomTooltip";
+import { MdOutlineGridView } from "react-icons/md";
 import {
   Select,
   SelectContent,
@@ -61,13 +62,27 @@ const ThemeBar = () => {
     );
 
   return (
-    <div className="absolute left-0 top-0 flex flex-row gap-2 p-2 lg:flex-col">
+    <div className="flex items-center justify-start space-x-2">
+      <CustomTooltip
+        text="Choose template"
+        delayDuration={0}
+        side={"bottom"}
+        className="z-[1000]"
+      >
+        <Button
+          className="text-xs active:scale-90"
+          variant="outline"
+          size={"icon"}
+        >
+          <MdOutlineGridView />
+        </Button>
+      </CustomTooltip>
       <Popover>
         <CustomTooltip
           className="z-[1000]"
           text="Change text color"
           delayDuration={0}
-          side="right"
+          side="bottom"
         >
           <PopoverTrigger>
             <Button
@@ -115,13 +130,12 @@ const ThemeBar = () => {
           />
         </PopoverContent>
       </Popover>
-
       <Popover>
         <CustomTooltip
           className="z-[1000]"
           text="Change backdrop color"
           delayDuration={0}
-          side="right"
+          side="bottom"
         >
           <PopoverTrigger>
             <Button
@@ -169,7 +183,6 @@ const ThemeBar = () => {
           />
         </PopoverContent>
       </Popover>
-
       <FormField
         control={form.control}
         name="borderStyle"
@@ -178,7 +191,7 @@ const ThemeBar = () => {
             className="z-[1000]"
             text="Change border styles"
             delayDuration={0}
-            side="right"
+            side="bottom"
           >
             <Button
               className="active:scale-90"
@@ -198,13 +211,12 @@ const ThemeBar = () => {
           </CustomTooltip>
         )}
       />
-
       <Select>
         <CustomTooltip
           className="z-[1000]"
           text="Change font"
           delayDuration={0}
-          side="right"
+          side="bottom"
         >
           <SelectTrigger className="!h-auto !w-auto p-0 focus:ring-0 [&>svg]:hidden">
             <Button

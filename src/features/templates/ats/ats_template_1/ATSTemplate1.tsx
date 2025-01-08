@@ -5,7 +5,14 @@ import Image from "next/image";
 import usePhotoURL from "@/hooks/usePhotoURL";
 import styles from "./styles.module.css";
 import { cn } from "@/lib/utils";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
+import {
+  FaGithub,
+  FaGlobe,
+  FaInstagram,
+  FaLinkedin,
+  FaThreads,
+  FaXTwitter,
+} from "react-icons/fa6";
 
 const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
   const { textHex, backdropHex, borderStyle } = resumeData;
@@ -282,8 +289,22 @@ const Skills = ({ resumeData, textHex }: TemplateProps) => {
 };
 
 const SocialLinks = ({ resumeData }: TemplateProps) => {
-  const { linkedin, github, instagram } = resumeData;
-  return linkedin || github || instagram ? (
+  const {
+    linkedin,
+    github,
+    instagram,
+    twitter,
+    threads,
+    website,
+    customSocialLinks,
+  } = resumeData;
+  return linkedin ||
+    github ||
+    instagram ||
+    twitter ||
+    threads ||
+    website ||
+    (customSocialLinks && customSocialLinks?.length > 0) ? (
     <div className="mt-16 flex flex-col space-y-2">
       {linkedin && (
         <div>
@@ -310,6 +331,49 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <span className={styles.subHeading}>Instagram</span>
           </div>
           <p className={styles.para}>{instagram}</p>
+        </div>
+      )}
+
+      {twitter && (
+        <div>
+          <div className="flex items-center justify-start space-x-1">
+            <FaXTwitter />
+            <span className={styles.subHeading}>Twitter/X</span>
+          </div>
+          <p className={styles.para}>{twitter}</p>
+        </div>
+      )}
+
+      {threads && (
+        <div>
+          <div className="flex items-center justify-start space-x-1">
+            <FaThreads />
+            <span className={styles.subHeading}>Threads</span>
+          </div>
+          <p className={styles.para}>{threads}</p>
+        </div>
+      )}
+
+      {website && (
+        <div>
+          <div className="flex items-center justify-start space-x-1">
+            <FaGlobe />
+            <span className={styles.subHeading}>My Website</span>
+          </div>
+          <p className={styles.para}>{website}</p>
+        </div>
+      )}
+
+      {customSocialLinks && customSocialLinks.length > 0 && (
+        <div>
+          {customSocialLinks.map((item, index) => (
+            <div key={"custom-social-link-" + index}>
+              <div className="flex items-center justify-start space-x-1">
+                <span className={styles.subHeading}>{item.label}</span>
+              </div>
+              <p className={styles.para}>{item.link}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
