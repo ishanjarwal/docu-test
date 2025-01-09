@@ -4,8 +4,10 @@ import { SkillSchema, SkillType } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import {
+  ArrayPath,
   Control,
   FieldArrayWithId,
+  FieldValues,
   useFieldArray,
   UseFieldArrayMove,
   useForm,
@@ -45,17 +47,14 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
+import { skillDefValues } from "@/validations/defaultValues";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<SkillType>({
     resolver: zodResolver(SkillSchema),
     defaultValues: {
-      hardSkills: resumeData.hardSkills || [
-        { name: "", level: 0, levelDisabled: true },
-      ],
-      softSkills: resumeData.softSkills || [
-        { name: "", level: 0, levelDisabled: true },
-      ],
+      hardSkills: resumeData.hardSkills || [skillDefValues],
+      softSkills: resumeData.softSkills || [skillDefValues],
     },
   });
 
@@ -101,9 +100,9 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     }),
   );
 
-  function handleDragEnd(
+  function handleDragEnd<TFieldValues extends FieldValues>(
     event: DragEndEvent,
-    fields: FieldArrayWithId<any>[],
+    fields: FieldArrayWithId<TFieldValues, ArrayPath<TFieldValues>>[],
     move: UseFieldArrayMove,
   ) {
     const { active, over } = event;
@@ -152,9 +151,7 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 </DndContext>
                 <Button
                   className="py-6 text-foreground"
-                  onClick={() =>
-                    hardSkillappend({ name: "", level: 0, levelDisabled: true })
-                  }
+                  onClick={() => hardSkillappend(skillDefValues)}
                 >
                   Add More
                   <IoMdAdd />
@@ -198,9 +195,7 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 </DndContext>
                 <Button
                   className="py-6 text-foreground"
-                  onClick={() =>
-                    softSkillappend({ name: "", level: 0, levelDisabled: true })
-                  }
+                  onClick={() => softSkillappend(skillDefValues)}
                 >
                   Add More
                   <IoMdAdd />

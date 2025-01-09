@@ -1,5 +1,4 @@
 "use client";
-import { PhoneInput } from "@/components/custom/phone-input";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -46,7 +45,6 @@ type FieldType =
   | "password"
   | "radio"
   | "textarea"
-  | "phone"
   | "date"
   | "country"
   | "range";
@@ -129,17 +127,6 @@ const RenderInput = ({
           <Textarea
             placeholder={props.placeholder}
             className="min-h-32 resize-none bg-foreground/5 focus-visible:ring-1 focus-visible:ring-primary"
-            {...field}
-          />
-        </FormControl>
-      );
-
-    case "phone":
-      return (
-        <FormControl>
-          <PhoneInput
-            className="rounded-lg bg-foreground/5 focus-within:ring-1 focus-within:ring-primary"
-            defaultCountry="IN"
             {...field}
           />
         </FormControl>

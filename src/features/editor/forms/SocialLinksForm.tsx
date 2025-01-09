@@ -15,24 +15,17 @@ import {
 } from "react-icons/fa6";
 import { SocialLinksSchema, SocialLinksValues } from "@/validations/validation";
 import { Button } from "@/components/ui/button";
+import { socialLinksDefValues } from "@/validations/defaultValues";
 
 const SocialLinksForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<SocialLinksValues>({
     mode: "onChange",
     resolver: zodResolver(SocialLinksSchema),
-    defaultValues: {
-      linkedin: resumeData.linkedin || "",
-      instagram: resumeData.instagram || "",
-      github: resumeData.github || "",
-      twitter: resumeData.twitter || "",
-      threads: resumeData.threads || "",
-      website: resumeData.website || "",
-      customSocialLinks: resumeData.customSocialLinks || [],
-    },
+    defaultValues: resumeData.socialLinks || socialLinksDefValues,
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: "customSocialLinks",
+    name: "custom",
     control: form.control,
   });
 
@@ -43,15 +36,9 @@ const SocialLinksForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       if (!isValid) return;
       setResumeData({
         ...resumeData,
-        ...{
-          linkedin: values.linkedin,
-          instagram: values.instagram,
-          twitter: values.twitter,
-          threads: values.threads,
-          github: values.github,
-          website: values.website,
-          customSocialLinks:
-            values.customSocialLinks?.filter((item) => item != undefined) || [],
+        socialLinks: {
+          ...values,
+          custom: values.custom?.filter((item) => item != undefined) || [],
         },
       });
     });
@@ -135,7 +122,7 @@ const SocialLinksForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                   >
                     <CustomFormField
                       props={{
-                        name: `customSocialLinks.${index}.label`,
+                        name: `custom.${index}.label`,
                         fieldType: "text",
                         label: "Label",
                         placeholder: "Label",
@@ -145,7 +132,7 @@ const SocialLinksForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                     <CustomFormField
                       key={field.id}
                       props={{
-                        name: `customSocialLinks.${index}.link`,
+                        name: `custom.${index}.link`,
                         fieldType: "text",
                         label: "Link",
                         placeholder: "Link",

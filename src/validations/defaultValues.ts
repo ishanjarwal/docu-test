@@ -1,4 +1,8 @@
-import { SocialLinksValues } from "./validation";
+import {
+  resumeSchemaType,
+  SocialLinksValues,
+  TemplateValues,
+} from "./validation";
 
 export const projectTitleDefValues = {
   title: "Untitled",
@@ -14,7 +18,7 @@ export const personalDetailsDefValues = {
   email: "",
   country: "",
   city: "",
-  bio: "",
+  summary: "",
 };
 
 export const socialLinksDefValues: SocialLinksValues = {
@@ -24,7 +28,7 @@ export const socialLinksDefValues: SocialLinksValues = {
   website: "",
   twitter: "",
   threads: "",
-  customSocialLinks: [],
+  custom: [],
 };
 
 export const educationDetailsDefValues = {
@@ -38,74 +42,61 @@ export const educationDetailsDefValues = {
 };
 
 export const workExperienceDefValues = {
-  workExperiences: [
-    {
-      position: "",
-      employer: "",
-      description: "",
-      jobType: "",
-      location: "",
-      startDate: "",
-      endDate: "",
-      current: false,
-    },
-  ],
+  position: "",
+  employer: "",
+  description: "",
+  jobType: undefined,
+  location: "",
+  startDate: "",
+  endDate: "",
+  current: false,
 };
 
 export const skillDefValues = {
-  hardSkills: [
-    {
-      name: "",
-      level: 0,
-      levelDisabled: false,
-    },
-  ],
-  softSkills: [
-    {
-      name: "",
-      level: 0,
-      levelDisabled: false,
-    },
-  ],
+  name: "",
+  level: 0,
+  levelDisabled: false,
 };
 
 export const certificationDefValues = {
-  certifications: [
-    {
-      title: "",
-      organization: "",
-      link: "",
-      score: "",
-      description: "",
-    },
-  ],
+  title: "",
+  organization: "",
+  link: "",
+  score: "",
+  description: "",
 };
 
 export const courseDefValues = {
-  courses: [
-    {
-      title: "",
-      organization: "",
-      link: "",
-      score: "",
-      description: "",
-    },
-  ],
+  title: "",
+  organization: "",
+  link: "",
+  score: "",
+  description: "",
 };
 
 export const hobbyDefValues = {
-  hobbies: [
-    {
-      name: "",
-      description: "",
-    },
-  ],
+  name: "",
+  description: "",
 };
 
-export const templateDefValues = {
-  templateId: "",
-  textHex: "",
-  backdropHex: "",
-  borderStyle: "square", // Default value can be "circle", "square", or "squircle"
-  fontFace: "",
+export const templateDefValues: TemplateValues = {
+  textHex: "#000000",
+  backdropHex: "#FFFFFF",
+  borderStyle: "squircle",
+  templateId: "ats-template-1",
+  fontFace: "Inter",
+};
+
+export const resumeDataDefValues: resumeSchemaType = {
+  title: "Untitled",
+  personalDetails: personalDetailsDefValues,
+  socialLinks: socialLinksDefValues,
+  educationDetails: [educationDetailsDefValues],
+  workExperiences: [workExperienceDefValues],
+  hardSkills: [skillDefValues],
+  softSkills: [skillDefValues],
+  courses: [courseDefValues],
+  certifications: [certificationDefValues],
+  hobbies: [hobbyDefValues],
+  template: templateDefValues,
 };

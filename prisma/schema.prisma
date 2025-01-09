@@ -19,15 +19,9 @@ enum borderStyles {
   squircle
 }
 
-enum jobType {
-  onSite
-  remote
-  hybrid
-}
-
 type CustomSocialLink {
-  label String
-  link  String
+  label String?
+  link  String?
 }
 
 type SocialLinks {
@@ -41,16 +35,16 @@ type SocialLinks {
 }
 
 type PersonalDetails {
-  profilePictureURL String?
-  firstName         String?
-  lastName          String?
-  jobTitle          String?
-  gender            String?
-  phone             String?
-  email             String?
-  country           String?
-  city              String?
-  bio               String?
+  profilePicture String?
+  firstName      String?
+  lastName       String?
+  jobTitle       String?
+  gender         String?
+  phone          String?
+  email          String?
+  country        String?
+  city           String?
+  summary        String?
 }
 
 type Educations {
@@ -67,7 +61,7 @@ type WorkExperience {
   position    String?
   employer    String?
   description String?
-  jobType     jobType
+  jobType     String?
   location    String?
   startDate   String?
   endDate     String?
@@ -110,21 +104,21 @@ type TemplateDetails {
 }
 
 model Resume {
-  id     String @id @map("_id")
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
   userId String
 
   title       String? @default("Untitled")
   description String?
 
-  personalDetails PersonalDetails
-  socialLinks     SocialLinks
-  educations      Educations[]
-  workExperiences WorkExperience[]
-  hardSkills      SkillItem[]
-  softSkills      SkillItem[]
-  certifications  Certification[]
-  courses         Course[]
-  hobbies         Hobby[]
+  personalDetails  PersonalDetails
+  socialLinks      SocialLinks
+  educationDetails Educations[]
+  workExperiences  WorkExperience[]
+  hardSkills       SkillItem[]
+  softSkills       SkillItem[]
+  certifications   Certification[]
+  courses          Course[]
+  hobbies          Hobby[]
 
   template TemplateDetails
 

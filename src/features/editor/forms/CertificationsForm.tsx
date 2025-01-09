@@ -47,12 +47,13 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
+import { certificationDefValues } from "@/validations/defaultValues";
 
 const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CertificationType>({
     resolver: zodResolver(CerificationsSchema),
     defaultValues: {
-      certifications: resumeData.certifications || [{}],
+      certifications: resumeData.certifications || [certificationDefValues],
     },
   });
 
@@ -126,7 +127,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           </div>
           <Button
             className="mt-4 w-full py-6 text-foreground"
-            onClick={() => append({})}
+            onClick={() => append(certificationDefValues)}
           >
             Add More
             <IoMdAdd />

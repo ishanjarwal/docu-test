@@ -23,6 +23,7 @@ import { CiImageOn } from "react-icons/ci";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { useDeviceType } from "@/hooks/useDeviceType";
+import { personalDetailsDefValues } from "@/validations/defaultValues";
 
 const PersonalDetailsForm = ({
   resumeData,
@@ -31,11 +32,7 @@ const PersonalDetailsForm = ({
   const form = useForm<personalDetailsType>({
     mode: "onChange",
     resolver: zodResolver(personalDetailsSchema),
-    defaultValues: {
-      firstName: resumeData.firstName || "",
-      lastName: resumeData.lastName || "",
-      phone: resumeData.phone || "",
-    },
+    defaultValues: resumeData.personalDetails || personalDetailsDefValues,
   });
 
   const { isDesktop } = useDeviceType();
@@ -44,7 +41,7 @@ const PersonalDetailsForm = ({
     const { unsubscribe } = form.watch(async (values) => {
       const isValid = await form.trigger();
       if (!isValid) return;
-      setResumeData({ ...resumeData, ...values });
+      setResumeData({ ...resumeData, personalDetails: { ...values } });
     });
 
     return unsubscribe;
@@ -201,7 +198,7 @@ const PersonalDetailsForm = ({
               <CustomFormField
                 props={{
                   name: "phone",
-                  fieldType: "phone",
+                  fieldType: "text",
                   label: "Phone",
                   icon: null,
                   placeholder: "Your Phone Number",
@@ -231,10 +228,10 @@ const PersonalDetailsForm = ({
             </div>
             <CustomFormField
               props={{
-                name: "bio",
+                name: "summary",
                 fieldType: "textarea",
-                label: "Short Bio",
-                placeholder: "A Brief about you",
+                label: "Professional Summary",
+                placeholder: "A brief about you",
               }}
               control={form.control}
             />

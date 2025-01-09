@@ -4,6 +4,7 @@ import isEqual from "lodash.isequal";
 import { useEffect, useState } from "react";
 
 const useAutoSaveResume = (resumeData: resumeSchemaType) => {
+  console.log(resumeData);
   const debouncedData = useDebounce(resumeData, 1500);
 
   const [lastSaved, setLastSaved] = useState(structuredClone(resumeData));

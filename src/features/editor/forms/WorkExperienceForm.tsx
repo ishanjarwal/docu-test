@@ -40,12 +40,13 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
+import { workExperienceDefValues } from "@/validations/defaultValues";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<WorkExperienceType>({
     resolver: zodResolver(WorkExperienceSchema),
     defaultValues: {
-      workExperiences: resumeData.workExperiences || [{}],
+      workExperiences: resumeData.workExperiences || [workExperienceDefValues],
     },
   });
 

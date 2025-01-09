@@ -1,14 +1,6 @@
-import { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
 
 const optionalString = z.string().trim().optional().or(z.literal(""));
-const validPhone = z
-  .string()
-  .optional()
-  .refine(
-    (value) => !value || isValidPhoneNumber(value), // Only validate if value is not empty
-    { message: "Invalid phone number" },
-  );
 
 export const projectTitleSchema = z.object({
   title: optionalString,
@@ -36,11 +28,11 @@ export const personalDetailsSchema = z.object({
   lastName: optionalString,
   jobTitle: optionalString,
   gender: optionalString,
-  phone: validPhone,
+  phone: optionalString,
   email: optionalString,
   country: optionalString,
   city: optionalString,
-  bio: optionalString,
+  summary: optionalString,
 });
 
 export type personalDetailsType = z.infer<typeof personalDetailsSchema>;
@@ -52,7 +44,7 @@ export const SocialLinksSchema = z.object({
   website: optionalString,
   twitter: optionalString,
   threads: optionalString,
-  customSocialLinks: z
+  custom: z
     .array(
       z.object({
         label: optionalString,
@@ -181,16 +173,22 @@ export const TemplateSchema = z.object({
 export type TemplateValues = z.infer<typeof TemplateSchema>;
 
 export const resumeSchema = z.object({
-  ...projectTitleSchema.shape,
-  ...personalDetailsSchema.shape,
+  personalDetails: z.object({
+    ...personalDetailsSchema.shape,
+  }),
   ...EducationDetailsSchema.shape,
   ...WorkExperienceSchema.shape,
   ...SkillSchema.shape,
   ...CerificationsSchema.shape,
   ...CourseSchema.shape,
   ...HobbySchema.shape,
-  ...SocialLinksSchema.shape,
-  ...TemplateSchema.shape,
+  ...projectTitleSchema.shape,
+  socialLinks: z.object({
+    ...SocialLinksSchema.shape,
+  }),
+  template: z.object({
+    ...TemplateSchema.shape,
+  }),
 });
 
 export type resumeSchemaType = Omit<

@@ -44,12 +44,13 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
+import { hobbyDefValues } from "@/validations/defaultValues";
 
 const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<HobbyValues>({
     resolver: zodResolver(HobbySchema),
     defaultValues: {
-      hobbies: resumeData.hobbies || [{}],
+      hobbies: resumeData.hobbies || [hobbyDefValues],
     },
   });
 
@@ -124,7 +125,7 @@ const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           </div>
           <Button
             className="mt-4 w-full py-6 text-foreground"
-            onClick={() => append({})}
+            onClick={() => append(hobbyDefValues)}
           >
             Add More
             <IoMdAdd />

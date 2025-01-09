@@ -44,12 +44,13 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
+import { courseDefValues } from "@/validations/defaultValues";
 
 const CourseForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CourseValues>({
     resolver: zodResolver(CourseSchema),
     defaultValues: {
-      courses: resumeData.courses || [{}],
+      courses: resumeData.courses || [courseDefValues],
     },
   });
 
@@ -122,7 +123,7 @@ const CourseForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           </div>
           <Button
             className="mt-4 w-full py-6 text-foreground"
-            onClick={() => append({})}
+            onClick={() => append(courseDefValues)}
           >
             Add More
             <IoMdAdd />
