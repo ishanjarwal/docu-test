@@ -4,7 +4,6 @@ import { useToast } from "@/hooks/use-toast";
 import useDebounce from "@/hooks/useDebounce";
 import { fileReplacer } from "@/lib/utils";
 import { resumeSchemaType } from "@/validations/validation";
-import isEqual from "lodash.isequal";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -32,9 +31,8 @@ const useAutoSaveResume = (resumeData: resumeSchemaType) => {
 
         const newData = structuredClone(debouncedData);
 
-        const updatedResume = await saveResume({
+        const sendable = {
           ...newData,
-          id: resumeId,
           personalDetails: {
             ...newData.personalDetails,
             ...(JSON.stringify(
@@ -44,11 +42,11 @@ const useAutoSaveResume = (resumeData: resumeSchemaType) => {
               JSON.stringify(
                 newData.personalDetails.profilePicture,
                 fileReplacer,
-              ) && {
-              profilePicture: undefined,
-            }),
+              ) && { profilePicture: undefined }),
           },
-        });
+          id: resumeId,
+        };
+        const updatedResume = await saveResume(sendable);
 
         setResumeId(updatedResume.id);
         setLastSaved(newData);
@@ -106,7 +104,9 @@ const useAutoSaveResume = (resumeData: resumeSchemaType) => {
 
   return {
     isSaving,
-    hasUnsavedChanges: !isEqual(resumeData, lastSaved),
+    hasUnsavedChanges:
+      JSON.stringify(resumeData, fileReplacer) !==
+      JSON.stringify(lastSaved, fileReplacer),
   };
 };
 

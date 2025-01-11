@@ -23,7 +23,6 @@ import { CiImageOn } from "react-icons/ci";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { useDeviceType } from "@/hooks/useDeviceType";
-import { personalDetailsDefValues } from "@/validations/defaultValues";
 
 const PersonalDetailsForm = ({
   resumeData,
@@ -32,7 +31,7 @@ const PersonalDetailsForm = ({
   const form = useForm<personalDetailsType>({
     mode: "onChange",
     resolver: zodResolver(personalDetailsSchema),
-    defaultValues: resumeData.personalDetails || personalDetailsDefValues,
+    defaultValues: { ...resumeData.personalDetails, profilePicture: undefined },
   });
 
   const { isDesktop } = useDeviceType();
@@ -44,7 +43,6 @@ const PersonalDetailsForm = ({
         ...resumeData,
         personalDetails: {
           ...values,
-          profilePicture: values.profilePicture,
         },
       });
     });

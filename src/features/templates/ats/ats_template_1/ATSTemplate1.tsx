@@ -15,12 +15,12 @@ import {
 } from "react-icons/fa6";
 
 const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
-  const { textHex, backdropHex, borderStyle } = resumeData;
+  const { template } = resumeData;
 
   const borderRadiusValue =
-    borderStyle == "circle"
+    template.borderStyle == "circle"
       ? "9999px"
-      : borderStyle == "square"
+      : template.borderStyle == "square"
         ? "0px"
         : "10%";
 
@@ -28,8 +28,8 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
     <div
       className="flex h-full flex-col space-y-8 p-8"
       style={{
-        color: textHex,
-        backgroundColor: backdropHex,
+        color: template.textHex,
+        backgroundColor: template.backdropHex,
       }}
     >
       <Header resumeData={resumeData} borderRadiusValue={borderRadiusValue} />
@@ -38,15 +38,19 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
           <div className="flex flex-col space-y-4">
             <Summary resumeData={resumeData} />
             {resumeData.workExperiences &&
-              resumeData.workExperiences.length > 0 && <hr />}
+              resumeData.workExperiences.length > 0 && (
+                <hr style={{ borderColor: template.textHex }} />
+              )}
             <WorkExperience resumeData={resumeData} />
             {resumeData.educationDetails &&
-              resumeData.educationDetails.length > 0 && <hr />}
+              resumeData.educationDetails.length > 0 && (
+                <hr style={{ borderColor: template.textHex }} />
+              )}
             <Educations resumeData={resumeData} />
           </div>
         </div>
         <div className="col-span-1 h-full p-4">
-          <Skills resumeData={resumeData} textHex={textHex} />
+          <Skills resumeData={resumeData} />
           <SocialLinks resumeData={resumeData} />
         </div>
       </div>
@@ -65,7 +69,7 @@ const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
     country,
     gender,
     profilePicture,
-  } = resumeData;
+  } = resumeData.personalDetails;
   const photoURL = usePhotoURL(profilePicture);
 
   return (
@@ -115,11 +119,11 @@ const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
 };
 
 const Summary = ({ resumeData }: TemplateProps) => {
-  const { bio } = resumeData;
-  return bio ? (
+  const { summary } = resumeData.personalDetails;
+  return summary ? (
     <div className="flex flex-col space-y-1">
       <p className={styles.heading}>Professional Summary</p>
-      <p className={styles.para}>{bio}</p>
+      <p className={styles.para}>{summary}</p>
     </div>
   ) : null;
 };
@@ -215,8 +219,9 @@ const Educations = ({ resumeData }: TemplateProps) => {
   ) : null;
 };
 
-const Skills = ({ resumeData, textHex }: TemplateProps) => {
+const Skills = ({ resumeData }: TemplateProps) => {
   const { hardSkills, softSkills } = resumeData;
+  const { textHex } = resumeData.template;
   return (
     <div className="flex flex-col space-y-4">
       {hardSkills && hardSkills.length > 0 && (
@@ -232,7 +237,7 @@ const Skills = ({ resumeData, textHex }: TemplateProps) => {
                       <span
                         className="absolute left-0 top-0 h-full w-full rounded-full"
                         style={{
-                          backgroundColor: textHex || "hsl(var(--primary))",
+                          backgroundColor: textHex,
                           opacity: "25%",
                         }}
                       ></span>
@@ -240,7 +245,7 @@ const Skills = ({ resumeData, textHex }: TemplateProps) => {
                         className="absolute left-0 top-0 h-full"
                         style={{
                           width: (item.level + 1) * 20 + "%",
-                          backgroundColor: textHex || "hsl(var(--primary))",
+                          backgroundColor: textHex,
                         }}
                       ></span>
                     </span>
@@ -265,7 +270,7 @@ const Skills = ({ resumeData, textHex }: TemplateProps) => {
                       <span
                         className="absolute left-0 top-0 h-full w-full rounded-full"
                         style={{
-                          backgroundColor: textHex || "hsl(var(--primary))",
+                          backgroundColor: textHex,
                           opacity: "25%",
                         }}
                       ></span>
@@ -273,7 +278,7 @@ const Skills = ({ resumeData, textHex }: TemplateProps) => {
                         className="absolute left-0 top-0 h-full"
                         style={{
                           width: (item.level + 1) * 20 + "%",
-                          backgroundColor: textHex || "hsl(var(--primary))",
+                          backgroundColor: textHex,
                         }}
                       ></span>
                     </span>
@@ -289,22 +294,15 @@ const Skills = ({ resumeData, textHex }: TemplateProps) => {
 };
 
 const SocialLinks = ({ resumeData }: TemplateProps) => {
-  const {
-    linkedin,
-    github,
-    instagram,
-    twitter,
-    threads,
-    website,
-    customSocialLinks,
-  } = resumeData;
+  const { linkedin, github, instagram, twitter, threads, website, custom } =
+    resumeData.socialLinks;
   return linkedin ||
     github ||
     instagram ||
     twitter ||
     threads ||
     website ||
-    (customSocialLinks && customSocialLinks?.length > 0) ? (
+    (custom && custom?.length > 0) ? (
     <div className="mt-16 flex flex-col space-y-2">
       {linkedin && (
         <div>
@@ -364,9 +362,9 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
         </div>
       )}
 
-      {customSocialLinks && customSocialLinks.length > 0 && (
+      {custom && custom.length > 0 && (
         <div>
-          {customSocialLinks.map((item, index) => (
+          {custom.map((item, index) => (
             <div key={"custom-social-link-" + index}>
               <div className="flex items-center justify-start space-x-1">
                 <span className={styles.subHeading}>{item.label}</span>

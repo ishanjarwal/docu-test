@@ -3,11 +3,10 @@
 import prisma from "@/lib/prisma";
 import { resumeSchema, resumeSchemaType } from "@/validations/validation";
 // import { auth } from "@clerk/nextjs/server";
-import { del, put } from "@vercel/blob";
+import { del, head, put } from "@vercel/blob";
 import path from "path";
 
 export const saveResume = async (values: resumeSchemaType) => {
-  console.log("Called");
   const { id } = values;
   console.log("values received at backend : ", values);
   // test
@@ -53,15 +52,30 @@ export const saveResume = async (values: resumeSchemaType) => {
         await del(existingResume.personalDetails.profilePicture);
       }
       newPhotoURL = null;
+    } else if (typeof profilePicture === "string") {
+      try {
+        const isValid = await head(profilePicture);
+        newPhotoURL = profilePicture;
+      } catch (error) {
+        newPhotoURL = existingResume?.personalDetails.profilePicture;
+      }
+    } else if (profilePicture === undefined) {
+      if (existingResume?.personalDetails.profilePicture) {
+        newPhotoURL = existingResume.personalDetails.profilePicture;
+      }
     }
 
     if (id) {
       // update
+
       return prisma.resume.update({
         where: { id },
         data: {
           userId,
-          personalDetails: { ...personalDetails, profilePicture: newPhotoURL },
+          personalDetails: {
+            ...personalDetails,
+            profilePicture: newPhotoURL,
+          },
           ...restResumeData,
         },
       });

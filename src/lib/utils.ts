@@ -13,12 +13,12 @@ export function fileReplacer(key: unknown, value: unknown) {
         name: value.name,
         type: value.type,
         size: value.size,
-        lastModified: value.lastModified,
       }
     : value;
 }
 
 export function mapToResumeSchemaType(
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   data: Prisma.ResumeGetPayload<{}>,
 ): resumeSchemaType {
   const {

@@ -14,16 +14,21 @@ export type projectTitleType = z.infer<typeof projectTitleSchema>;
 
 export const personalDetailsSchema = z.object({
   profilePicture: z
-    .custom<File | undefined | null>()
-    .refine(
-      (file) =>
-        !file || (file instanceof File && file.type.startsWith("image/")),
-      "File must be an image",
-    )
-    .refine(
-      (file) => !file || file.size <= 1024 * 1024 * 4,
-      "File too large, upto 4MB acceptable",
-    ),
+    .union([
+      z.string().optional(),
+      z
+        .custom<File | null | undefined>()
+        .refine(
+          (file) =>
+            !file || (file instanceof File && file.type.startsWith("image/")),
+          "File must be an image",
+        )
+        .refine(
+          (file) => !file || file.size <= 1024 * 1024 * 4,
+          "File too large, up to 4MB acceptable",
+        ),
+    ])
+    .optional(),
   firstName: optionalString,
   lastName: optionalString,
   jobTitle: optionalString,
@@ -35,18 +40,7 @@ export const personalDetailsSchema = z.object({
   summary: optionalString,
 });
 
-export type personalDetailsType = {
-  profilePicture?: File | string | undefined | null;
-  firstName?: string | undefined;
-  lastName?: string | undefined;
-  jobTitle?: string | undefined;
-  gender?: string | undefined;
-  phone?: string | undefined;
-  email?: string | undefined;
-  country?: string | undefined;
-  city?: string | undefined;
-  summary?: string | undefined;
-};
+export type personalDetailsType = z.infer<typeof personalDetailsSchema>;
 
 export const SocialLinksSchema = z.object({
   linkedin: optionalString,
@@ -202,13 +196,6 @@ export const resumeSchema = z.object({
   }),
 });
 
-export type resumeSchemaType = Omit<
-  z.infer<typeof resumeSchema>,
-  "personalDetails"
-> & {
+export type resumeSchemaType = z.infer<typeof resumeSchema> & {
   id?: string;
-  personalDetails: Omit<
-    z.infer<typeof personalDetailsSchema>,
-    "profilePicture"
-  > & { profilePicture: File | null | undefined | string };
 };

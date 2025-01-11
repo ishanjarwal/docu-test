@@ -55,7 +55,10 @@ const Preview = ({ className }: { className?: string }) => {
       <div className={cn("h-fit px-4 pb-4 pt-8", isPreviewOpen && "pt-24")}>
         <div
           ref={containerRef as React.RefObject<HTMLDivElement>}
-          className="mx-auto aspect-[210/297] max-w-xl bg-white shadow-2xl"
+          className={cn(
+            "mx-auto aspect-[210/297] max-w-xl bg-white shadow-2xl",
+            isPreviewOpen && "max-w-4xl",
+          )}
         >
           <div
             className="h-full"

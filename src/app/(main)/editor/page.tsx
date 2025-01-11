@@ -20,8 +20,8 @@ const page = async ({
 
   return (
     <ResumeData existingResume={existingResume}>
-      <PreviewRenderer />
       <main className="flex min-h-screen w-full lg:max-h-screen">
+        <PreviewRenderer />
         <div className="relative mx-auto flex w-full max-w-[1600px] grow bg-card">
           <div className="flex w-full lg:absolute lg:bottom-0 lg:top-0">
             <div className="relative flex min-w-0 flex-1 flex-col bg-card">
