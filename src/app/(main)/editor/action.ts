@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma";
 import { resumeSchema, resumeSchemaType } from "@/validations/validation";
-import { Prisma } from "@prisma/client";
 // import { auth } from "@clerk/nextjs/server";
 import { del, put } from "@vercel/blob";
 import path from "path";
@@ -44,7 +43,7 @@ export const saveResume = async (values: resumeSchemaType) => {
         `resume_profile_pictures/${path.extname(profilePicture.name)}`,
         profilePicture,
         {
-          access: "public", // currently available
+          access: "public", // currently only this is available
         },
       );
 
@@ -68,20 +67,20 @@ export const saveResume = async (values: resumeSchemaType) => {
       });
     } else {
       // insert new entry
-      const addable = {
-        userId,
-        personalDetails: {
-          ...personalDetails,
-          profilePicture: newPhotoURL,
-        },
-        ...restResumeData,
-      };
-      console.log("Added to db : ", addable);
       return prisma.resume.create({
-        data: addable,
+        data: {
+          userId,
+          personalDetails: {
+            ...personalDetails,
+            profilePicture: newPhotoURL,
+          },
+          ...restResumeData,
+        },
       });
     }
   } catch (error) {
-    throw new Error("Something went wrong");
+    throw new Error(
+      (error instanceof Error && error.message) || "Something went wrong",
+    );
   }
 };

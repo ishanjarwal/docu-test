@@ -36,12 +36,17 @@ const PersonalDetailsForm = ({
   });
 
   const { isDesktop } = useDeviceType();
-
   useEffect(() => {
     const { unsubscribe } = form.watch(async (values) => {
       const isValid = await form.trigger();
       if (!isValid) return;
-      setResumeData({ ...resumeData, personalDetails: { ...values } });
+      setResumeData({
+        ...resumeData,
+        personalDetails: {
+          ...values,
+          profilePicture: values.profilePicture,
+        },
+      });
     });
 
     return unsubscribe;
@@ -62,8 +67,7 @@ const PersonalDetailsForm = ({
     }, // Accept only images
   });
 
-  const photo = form.watch("profilePicture");
-  const photoURL = usePhotoURL(photo);
+  const photoURL = usePhotoURL(resumeData.personalDetails.profilePicture);
 
   return (
     <div className="p-4 sm:p-8">
@@ -114,14 +118,14 @@ const PersonalDetailsForm = ({
                               <div
                                 className={clsx(
                                   "pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center bg-background opacity-0 backdrop-blur-sm duration-150 group-hover:opacity-100",
-                                  !photo && "opacity-100",
-                                  photo && "bg-background/25",
+                                  !photoURL && "opacity-100",
+                                  photoURL && "bg-background/25",
                                 )}
                               >
                                 <p className="flex flex-col items-center justify-center space-y-1 px-2 text-xs">
                                   <CiImageOn className="size-8" />
                                   <span className="text-center">
-                                    {photo
+                                    {photoURL
                                       ? "Change photo"
                                       : "Drag and drop or select a photo"}
                                   </span>
@@ -129,7 +133,7 @@ const PersonalDetailsForm = ({
                               </div>
                             )}
                           </div>
-                          {photo && (
+                          {photoURL && (
                             <div className="flex flex-col items-center justify-start gap-2 sm:flex-row">
                               <Button
                                 variant={"destructive"}

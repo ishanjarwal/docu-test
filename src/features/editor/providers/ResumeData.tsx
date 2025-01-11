@@ -1,7 +1,9 @@
 "use client";
 
+import { mapToResumeSchemaType } from "@/lib/utils";
 import { resumeDataDefValues } from "@/validations/defaultValues";
 import { resumeSchemaType } from "@/validations/validation";
+import { Prisma } from "@prisma/client";
 import React, { createContext, ReactNode, useState } from "react";
 
 interface ResumeDataContextType {
@@ -14,8 +16,19 @@ export const ResumeDataContext = createContext<ResumeDataContextType>({
   setResumeData: () => {},
 });
 
-export const ResumeData = ({ children }: { children: ReactNode }) => {
-  const [resumeData, setResumeData] = useState(resumeDataDefValues);
+export const ResumeData = ({
+  children,
+  existingResume,
+}: {
+  children: ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  existingResume: Prisma.ResumeGetPayload<{}> | null;
+}) => {
+  const [resumeData, setResumeData] = useState(
+    existingResume
+      ? mapToResumeSchemaType(existingResume)
+      : resumeDataDefValues,
+  );
 
   return (
     <ResumeDataContext.Provider value={{ resumeData, setResumeData }}>

@@ -35,7 +35,18 @@ export const personalDetailsSchema = z.object({
   summary: optionalString,
 });
 
-export type personalDetailsType = z.infer<typeof personalDetailsSchema>;
+export type personalDetailsType = {
+  profilePicture?: File | string | undefined | null;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  jobTitle?: string | undefined;
+  gender?: string | undefined;
+  phone?: string | undefined;
+  email?: string | undefined;
+  country?: string | undefined;
+  city?: string | undefined;
+  summary?: string | undefined;
+};
 
 export const SocialLinksSchema = z.object({
   linkedin: optionalString,
@@ -193,8 +204,11 @@ export const resumeSchema = z.object({
 
 export type resumeSchemaType = Omit<
   z.infer<typeof resumeSchema>,
-  "profilePicture"
+  "personalDetails"
 > & {
   id?: string;
-  profilePicture?: File | string | null;
+  personalDetails: Omit<
+    z.infer<typeof personalDetailsSchema>,
+    "profilePicture"
+  > & { profilePicture: File | null | undefined | string };
 };

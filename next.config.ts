@@ -1,14 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // images: {
-  //   remotePatterns: [
-  //     {
-  //       hostname: "flagsapi.com",
-  //       protocol: "https",
-  //     },
-  //   ],
-  // },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "4mb",
+    },
+  },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "afxjawn6uqlgl28h.public.blob.vercel-storage.com",
+        protocol: "https",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
