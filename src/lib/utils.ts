@@ -131,3 +131,12 @@ export function mapToResumeSchemaType(
     },
   };
 }
+
+export const isValidJSON = (input: string) => {
+  try {
+    JSON.parse(input);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};

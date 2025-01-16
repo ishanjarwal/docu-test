@@ -53,7 +53,7 @@ interface CustomFormFieldType {
   form?: UseFormReturn;
   name: string;
   fieldType: FieldType;
-  label: string;
+  label?: string;
   icon?: ReactNode;
   placeholder?: string;
   options?: { label: string; value: string }[];

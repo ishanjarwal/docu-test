@@ -199,3 +199,12 @@ export const resumeSchema = z.object({
 export type resumeSchemaType = z.infer<typeof resumeSchema> & {
   id?: string;
 };
+
+// Schemas and Types for AI
+export const GenerateSummarySchema = z.object({
+  jobTitle: optionalString,
+  ...EducationDetailsSchema.shape,
+  ...WorkExperienceSchema.shape,
+});
+
+export type GenerateSummaryValues = z.infer<typeof GenerateSummarySchema>;
