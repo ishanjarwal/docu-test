@@ -4,7 +4,7 @@ import { TemplateProps } from "../../types";
 import Image from "next/image";
 import usePhotoURL from "@/hooks/usePhotoURL";
 import styles from "./styles.module.css";
-import { cn } from "@/lib/utils";
+import { cn, convertToUlORP } from "@/lib/utils";
 import {
   FaGithub,
   FaGlobe,
@@ -210,7 +210,12 @@ const Educations = ({ resumeData }: TemplateProps) => {
               )}
             </p>
             {item.description && (
-              <p className={cn(styles.para, "mt-1")}>{item.description}</p>
+              <div
+                className={cn(styles.para, "mt-1")}
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(item.description),
+                }}
+              />
             )}
           </div>
         ))}

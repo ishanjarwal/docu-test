@@ -131,3 +131,22 @@ export function mapToResumeSchemaType(
     },
   };
 }
+
+export function convertToUlORP(input: string): string {
+  // Check if the input contains bullet points
+  const lines = input.split("\n").map((line) => line.trim());
+
+  // Filter for lines that start with a bullet point "-"
+  const bulletPoints = lines.filter((line) => line.startsWith("-"));
+
+  if (bulletPoints.length > 0) {
+    // If there are bullet points, wrap them in <ul> tags
+    const listItems = bulletPoints
+      .map((line) => `<li>${line.substring(1).trim()}</li>`) // Remove "-" and trim
+      .join("");
+    return `<ul class='list-disc ps-4'>${listItems}</ul>`;
+  } else {
+    // Otherwise, return the whole input wrapped in a <p> tag
+    return `<p>${input.trim()}</p>`;
+  }
+}
