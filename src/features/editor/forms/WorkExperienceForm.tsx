@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { EditorFormProps } from "../constants/types";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import {
+  GenerateWorkExperienceSchema,
+  GenerateWorkExperienceValues,
   WorkExperienceSchema,
   WorkExperienceType,
 } from "@/validations/validation";
@@ -19,7 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { FiTrash } from "react-icons/fi";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaWandMagicSparkles } from "react-icons/fa6";
 import {
   closestCenter,
   DndContext,
@@ -41,6 +43,19 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
 import { workExperienceDefValues } from "@/validations/defaultValues";
+import AIButton from "@/components/custom/AIButton";
+import { generateWorkExperience } from "./action";
+import toast from "react-hot-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { LuLoaderCircle } from "react-icons/lu";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<WorkExperienceType>({
@@ -168,7 +183,7 @@ const WorkExperienceItem = ({
         defaultValue={"item-1"}
       >
         <AccordionItem value="item-1" className="border-b-0">
-          <AccordionTrigger className="truncate py-0 outline-none">
+          <AccordionTrigger className="group truncate py-0 outline-none">
             <div className="flex w-full items-center justify-between gap-x-4">
               <div>
                 <MdDragIndicator
@@ -182,6 +197,7 @@ const WorkExperienceItem = ({
                   {form.watch("workExperiences")?.[index]?.position ||
                     "Untitled"}
                 </p>
+
                 <span>
                   <FaChevronDown />
                 </span>
@@ -201,6 +217,9 @@ const WorkExperienceItem = ({
             <div className="relative flex flex-col items-stretch md:flex-row">
               <div className="flex-1 px-2 py-4 md:px-4">
                 <div className="mt-4 grid grid-cols-1 gap-y-4">
+                  <div className="flex justify-end">
+                    <AIWorkExperienceGenerator form={form} index={index} />
+                  </div>
                   <CustomFormField
                     props={{
                       name: `workExperiences.${index}.position`,
@@ -306,3 +325,148 @@ const WorkExperienceItem = ({
 };
 
 export default WorkExperienceForm;
+
+const AIWorkExperienceGenerator = ({
+  form,
+  index,
+}: {
+  form: UseFormReturn<WorkExperienceType>;
+  index: number;
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const descForm = useForm<GenerateWorkExperienceValues>({
+    resolver: zodResolver(GenerateWorkExperienceSchema),
+    defaultValues: { description: "" },
+    mode: "onChange",
+  });
+
+  async function handleClick(desc: string) {
+    try {
+      setLoading(true);
+      const result = await generateWorkExperience({
+        description: desc,
+      });
+      if (result.error) {
+        const tID = toast.error(
+          <div className="flex items-center justify-between space-x-1 ps-1">
+            <p className="text-sm">{result.error}</p>
+            <Button
+              className="text-xs"
+              size={"sm"}
+              variant={"secondary"}
+              onClick={() => toast.dismiss(tID)}
+            >
+              Cancel
+            </Button>
+          </div>,
+          { position: "bottom-center" },
+        );
+      } else if (result.success) {
+        const {
+          position,
+          employer,
+          startDate,
+          endDate,
+          jobType,
+          current,
+          location,
+          description,
+        } = result.success.content;
+        form.setValue(
+          `workExperiences.${index}.position`,
+          position ? position : workExperienceDefValues.position,
+        );
+        form.setValue(
+          `workExperiences.${index}.employer`,
+          employer ? employer : workExperienceDefValues.employer,
+        );
+        form.setValue(
+          `workExperiences.${index}.startDate`,
+          startDate ? startDate : workExperienceDefValues.startDate,
+        );
+        form.setValue(
+          `workExperiences.${index}.endDate`,
+          endDate ? endDate : workExperienceDefValues.endDate,
+        );
+        form.setValue(
+          `workExperiences.${index}.description`,
+          description ? description : workExperienceDefValues.description,
+        );
+        form.setValue(
+          `workExperiences.${index}.jobType`,
+          jobType ? jobType : workExperienceDefValues.jobType,
+        );
+        form.setValue(
+          `workExperiences.${index}.current`,
+          current ? current : workExperienceDefValues.current,
+        );
+        form.setValue(
+          `workExperiences.${index}.location`,
+          location ? location : workExperienceDefValues.location,
+        );
+      }
+    } catch (error) {
+      toast.error("Something went wrong", { position: "bottom-center" });
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <div>
+          <AIButton />
+        </div>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>
+            <p className="flex items-center space-x-2">
+              <FaWandMagicSparkles />
+              <span>Take help from AI</span>
+            </p>
+          </DialogTitle>
+          <DialogDescription>
+            Describe a little about your job experience, like your position,
+            employer, join and end dates etc.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <Form {...descForm}>
+            <CustomFormField
+              control={descForm.control}
+              props={{
+                fieldType: "textarea",
+                name: "description",
+                label: "Description",
+                placeholder:
+                  "eg: I worked at google from nov 2023 to dec 2024 as a backend engineer",
+              }}
+            />
+          </Form>
+        </div>
+        <DialogFooter>
+          <Button
+            disabled={loading}
+            onClick={() => {
+              const isValid = descForm.trigger();
+              if (!isValid) return;
+              const description = descForm.watch("description");
+              if (description) handleClick(description);
+            }}
+            type="submit"
+          >
+            {loading && <LuLoaderCircle className="animate-spin" />}
+            {!loading && <FaWandMagicSparkles />}
+            Generate
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};

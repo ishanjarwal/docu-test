@@ -14,7 +14,9 @@ const AIButton = ({
 }) => {
   return (
     <div
-      onClick={() => onClick && !loading && onClick()}
+      onClick={() => {
+        if (onClick && !loading) onClick();
+      }}
       className={cn(
         "relative w-max cursor-pointer rounded-lg bg-gradient-to-br from-blue-500 via-green-400 to-blue-800 p-[2px] shadow-lg duration-150 hover:scale-105",
         loading && "cursor-not-allowed opacity-50 duration-0 hover:scale-100",
