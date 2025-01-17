@@ -160,7 +160,12 @@ const WorkExperience = ({ resumeData }: TemplateProps) => {
               {item.current && <span>Working</span>}
             </p>
             {item.description && (
-              <p className={cn(styles.para, "mt-1")}>{item.description}</p>
+              <div
+                className={cn(styles.para, "mt-1")}
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(item.description),
+                }}
+              />
             )}
           </div>
         ))}
