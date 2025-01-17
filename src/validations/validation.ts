@@ -78,6 +78,9 @@ export const EducationDetailsSchema = z.object({
 });
 
 export type EducationDetailsType = z.infer<typeof EducationDetailsSchema>;
+export type SingleEducationDetailsValues = NonNullable<
+  z.infer<typeof EducationDetailsSchema>["educationDetails"]
+>[number];
 
 export const WorkExperienceSchema = z.object({
   workExperiences: z
@@ -223,4 +226,17 @@ export const GenerateWorkExperienceSchema = z.object({
 
 export type GenerateWorkExperienceValues = z.infer<
   typeof GenerateWorkExperienceSchema
+>;
+
+export const GenerateEducationDetailsSchema = z.object({
+  description: z
+    .string()
+    .min(1, "Required")
+    .min(20, "Minimum 20 characters")
+    .max(300, "Max 300 characters allowed")
+    .optional(),
+});
+
+export type GenerateEducationDetailsValues = z.infer<
+  typeof GenerateEducationDetailsSchema
 >;

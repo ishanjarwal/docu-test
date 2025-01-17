@@ -2,6 +2,8 @@
 
 import { isValidJSON } from "@/lib/utils";
 import {
+  GenerateEducationDetailsSchema,
+  GenerateEducationDetailsValues,
   GenerateSummaryValues,
   GenerateWorkExperienceSchema,
   GenerateWorkExperienceValues,
@@ -97,11 +99,72 @@ export async function generateWorkExperience(
         startDate: date string(yyyy-mm-dd) or don't include (job joining date);
         endDate: date string(yyyy-mm-dd) or don't include (job end date);
         current: boolean or don't include (if working here currently);
-        description: string or don't include (learnings/experiences at the job between 30 - 80 words in bullet points (-) and seperate lines);
+        description: string or don't include (learnings/experiences at the institution between 30 - 80 words in bullet points (-) and seperate lines);
         position: string or don't include;
         employer: string or don't include;
         jobType: enum["on-site", "remote", "hybrid"] or don't include;
         location: string or don't include (provide only if jobType is on-site);
+      }
+    }
+    Return an Object only.
+    and don't ever use null, instead, remove that field from the response
+    `;
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      generationConfig: { responseMimeType: "application/json" },
+    });
+
+    const result = await model.generateContent(prompt);
+
+    console.log(result.response.text());
+
+    if (!result || !isValidJSON(result.response.text())) {
+      return { error: "AI was unable to create response" };
+    }
+    if (JSON.parse(result.response.text()).isVague) {
+      return {
+        error: "Please provide relevant information only",
+      };
+    }
+    if (JSON.parse(result.response.text()).isVulgar) {
+      return { error: "Please remove vulgarity from the content you provided" };
+    }
+    console.log(JSON.parse(result.response.text()));
+    return { success: JSON.parse(result.response.text()) };
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : "Unexpected error occurred",
+    };
+  }
+}
+
+export async function generateEducationDetails(
+  input: GenerateEducationDetailsValues,
+) {
+  try {
+    const { description } = GenerateEducationDetailsSchema.parse(input);
+
+    const prompt = `
+    You are an AI Resume generator. Create a educational qualifications object based on the description provided by the user. keep the language very professional and concise.
+
+    description provided by user : 
+    description : ${description}
+
+    Always provide a structured JSON response.
+    Response schema :
+    {
+      isVague: boolean(required, if the description provided is not sufficient)
+      isVulgar: boolean(required, if there is vulgarity/voilence/illegal things in the prompt)
+      content : object/null (the generated object. show null if isVague or isVulgar is true) : {
+        startDate: date string(yyyy-mm-dd) or don't include (job joining date);
+        endDate: date string(yyyy-mm-dd) or don't include (job end date);
+        current: boolean or don't include (if working here currently);
+        description: string or don't include (learnings/experiences at the job between 30 - 80 words in bullet points (-) and seperate lines);
+        degree: string or don't include (title of the degree);
+        institution: string or don't include (institution that is providing the degree);
+        score: string or don't include (score in percentage/gpa/grade);
       }
     }
     Return an Object only.
