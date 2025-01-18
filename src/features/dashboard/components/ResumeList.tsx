@@ -17,7 +17,7 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import { Prisma } from "@prisma/client";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
-import { cn, mapToResumeSchemaType } from "@/lib/utils";
+import { cn, completionPercentage, mapToResumeSchemaType } from "@/lib/utils";
 import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 import useDimensions from "@/hooks/useDimensions";
 
@@ -82,9 +82,17 @@ const ResumeItem = ({
           </p>
         </div>
         <div className="mb-2">
-          <p className="text-xs">20%</p>
+          <p className="text-xs">
+            {completionPercentage(mapToResumeSchemaType(resumeData))}% completed
+          </p>
           <div className="relative h-2 rounded-full bg-black/5 dark:bg-white/5">
-            <span className="absolute left-0 top-0 h-2 w-[20%] rounded-full bg-primary"></span>
+            <span
+              className="absolute left-0 top-0 h-2 rounded-full bg-primary"
+              style={{
+                width:
+                  completionPercentage(mapToResumeSchemaType(resumeData)) + "%",
+              }}
+            ></span>
           </div>
         </div>
         <div className="flex space-x-2">

@@ -159,3 +159,37 @@ export function convertToUlORP(input: string): string {
     return `<p>${input.trim()}</p>`;
   }
 }
+
+function areAllFieldsDefined(obj: object): boolean {
+  return Object.values(obj).every((value) => value !== undefined);
+}
+
+export function completionPercentage(resumeData: resumeSchemaType): number {
+  // TODO : calculate the percentage of completion and return it
+  let sum = 0;
+  const {
+    personalDetails,
+    workExperiences,
+    educationDetails,
+    hardSkills,
+    socialLinks,
+  } = resumeData;
+  if (personalDetails && areAllFieldsDefined(personalDetails)) {
+    sum++;
+  }
+  if (workExperiences && workExperiences.length > 0) {
+    sum++;
+  }
+  if (educationDetails && educationDetails.length > 0) {
+    sum++;
+  }
+  if (hardSkills && hardSkills.length > 0) {
+    sum++;
+  }
+  if (socialLinks && areAllFieldsDefined(socialLinks)) {
+    sum++;
+  }
+
+  const percentage = (sum / 5) * 100;
+  return percentage;
+}
