@@ -424,7 +424,7 @@ const AIEdicationDetailsGenerator = ({
                 name: "description",
                 label: "Description",
                 placeholder:
-                  "eg: I worked at google from nov 2023 to dec 2024 as a backend engineer",
+                  "eg: I did B.Tech in CSE from IIT Delhi from 2020 to 2024 with a cgpa score of 9.4. I engaged myself in hackathons and networking events",
               }}
             />
           </Form>
