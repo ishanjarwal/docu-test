@@ -247,3 +247,14 @@ export const GenerateSkillsSchema = z.object({
 });
 
 export type GenerateSkillsValues = z.infer<typeof GenerateSkillsSchema>;
+
+export const GenerateHobbiesSchema = z.object({
+  description: z
+    .string()
+    .min(1, "Required")
+    .min(20, "Minimum 20 characters")
+    .max(300, "Max 300 characters allowed")
+    .optional(),
+});
+
+export type GenerateHobbiesValues = z.infer<typeof GenerateHobbiesSchema>;
