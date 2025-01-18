@@ -240,3 +240,10 @@ export const GenerateEducationDetailsSchema = z.object({
 export type GenerateEducationDetailsValues = z.infer<
   typeof GenerateEducationDetailsSchema
 >;
+
+export const GenerateSkillsSchema = z.object({
+  description: optionalString,
+  type: z.enum(["hard", "soft"]).default("hard"),
+});
+
+export type GenerateSkillsValues = z.infer<typeof GenerateSkillsSchema>;

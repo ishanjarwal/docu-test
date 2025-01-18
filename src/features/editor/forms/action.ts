@@ -4,6 +4,8 @@ import { isValidJSON } from "@/lib/utils";
 import {
   GenerateEducationDetailsSchema,
   GenerateEducationDetailsValues,
+  GenerateSkillsSchema,
+  GenerateSkillsValues,
   GenerateSummaryValues,
   GenerateWorkExperienceSchema,
   GenerateWorkExperienceValues,
@@ -168,6 +170,60 @@ export async function generateEducationDetails(
       }
     }
     Return an Object only.
+    and don't ever use null, instead, remove that field from the response
+    `;
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      generationConfig: { responseMimeType: "application/json" },
+    });
+
+    const result = await model.generateContent(prompt);
+
+    console.log(result.response.text());
+
+    if (!result || !isValidJSON(result.response.text())) {
+      return { error: "AI was unable to create response" };
+    }
+    if (JSON.parse(result.response.text()).isVague) {
+      return {
+        error: "Please provide relevant information only",
+      };
+    }
+    if (JSON.parse(result.response.text()).isVulgar) {
+      return { error: "Please remove vulgarity from the content you provided" };
+    }
+    console.log(JSON.parse(result.response.text()));
+    return { success: JSON.parse(result.response.text()) };
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : "Unexpected error occurred",
+    };
+  }
+}
+
+export async function generateSkills(input: GenerateSkillsValues) {
+  try {
+    const { description, type } = GenerateSkillsSchema.parse(input);
+    const prompt = `
+    You are an AI Resume generator. Create a ${type} skills array based on the description and/or data provided by the user. keep the language very professional and concise.
+
+    description provided by user : 
+    description : ${description}
+
+    Always provide a structured JSON response.
+    Response schema :
+    {
+      isVague: boolean(required, if the description provided is not sufficient)
+      isVulgar: boolean(required, if there is vulgarity/voilence/illegal things in the prompt)
+      content : array/null (the generated array. show null if isVague or isVulgar is true) : object of this array : {
+        name: string (name of the skill in 2 - 4 words only eg: DSA in C++ )
+        level: number or leave (range from 0 - 4, level of the skill) 
+        levelDisabled: boolean (if not showing level, then set this to true);
+      }
+    }
+    Return an array only.
     and don't ever use null, instead, remove that field from the response
     `;
 
