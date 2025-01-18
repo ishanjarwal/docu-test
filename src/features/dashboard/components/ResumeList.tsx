@@ -1,6 +1,6 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
-import React from "react";
+import React, { useState, useTransition } from "react";
 import { FiTrash } from "react-icons/fi";
 import { MdOutlineEdit } from "react-icons/md";
 import { BiExpandAlt } from "react-icons/bi";
@@ -20,6 +20,18 @@ import Link from "next/link";
 import { cn, completionPercentage, mapToResumeSchemaType } from "@/lib/utils";
 import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 import useDimensions from "@/hooks/useDimensions";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import toast from "react-hot-toast";
+import { deleteResume } from "@/app/(main)/resumes/action";
+import { LuLoaderCircle } from "react-icons/lu";
 
 interface ResumeListProps {
   resumes: Prisma.ResumeGetPayload<object>[];
@@ -119,10 +131,7 @@ const ResumeItem = ({
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="mt-1 bg-red-500/10 text-destructive hover:!bg-red-500/15 hover:!text-destructive">
-                <FiTrash />
-                <span>Delete</span>
-              </DropdownMenuItem>
+              <DeleteModal id={resumeData.id} />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -130,5 +139,61 @@ const ResumeItem = ({
     </div>
   );
 };
-
 export default ResumeList;
+
+const DeleteModal = ({ id }: { id: string }) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, startTransition] = useTransition();
+  async function handleDelete() {
+    startTransition(async () => {
+      try {
+        const result = await deleteResume(id);
+        if (result.error) {
+          toast.error(result.error, { position: "bottom-center" });
+        } else if (result.success) {
+          toast.success(result.success, { position: "bottom-center" });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong", { position: "bottom-center" });
+      } finally {
+        setOpen(false);
+      }
+    });
+  }
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant={"destructive"}
+          size={"sm"}
+          className="w-full justify-start text-white/75"
+        >
+          <FiTrash />
+          Delete
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone and will remove all your data
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant={"secondary"} onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            disabled={loading}
+            variant={"destructive"}
+            onClick={handleDelete}
+          >
+            {loading && <LuLoaderCircle className="animate-spin" />}
+            {loading ? "Deleting" : "Delete"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
