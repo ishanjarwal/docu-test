@@ -47,6 +47,19 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
                 <hr style={{ borderColor: template.textHex }} />
               )}
             <Educations resumeData={resumeData} />
+            {resumeData.certifications &&
+              resumeData.certifications.length > 0 && (
+                <hr style={{ borderColor: template.textHex }} />
+              )}
+            <Certifications resumeData={resumeData} />
+            {resumeData.courses && resumeData.courses.length > 0 && (
+              <hr style={{ borderColor: template.textHex }} />
+            )}
+            <Courses resumeData={resumeData} />
+            {resumeData.hobbies && resumeData.hobbies.length > 0 && (
+              <hr style={{ borderColor: template.textHex }} />
+            )}
+            <Hobbies resumeData={resumeData} />
           </div>
         </div>
         <div className="col-span-1 h-full p-4">
@@ -384,6 +397,124 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
           ))}
         </div>
       )}
+    </div>
+  ) : null;
+};
+
+const Certifications = ({ resumeData }: TemplateProps) => {
+  const { certifications } = resumeData;
+  return certifications && certifications?.length > 0 ? (
+    <div className="flex flex-col space-y-2">
+      <p className={styles.heading}>Certifications</p>
+      <div className="flex flex-col space-y-4">
+        {certifications.map((item, index) => (
+          <div key={"certification-" + index} className="flex flex-col">
+            <p className={styles.subHeading}>
+              {item.title && <span>{item.title}</span>}
+              {item.organization && (
+                <>
+                  <span>{" • "}</span>
+                  <span>{item.organization}</span>
+                </>
+              )}
+              {item.link && (
+                <>
+                  <span>{" • "}</span>
+                  <a href={item.link}>{item.link}</a>
+                </>
+              )}
+            </p>
+            <p className={styles.para}>
+              {item.score && (
+                <span>
+                  {"Score : "}
+                  {item.score}
+                </span>
+              )}
+            </p>
+            {item.description && (
+              <div
+                className={cn(styles.para, "mt-1")}
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(item.description),
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : null;
+};
+
+const Courses = ({ resumeData }: TemplateProps) => {
+  const { courses } = resumeData;
+  return courses && courses?.length > 0 ? (
+    <div className="flex flex-col space-y-2">
+      <p className={styles.heading}>Courses</p>
+      <div className="flex flex-col space-y-4">
+        {courses.map((item, index) => (
+          <div key={"certification-" + index} className="flex flex-col">
+            <p className={styles.subHeading}>
+              {item.title && <span>{item.title}</span>}
+              {item.organization && (
+                <>
+                  <span>{" • "}</span>
+                  <span>{item.organization}</span>
+                </>
+              )}
+              {item.link && (
+                <>
+                  <span>{" • "}</span>
+                  <a href={item.link}>{item.link}</a>
+                </>
+              )}
+            </p>
+            <p className={styles.para}>
+              {item.score && (
+                <span>
+                  {"Score : "}
+                  {item.score}
+                </span>
+              )}
+            </p>
+            {item.description && (
+              <div
+                className={cn(styles.para, "mt-1")}
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(item.description),
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : null;
+};
+
+const Hobbies = ({ resumeData }: TemplateProps) => {
+  const { hobbies } = resumeData;
+  return hobbies && hobbies?.length > 0 ? (
+    <div className="flex flex-col space-y-2">
+      <p className={styles.heading}>Hobbies</p>
+      <div className="grid grid-cols-2 gap-4">
+        {hobbies.map((item, index) => (
+          <div key={"certification-" + index} className="flex flex-col">
+            <p className={styles.subHeading}>
+              {item.name && <span>{item.name}</span>}
+            </p>
+            {item.description && (
+              <div
+                className={cn(styles.para, "mt-1")}
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(item.description),
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   ) : null;
 };
