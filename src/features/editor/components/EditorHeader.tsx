@@ -9,6 +9,7 @@ import Image from "next/image";
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import TitleForm from "../forms/TitleForm";
+import Link from "next/link";
 
 const EditorHeader = () => {
   const { theme, systemTheme } = useTheme();
@@ -16,8 +17,10 @@ const EditorHeader = () => {
   return (
     <header className="flex w-full items-center justify-between border-b p-2">
       <div className="flex basis-3/12 items-center justify-start space-x-2">
-        <Button variant={"ghost"} className="px-1">
-          <IoIosArrowBack />
+        <Button variant={"ghost"} className="px-1" asChild>
+          <Link href={"/resumes"}>
+            <IoIosArrowBack />
+          </Link>
         </Button>
         <div className="relative aspect-square w-6 lg:w-12">
           <Image
