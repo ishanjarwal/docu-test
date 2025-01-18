@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomFormField from "../components/CustomFormField";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import {
   personalDetailsSchema,
   personalDetailsType,
+  resumeSchemaType,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,6 +24,9 @@ import { CiImageOn } from "react-icons/ci";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { useDeviceType } from "@/hooks/useDeviceType";
+import AIButton from "@/components/custom/AIButton";
+import { generateSummary } from "./action";
+import toast from "react-hot-toast";
 
 const PersonalDetailsForm = ({
   resumeData,
@@ -228,15 +232,21 @@ const PersonalDetailsForm = ({
                 control={form.control}
               />
             </div>
-            <CustomFormField
-              props={{
-                name: "summary",
-                fieldType: "textarea",
-                label: "Professional Summary",
-                placeholder: "A brief about you",
-              }}
-              control={form.control}
-            />
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center justify-between">
+                <p>Professional summary</p>
+                <AISummaryGenerator resumeData={resumeData} form={form} />
+              </div>
+              <CustomFormField
+                props={{
+                  name: "summary",
+                  fieldType: "textarea",
+                  // label: "Professional Summary",
+                  placeholder: "A brief about you",
+                }}
+                control={form.control}
+              />
+            </div>
             <div className="grid grid-cols-1 gap-x-2 gap-y-8">
               <CustomFormField
                 props={{
@@ -261,3 +271,49 @@ const PersonalDetailsForm = ({
 };
 
 export default PersonalDetailsForm;
+
+export const AISummaryGenerator = ({
+  resumeData,
+  form,
+}: {
+  form: UseFormReturn<personalDetailsType>;
+  resumeData: resumeSchemaType;
+}) => {
+  const [loading, setLoading] = useState(false);
+
+  async function handleClick() {
+    try {
+      setLoading(true);
+      const result = await generateSummary({
+        jobTitle: resumeData.personalDetails.jobTitle,
+        educationDetails: resumeData.educationDetails,
+        workExperiences: resumeData.workExperiences,
+      });
+      if (result?.error) {
+        const tID = toast.error(
+          <div className="flex items-center justify-between space-x-1 ps-1">
+            <p className="text-sm">{result.error}</p>
+            <Button
+              className="text-xs"
+              size={"sm"}
+              variant={"secondary"}
+              onClick={() => toast.dismiss(tID)}
+            >
+              Cancel
+            </Button>
+          </div>,
+          { position: "bottom-center" },
+        );
+      } else if (result?.success) {
+        form.setValue("summary", result.success.content);
+      }
+    } catch (error) {
+      toast.error("Something went wrong", { position: "bottom-center" });
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return <AIButton onClick={() => handleClick()} loading={loading} />;
+};

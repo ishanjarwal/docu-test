@@ -78,6 +78,9 @@ export const EducationDetailsSchema = z.object({
 });
 
 export type EducationDetailsType = z.infer<typeof EducationDetailsSchema>;
+export type SingleEducationDetailsValues = NonNullable<
+  z.infer<typeof EducationDetailsSchema>["educationDetails"]
+>[number];
 
 export const WorkExperienceSchema = z.object({
   workExperiences: z
@@ -97,6 +100,9 @@ export const WorkExperienceSchema = z.object({
 });
 
 export type WorkExperienceType = z.infer<typeof WorkExperienceSchema>;
+export type SingleWorkExperienceValues = NonNullable<
+  z.infer<typeof WorkExperienceSchema>["workExperiences"]
+>[number];
 
 export const SkillSchema = z.object({
   hardSkills: z
@@ -199,3 +205,56 @@ export const resumeSchema = z.object({
 export type resumeSchemaType = z.infer<typeof resumeSchema> & {
   id?: string;
 };
+
+// Schemas and Types for AI
+export const GenerateSummarySchema = z.object({
+  jobTitle: optionalString,
+  ...EducationDetailsSchema.shape,
+  ...WorkExperienceSchema.shape,
+});
+
+export type GenerateSummaryValues = z.infer<typeof GenerateSummarySchema>;
+
+export const GenerateWorkExperienceSchema = z.object({
+  description: z
+    .string()
+    .min(1, "Required")
+    .min(20, "Minimum 20 characters")
+    .max(300, "Max 300 characters allowed")
+    .optional(),
+});
+
+export type GenerateWorkExperienceValues = z.infer<
+  typeof GenerateWorkExperienceSchema
+>;
+
+export const GenerateEducationDetailsSchema = z.object({
+  description: z
+    .string()
+    .min(1, "Required")
+    .min(20, "Minimum 20 characters")
+    .max(300, "Max 300 characters allowed")
+    .optional(),
+});
+
+export type GenerateEducationDetailsValues = z.infer<
+  typeof GenerateEducationDetailsSchema
+>;
+
+export const GenerateSkillsSchema = z.object({
+  description: optionalString,
+  type: z.enum(["hard", "soft"]).default("hard"),
+});
+
+export type GenerateSkillsValues = z.infer<typeof GenerateSkillsSchema>;
+
+export const GenerateHobbiesSchema = z.object({
+  description: z
+    .string()
+    .min(1, "Required")
+    .min(20, "Minimum 20 characters")
+    .max(300, "Max 300 characters allowed")
+    .optional(),
+});
+
+export type GenerateHobbiesValues = z.infer<typeof GenerateHobbiesSchema>;

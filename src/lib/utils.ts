@@ -132,6 +132,15 @@ export function mapToResumeSchemaType(
   };
 }
 
+export const isValidJSON = (input: string) => {
+  try {
+    JSON.parse(input);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 export function convertToUlORP(input: string): string {
   // Check if the input contains bullet points
   const lines = input.split("\n").map((line) => line.trim());

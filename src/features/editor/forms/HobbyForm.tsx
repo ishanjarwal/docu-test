@@ -1,8 +1,13 @@
 "use client";
 import { Form } from "@/components/ui/form";
-import { HobbySchema, HobbyValues } from "@/validations/validation";
+import {
+  GenerateHobbiesSchema,
+  GenerateHobbiesValues,
+  HobbySchema,
+  HobbyValues,
+} from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Control,
   useFieldArray,
@@ -21,7 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaWandMagicSparkles } from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
 
 import {
@@ -45,6 +50,19 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
 import { hobbyDefValues } from "@/validations/defaultValues";
+import { generateHobbies } from "./action";
+import toast from "react-hot-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { LuLoaderCircle } from "react-icons/lu";
+import AIButton from "@/components/custom/AIButton";
 
 const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<HobbyValues>({
@@ -100,6 +118,9 @@ const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       <div className="mt-8">
         <Form {...form}>
           <div className="flex flex-col gap-y-8">
+            <div className="flex justify-end">
+              <AIHobbiesGenerator form={form} />
+            </div>
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -236,3 +257,109 @@ const HobbyItem = ({ id, form, index, remove, control }: HobbyItemProps) => {
 };
 
 export default HobbyForm;
+
+const AIHobbiesGenerator = ({ form }: { form: UseFormReturn<HobbyValues> }) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const descForm = useForm({
+    mode: "onChange",
+    resolver: zodResolver(GenerateHobbiesSchema),
+  });
+
+  async function handleClick(
+    description: GenerateHobbiesValues["description"],
+  ) {
+    try {
+      try {
+        setLoading(true);
+        const result = await generateHobbies({ description });
+        if (result.error) {
+          const tID = toast.error(
+            <div className="flex items-center justify-between space-x-1 ps-1">
+              <p className="text-sm">{result.error}</p>
+              <Button
+                className="text-xs"
+                size={"sm"}
+                variant={"secondary"}
+                onClick={() => toast.dismiss(tID)}
+              >
+                Cancel
+              </Button>
+            </div>,
+            { position: "bottom-center" },
+          );
+        } else if (result.success) {
+          const arr = result.success.content;
+          form.setValue("hobbies", arr);
+        }
+      } catch (error) {
+        toast.error("Something went wrong", { position: "bottom-center" });
+        console.log(error);
+      } finally {
+        setLoading(false);
+        setOpen(false);
+      }
+    } catch (error) {
+      toast.error("Something went wrong", { position: "bottom-center" });
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <div>
+          <AIButton text="Fill with AI" />
+        </div>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>
+            <p className="flex items-center space-x-2">
+              <FaWandMagicSparkles />
+              <span>Take help from AI</span>
+            </p>
+          </DialogTitle>
+          <DialogDescription>
+            Describe a little about your hobbies, what you like to do, your
+            achievements in extra curricular etc.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <Form {...descForm}>
+            <CustomFormField
+              control={descForm.control}
+              props={{
+                fieldType: "textarea",
+                name: "description",
+                label: "Description",
+                placeholder:
+                  "eg: I love cooking food for my family, I have also been featured in a news blog for my cooking skills.",
+              }}
+            />
+          </Form>
+        </div>
+        <DialogFooter>
+          <Button
+            disabled={loading}
+            onClick={async () => {
+              const isValid = await descForm.trigger();
+              if (!isValid) return;
+              const description = descForm.watch("description");
+              handleClick(description);
+            }}
+            type="submit"
+          >
+            {loading && <LuLoaderCircle className="animate-spin" />}
+            {!loading && <FaWandMagicSparkles />}
+            Generate
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
