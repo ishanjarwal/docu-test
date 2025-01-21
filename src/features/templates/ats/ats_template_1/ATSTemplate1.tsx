@@ -134,7 +134,7 @@ const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
 const Summary = ({ resumeData }: TemplateProps) => {
   const { summary } = resumeData.personalDetails;
   return summary ? (
-    <div className="flex flex-col space-y-1">
+    <div className="flex break-inside-avoid flex-col space-y-1">
       <p className={styles.heading}>Professional Summary</p>
       <p className={styles.para}>{summary}</p>
     </div>
@@ -148,7 +148,10 @@ const WorkExperience = ({ resumeData }: TemplateProps) => {
       <p className={styles.heading}>Work Experiences</p>
       <div className="flex flex-col space-y-4">
         {workExperiences.map((item, index) => (
-          <div key={"workexp+" + index} className="flex flex-col">
+          <div
+            key={"workexp+" + index}
+            className="flex break-inside-avoid flex-col"
+          >
             <p className={styles.subHeading}>
               {item.position && <span>{item.position}</span>}
               {item.employer && <span>{" at "}</span>}
@@ -194,7 +197,10 @@ const Educations = ({ resumeData }: TemplateProps) => {
       <p className={styles.heading}>Qualifications</p>
       <div className="flex flex-col space-y-4">
         {educationDetails.map((item, index) => (
-          <div key={"educations+" + index} className="flex flex-col">
+          <div
+            key={"educations+" + index}
+            className="flex break-inside-avoid flex-col"
+          >
             <p className={styles.subHeading}>
               {item.degree && <span>{item.degree}</span>}
             </p>
@@ -408,7 +414,10 @@ const Certifications = ({ resumeData }: TemplateProps) => {
       <p className={styles.heading}>Certifications</p>
       <div className="flex flex-col space-y-4">
         {certifications.map((item, index) => (
-          <div key={"certification-" + index} className="flex flex-col">
+          <div
+            key={"certification-" + index}
+            className="flex break-inside-avoid flex-col"
+          >
             <p className={styles.subHeading}>
               {item.title && <span>{item.title}</span>}
               {item.organization && (
@@ -454,7 +463,10 @@ const Courses = ({ resumeData }: TemplateProps) => {
       <p className={styles.heading}>Courses</p>
       <div className="flex flex-col space-y-4">
         {courses.map((item, index) => (
-          <div key={"certification-" + index} className="flex flex-col">
+          <div
+            key={"certification-" + index}
+            className="flex break-inside-avoid flex-col"
+          >
             <p className={styles.subHeading}>
               {item.title && <span>{item.title}</span>}
               {item.organization && (
@@ -500,7 +512,10 @@ const Hobbies = ({ resumeData }: TemplateProps) => {
       <p className={styles.heading}>Hobbies</p>
       <div className="grid grid-cols-2 gap-4">
         {hobbies.map((item, index) => (
-          <div key={"certification-" + index} className="flex flex-col">
+          <div
+            key={"certification-" + index}
+            className="flex break-inside-avoid flex-col"
+          >
             <p className={styles.subHeading}>
               {item.name && <span>{item.name}</span>}
             </p>

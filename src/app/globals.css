@@ -70,3 +70,20 @@
     @apply !h-6 !w-6 !cursor-grab duration-100 active:scale-125;
   }
 }
+
+@media print {
+  #resumePreviewContent {
+    zoom: 1 !important;
+    padding: 0;
+  }
+}
+
+#resumePreviewContent {
+  font-family: Inter;
+}
+
+/* important for print */
+@page {
+  size: A4;
+  margin: 0cm;
+}

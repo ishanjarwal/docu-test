@@ -32,6 +32,7 @@ import {
 import toast from "react-hot-toast";
 import { deleteResume } from "@/app/(main)/resumes/action";
 import { LuLoaderCircle } from "react-icons/lu";
+import { usePrintable } from "@/hooks/usePrintable";
 
 interface ResumeListProps {
   resumes: Prisma.ResumeGetPayload<object>[];
@@ -47,6 +48,8 @@ const ResumeList = ({ resumes }: ResumeListProps) => {
   );
 };
 
+// Resume Item
+
 const ResumeItem = ({
   resumeData,
 }: {
@@ -56,6 +59,10 @@ const ResumeItem = ({
   const containerRef = React.useRef<HTMLDivElement>(
     null,
   ) as React.RefObject<HTMLElement>;
+
+  const printableRef = React.useRef<HTMLDivElement>(null);
+  const savePDF = usePrintable(printableRef);
+
   const { width } = useDimensions(containerRef);
   return (
     <div className="rounded-lg bg-foreground/5 p-2 md:p-4">
@@ -65,6 +72,8 @@ const ResumeItem = ({
           ref={containerRef as React.RefObject<HTMLDivElement>}
         >
           <div
+            id="resumePreviewContent"
+            ref={printableRef}
             style={{
               height: "100%",
               zoom: (1 / 794) * width,
@@ -122,7 +131,7 @@ const ResumeItem = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => savePDF()}>
                 <VscFilePdf />
                 <span>Download PDF</span>
               </DropdownMenuItem>
