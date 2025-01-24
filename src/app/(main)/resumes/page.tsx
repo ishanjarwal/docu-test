@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import CreateNewButton from "@/features/dashboard/components/CreateNewButton";
 import Navbar from "@/features/dashboard/components/Navbar";
 import ResumeList from "@/features/dashboard/components/ResumeList";
 import prisma from "@/lib/prisma";
@@ -29,12 +30,7 @@ const page = async () => {
           <p className="text-muted-foreground">
             Edit, customize or download your resumes here.
           </p>
-          <Button className="w-max px-8 font-semibold text-white" asChild>
-            <Link href={"/editor"}>
-              Create New
-              <IoAddOutline />
-            </Link>
-          </Button>
+          <CreateNewButton count={count} />
         </div>
         <div className="mt-8">
           <ResumeList resumes={resumes} />

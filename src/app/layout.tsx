@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import ThemeProvider from "@/features/theme_toggle/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import PremiumModal from "@/features/premium/components/PremiumModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,6 +38,8 @@ export default function RootLayout({
           >
             {children}
             <Toaster />
+            {/* temporary */}
+            <PremiumModal />
           </ThemeProvider>
         </body>
       </html>
