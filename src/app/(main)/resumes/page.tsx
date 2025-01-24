@@ -1,12 +1,8 @@
-import { Button } from "@/components/ui/button";
 import CreateNewButton from "@/features/dashboard/components/CreateNewButton";
 import Navbar from "@/features/dashboard/components/Navbar";
 import ResumeList from "@/features/dashboard/components/ResumeList";
 import prisma from "@/lib/prisma";
-import Link from "next/link";
-import React from "react";
 import { Toaster } from "react-hot-toast";
-import { IoAddOutline } from "react-icons/io5";
 
 const page = async () => {
   const [resumes, count] = await Promise.all([
