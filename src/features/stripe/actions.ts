@@ -1,5 +1,6 @@
 "use server";
 
+import { env } from "@/env";
 import stripe from "@/lib/stripe";
 // import { currentUser } from "@clerk/nextjs/server";
 
@@ -18,8 +19,8 @@ export const createCheckoutSession = async (priceId: string) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/plans/success?success_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/plans/failed`,
+      success_url: `${env.NEXT_PUBLIC_BASE_URL}/plans/success?success_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${env.NEXT_PUBLIC_BASE_URL}/plans/failed`,
       customer_email: user.emailAddresses[0].emailAddress,
       subscription_data: {
         metadata: {
@@ -28,7 +29,7 @@ export const createCheckoutSession = async (priceId: string) => {
       },
       custom_text: {
         terms_of_service_acceptance: {
-          message: `I have read ResumeBuildr's [Terms of Service](${process.env.NEXT_PUBLIC_BASE_URL}/terms-of-service) and agree to them.`,
+          message: `I have read ResumeBuildr's [Terms of Service](${env.NEXT_PUBLIC_BASE_URL}/terms-of-service) and agree to them.`,
         },
       },
       consent_collection: {

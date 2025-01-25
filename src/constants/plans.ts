@@ -1,8 +1,10 @@
+import { env } from "@/env";
+
 export const tiers = [
   {
     name: "Hobby",
     id: "tier-hobby",
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_HOBBY,
+    priceId: env.NEXT_PUBLIC_STRIPE_PRICE_ID_HOBBY,
     href: "#",
     priceMonthly: "$10",
     description:
@@ -13,7 +15,7 @@ export const tiers = [
   {
     name: "Pro",
     id: "tier-pro",
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO,
+    priceId: env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO,
     href: "#",
     priceMonthly: "$19",
     description: "Dedicated features and templates for professionals.",

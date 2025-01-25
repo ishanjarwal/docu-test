@@ -1,5 +1,6 @@
 "use server";
 
+import { env } from "@/env";
 import { isValidJSON } from "@/lib/utils";
 import {
   GenerateEducationDetailsSchema,
@@ -53,7 +54,7 @@ export async function generateSummary(input: GenerateSummaryValues) {
     Return an Object only.
     `;
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: { responseMimeType: "application/json" },
@@ -114,7 +115,7 @@ export async function generateWorkExperience(
     and don't ever use null, instead, remove that field from the response
     `;
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: { responseMimeType: "application/json" },
@@ -175,7 +176,7 @@ export async function generateEducationDetails(
     and don't ever use null, instead, remove that field from the response
     `;
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: { responseMimeType: "application/json" },
@@ -229,7 +230,7 @@ export async function generateSkills(input: GenerateSkillsValues) {
     and don't ever use null, instead, remove that field from the response
     `;
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: { responseMimeType: "application/json" },
@@ -282,7 +283,7 @@ export async function generateHobbies(input: GenerateHobbiesValues) {
     and don't ever use null, instead, remove that field from the response
     `;
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: { responseMimeType: "application/json" },
