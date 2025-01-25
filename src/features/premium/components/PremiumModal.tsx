@@ -28,7 +28,7 @@ const PremiumModal = () => {
           </DialogDescription>
         </DialogHeader>
         <div>
-          <Button className="w-full" asChild>
+          <Button onClick={() => setOpen(false)} className="w-full" asChild>
             <Link href={"/plans"}>
               View Plans
               <FaArrowRight />
