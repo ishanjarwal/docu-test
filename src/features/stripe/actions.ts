@@ -1,7 +1,10 @@
 "use server";
 
 import { env } from "@/env";
+import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
+import { auth } from "@clerk/nextjs/server";
+import { cache } from "react";
 // import { currentUser } from "@clerk/nextjs/server";
 
 export const createCheckoutSession = async (priceId: string) => {
@@ -53,6 +56,33 @@ export const retrieveCheckoutSession = async () => {
     // check if the session id is valid
     return { success: "12345678" };
   } catch (error) {
+    console.log(error);
     return { error: "Unexpected error occurred" };
   }
 };
+
+export type SubscriptionLevel = "free" | "hobby" | "pro";
+export const getUserSubscriptionLevel = cache(
+  async (userId: string): Promise<SubscriptionLevel> => {
+    try {
+      const subscription = await prisma.subscriptions.findUnique({
+        where: { userId },
+      });
+      if (!subscription || subscription.stripeCurrentPeriodEnd < new Date()) {
+        return "free";
+      }
+      if (
+        subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRICE_ID_HOBBY
+      ) {
+        return "hobby";
+      }
+      if (subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO) {
+        return "pro";
+      }
+      return "free";
+    } catch (error) {
+      console.log(error);
+      return "free";
+    }
+  },
+);
