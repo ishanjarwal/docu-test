@@ -2,16 +2,20 @@ import CreateNewButton from "@/features/dashboard/components/CreateNewButton";
 import Navbar from "@/features/dashboard/components/Navbar";
 import ResumeList from "@/features/dashboard/components/ResumeList";
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 
 const page = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    return redirect("/sign-in");
+  }
   const [resumes, count] = await Promise.all([
     prisma.resume.findMany({
-      where: {
-        userId: "abcd",
-      },
+      where: { userId },
     }),
-    prisma.resume.count({ where: { userId: "abcd" } }),
+    prisma.resume.count({ where: { userId } }),
   ]);
 
   return (

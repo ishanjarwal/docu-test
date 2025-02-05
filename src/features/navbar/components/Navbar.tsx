@@ -1,24 +1,21 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { images } from "@/constants/images";
-import Link from "next/link";
-import styles from "./navbar.module.css";
-import clsx from "clsx";
 import { Button } from "@/components/ui/button";
+import { images } from "@/constants/images";
+import clsx from "clsx";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import styles from "./navbar.module.css";
 
+import CustomUserButton from "@/components/custom/CustomUserButton";
+import navlinks from "@/constants/navlinks";
+import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { FaArrowRight } from "react-icons/fa6";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
-import navlinks from "@/constants/navlinks";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
-import { useTheme } from "next-themes";
-import { dark } from "@clerk/themes";
 
 const Navbar = () => {
-  const { theme, systemTheme } = useTheme();
-
   const [open, setOpen] = useState<boolean>(false);
   const toggleOpen = () => {
     setOpen(!open);
@@ -69,16 +66,19 @@ const Navbar = () => {
             </nav>
             <SignedOut>
               <div className="mt-8 flex items-center justify-start space-x-2">
-                <Button className={"text-xs"} variant={"outline"}>
+                {/* <Button className={"text-xs"} variant={"outline"}>
                   <SignInButton />
-                </Button>
+                </Button> */}
                 <Button
                   className={"bg-foreground text-xs hover:bg-foreground/90"}
+                  asChild
                 >
-                  <span>Try it out</span>
-                  <span>
-                    <FaArrowRight />
-                  </span>
+                  <Link href={"/sign-up"}>
+                    <span>Try it out</span>
+                    <span>
+                      <FaArrowRight />
+                    </span>
+                  </Link>
                 </Button>
               </div>
             </SignedOut>
@@ -121,36 +121,28 @@ const Navbar = () => {
           </div>
           <SignedIn>
             <div className="flex items-center">
-              <UserButton
-                appearance={{
-                  baseTheme:
-                    theme === "dark" ||
-                    (systemTheme === "dark" && theme === "system")
-                      ? dark
-                      : undefined,
-                  elements: {
-                    avatarBox: "w-8 h-8",
-                  },
-                }}
-              />
+              <CustomUserButton />
             </div>
           </SignedIn>
           <SignedOut>
-            <Button
+            {/* <Button
               className={"hidden text-xs md:flex lg:text-sm"}
               variant={"outline"}
             >
               <SignInButton />
-            </Button>
+            </Button> */}
             <Button
               className={
                 "hidden bg-foreground text-xs hover:bg-foreground/90 sm:flex lg:text-sm"
               }
+              asChild
             >
-              <span>Try it out</span>
-              <span>
-                <FaArrowRight />
-              </span>
+              <Link href={"/sign-up"}>
+                <span>Try it out</span>
+                <span>
+                  <FaArrowRight />
+                </span>
+              </Link>
             </Button>
           </SignedOut>
           <Button

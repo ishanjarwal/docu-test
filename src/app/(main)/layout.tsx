@@ -5,12 +5,10 @@ import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
 const layout = async ({ children }: Readonly<{ children: ReactNode }>) => {
-  //   const { userId } = await auth();
-  //   if (!userId) {
-  //     return redirect("/sign-in");
-  //   }
-
-  const userId = "abcd";
+  const { userId } = await auth();
+  if (!userId) {
+    return redirect("/sign-in");
+  }
 
   const subscriptionLevel = await getUserSubscriptionLevel(userId);
 

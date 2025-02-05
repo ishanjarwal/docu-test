@@ -1,13 +1,17 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 import { del } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function deleteResume(id: string) {
   try {
-    // TODO : check auth
-    const userId = "abcd";
+    const { userId } = await auth();
+    if (!userId) {
+      return redirect("/sign-in");
+    }
     const existingResume = await prisma.resume.findUnique({
       where: { userId, id },
     });

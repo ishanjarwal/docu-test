@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { resumeSchema, resumeSchemaType } from "@/validations/validation";
-// import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { del, head, put } from "@vercel/blob";
 import path from "path";
 
@@ -12,8 +12,7 @@ export const saveResume = async (values: resumeSchemaType) => {
   // test
   try {
     const { personalDetails, ...restResumeData } = resumeSchema.parse(values);
-    // const { userId } = await auth();
-    const userId = "abcd";
+    const { userId } = await auth();
     if (!userId) {
       throw new Error("unauthorized access");
     }

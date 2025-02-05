@@ -5,19 +5,14 @@ import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
 import { auth } from "@clerk/nextjs/server";
 import { cache } from "react";
-// import { currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const createCheckoutSession = async (priceId: string) => {
   try {
-    // const user = await currentUser();
-    // if (!user) {
-    //   return { error: "Unauthorized" };
-    // }
-
-    const user = {
-      id: "abcd",
-      emailAddresses: [{ emailAddress: "abcd@gmail.com" }],
-    };
+    const user = await currentUser();
+    if (!user) {
+      return { error: "Unauthorized" };
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: priceId, quantity: 1 }],

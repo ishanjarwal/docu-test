@@ -12,8 +12,8 @@ const navlinks = [
     href: "/",
   },
   {
-    display: "Pricing",
-    href: "/",
+    display: "Plans",
+    href: "/plans",
   },
   {
     display: "Contact",
