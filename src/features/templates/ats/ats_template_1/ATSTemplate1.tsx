@@ -13,6 +13,15 @@ import {
   FaThreads,
   FaXTwitter,
 } from "react-icons/fa6";
+import {
+  certificationDefValues,
+  courseDefValues,
+  educationDetailsDefValues,
+  hobbyDefValues,
+  skillDefValues,
+  workExperienceDefValues,
+} from "@/validations/defaultValues";
+import isEqual from "lodash.isequal";
 
 const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
   const { template } = resumeData;
@@ -32,33 +41,46 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
         backgroundColor: template.backdropHex,
       }}
     >
+      <pre> {JSON.stringify(resumeData, null, 2)}</pre>
       <Header resumeData={resumeData} borderRadiusValue={borderRadiusValue} />
       <div className="grid grid-cols-4 gap-8">
         <div className="col-span-3">
           <div className="flex flex-col space-y-4">
             <Summary resumeData={resumeData} />
             {resumeData.workExperiences &&
-              resumeData.workExperiences.length > 0 && (
+              resumeData.workExperiences.length > 0 &&
+              resumeData.workExperiences.length === 1 &&
+              resumeData.workExperiences[0] !== workExperienceDefValues && (
                 <hr style={{ borderColor: template.textHex }} />
               )}
             <WorkExperience resumeData={resumeData} />
             {resumeData.educationDetails &&
-              resumeData.educationDetails.length > 0 && (
+              resumeData.educationDetails.length > 0 &&
+              resumeData.educationDetails.length === 1 &&
+              resumeData.educationDetails[0] !== educationDetailsDefValues && (
                 <hr style={{ borderColor: template.textHex }} />
               )}
             <Educations resumeData={resumeData} />
             {resumeData.certifications &&
-              resumeData.certifications.length > 0 && (
+              resumeData.certifications.length > 0 &&
+              resumeData.certifications.length === 1 &&
+              resumeData.certifications[0] !== certificationDefValues && (
                 <hr style={{ borderColor: template.textHex }} />
               )}
             <Certifications resumeData={resumeData} />
-            {resumeData.courses && resumeData.courses.length > 0 && (
-              <hr style={{ borderColor: template.textHex }} />
-            )}
+            {resumeData.courses &&
+              resumeData.courses.length > 0 &&
+              resumeData.courses.length === 1 &&
+              resumeData.courses[0] !== courseDefValues && (
+                <hr style={{ borderColor: template.textHex }} />
+              )}
             <Courses resumeData={resumeData} />
-            {resumeData.hobbies && resumeData.hobbies.length > 0 && (
-              <hr style={{ borderColor: template.textHex }} />
-            )}
+            {resumeData.hobbies &&
+              resumeData.hobbies.length > 0 &&
+              resumeData.hobbies.length === 1 &&
+              resumeData.hobbies[0] !== hobbyDefValues && (
+                <hr style={{ borderColor: template.textHex }} />
+              )}
             <Hobbies resumeData={resumeData} />
           </div>
         </div>
@@ -143,7 +165,10 @@ const Summary = ({ resumeData }: TemplateProps) => {
 
 const WorkExperience = ({ resumeData }: TemplateProps) => {
   const { workExperiences } = resumeData;
-  return workExperiences && workExperiences?.length > 0 ? (
+  return workExperiences &&
+    workExperiences?.length > 0 &&
+    workExperiences.length === 1 &&
+    workExperiences[0] != workExperienceDefValues ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Work Experiences</p>
       <div className="flex flex-col space-y-4">
@@ -189,7 +214,9 @@ const WorkExperience = ({ resumeData }: TemplateProps) => {
 
 const Educations = ({ resumeData }: TemplateProps) => {
   const { educationDetails } = resumeData;
-  return educationDetails && educationDetails?.length > 0 ? (
+  return educationDetails &&
+    educationDetails?.length > 0 &&
+    educationDetails[0] != educationDetailsDefValues ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Qualifications</p>
       <div className="flex flex-col space-y-4">
@@ -251,31 +278,33 @@ const Skills = ({ resumeData }: TemplateProps) => {
         <div>
           <p className={styles.heading}>Skills</p>
           <div className="flex flex-col space-y-1">
-            {hardSkills?.map((item, index) => (
-              <div key={"hardSkills-" + index}>
-                <p className={styles.para}>{item.name}</p>
-                {item.level != undefined && !item.levelDisabled && (
-                  <div>
-                    <span className="relative block h-1 w-full overflow-hidden rounded-full">
-                      <span
-                        className="absolute left-0 top-0 h-full w-full rounded-full"
-                        style={{
-                          backgroundColor: textHex,
-                          opacity: "25%",
-                        }}
-                      ></span>
-                      <span
-                        className="absolute left-0 top-0 h-full"
-                        style={{
-                          width: (item.level + 1) * 20 + "%",
-                          backgroundColor: textHex,
-                        }}
-                      ></span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+            {hardSkills?.map((item, index) =>
+              !isEqual(item, skillDefValues) ? (
+                <div key={"hardSkills-" + index}>
+                  <p className={styles.para}>{item.name}</p>
+                  {item.level != undefined && !item.levelDisabled && (
+                    <div>
+                      <span className="relative block h-1 w-full overflow-hidden rounded-full">
+                        <span
+                          className="absolute left-0 top-0 h-full w-full rounded-full"
+                          style={{
+                            backgroundColor: textHex,
+                            opacity: "25%",
+                          }}
+                        ></span>
+                        <span
+                          className="absolute left-0 top-0 h-full"
+                          style={{
+                            width: (item.level + 1) * 20 + "%",
+                            backgroundColor: textHex,
+                          }}
+                        ></span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ) : null,
+            )}
           </div>
         </div>
       )}
@@ -284,31 +313,33 @@ const Skills = ({ resumeData }: TemplateProps) => {
         <div>
           <p className={styles.heading}>Soft skills</p>
           <div className="flex flex-col space-y-1">
-            {softSkills?.map((item, index) => (
-              <div key={"hardSkills-" + index}>
-                <p className={styles.para}>{item.name}</p>
-                {item.level != undefined && !item.levelDisabled && (
-                  <div>
-                    <span className="relative block h-1 w-full overflow-hidden rounded-full">
-                      <span
-                        className="absolute left-0 top-0 h-full w-full rounded-full"
-                        style={{
-                          backgroundColor: textHex,
-                          opacity: "25%",
-                        }}
-                      ></span>
-                      <span
-                        className="absolute left-0 top-0 h-full"
-                        style={{
-                          width: (item.level + 1) * 20 + "%",
-                          backgroundColor: textHex,
-                        }}
-                      ></span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+            {softSkills?.map((item, index) =>
+              !isEqual(item, skillDefValues) ? (
+                <div key={"hardSkills-" + index}>
+                  <p className={styles.para}>{item.name}</p>
+                  {item.level != undefined && !item.levelDisabled && (
+                    <div>
+                      <span className="relative block h-1 w-full overflow-hidden rounded-full">
+                        <span
+                          className="absolute left-0 top-0 h-full w-full rounded-full"
+                          style={{
+                            backgroundColor: textHex,
+                            opacity: "25%",
+                          }}
+                        ></span>
+                        <span
+                          className="absolute left-0 top-0 h-full"
+                          style={{
+                            width: (item.level + 1) * 20 + "%",
+                            backgroundColor: textHex,
+                          }}
+                        ></span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ) : null,
+            )}
           </div>
         </div>
       )}
@@ -403,7 +434,10 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
 
 const Certifications = ({ resumeData }: TemplateProps) => {
   const { certifications } = resumeData;
-  return certifications && certifications?.length > 0 ? (
+  return certifications &&
+    certifications?.length > 0 &&
+    certifications.length === 1 &&
+    certifications[0] != certificationDefValues ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Certifications</p>
       <div className="flex flex-col space-y-4">
@@ -449,7 +483,10 @@ const Certifications = ({ resumeData }: TemplateProps) => {
 
 const Courses = ({ resumeData }: TemplateProps) => {
   const { courses } = resumeData;
-  return courses && courses?.length > 0 ? (
+  return courses &&
+    courses?.length > 0 &&
+    courses.length === 1 &&
+    courses[0] != courseDefValues ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Courses</p>
       <div className="flex flex-col space-y-4">
@@ -495,7 +532,10 @@ const Courses = ({ resumeData }: TemplateProps) => {
 
 const Hobbies = ({ resumeData }: TemplateProps) => {
   const { hobbies } = resumeData;
-  return hobbies && hobbies?.length > 0 ? (
+  return hobbies &&
+    hobbies?.length > 0 &&
+    hobbies.length === 1 &&
+    hobbies[0] != hobbyDefValues ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Hobbies</p>
       <div className="grid grid-cols-2 gap-4">

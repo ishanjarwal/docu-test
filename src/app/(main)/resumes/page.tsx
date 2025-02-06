@@ -30,7 +30,7 @@ const page = async () => {
           <p className="text-muted-foreground">
             Edit, customize or download your resumes here.
           </p>
-          <CreateNewButton count={count} />
+          {count > 0 && <CreateNewButton count={count} />}
         </div>
         <div className="mt-8">
           <ResumeList resumes={resumes} />

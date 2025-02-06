@@ -32,6 +32,7 @@ import {
 import toast from "react-hot-toast";
 import { deleteResume } from "@/app/(main)/resumes/action";
 import { LuLoaderCircle } from "react-icons/lu";
+import { DotPattern } from "@/components/ui/dot-pattern";
 
 interface ResumeListProps {
   resumes: Prisma.ResumeGetPayload<object>[];
@@ -40,6 +41,27 @@ interface ResumeListProps {
 const ResumeList = ({ resumes }: ResumeListProps) => {
   return (
     <div className="grid grid-cols-1 gap-2 xs:grid-cols-2 sm:gap-4 md:gap-8 lg:grid-cols-3 xl:grid-cols-4">
+      {resumes.length === 0 && (
+        <Link
+          href={"/editor"}
+          className="relative col-span-full overflow-hidden rounded-xl border-2 border-dashed border-primary bg-primary/10 px-4 py-16 duration-150 hover:bg-primary/15"
+        >
+          <DotPattern
+            className={cn(
+              "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]",
+              "fill-primary",
+            )}
+          />
+          <h2 className="text-center text-xl font-bold text-primary underline">
+            Draft your First Resume
+          </h2>
+          <ul className="mx-auto mt-4 w-max list-disc ps-4 text-xs text-primary/75">
+            <li>45+ templates</li>
+            <li>Customization</li>
+            <li>PDF Downloads</li>
+          </ul>
+        </Link>
+      )}
       {resumes.map((item, idx) => (
         <ResumeItem key={idx} resumeData={item} />
       ))}

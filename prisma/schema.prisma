@@ -95,6 +95,13 @@ type Hobby {
   description String?
 }
 
+type Project {
+  name        String?
+  description String?
+  date        String?
+  link        String?
+}
+
 type TemplateDetails {
   templateId  String?      @default("ats-template-1")
   textHex     String       @default("#000000")
@@ -114,6 +121,7 @@ model Resume {
   socialLinks      SocialLinks
   educationDetails Educations[]
   workExperiences  WorkExperience[]
+  projects         Project[]
   hardSkills       SkillItem[]
   softSkills       SkillItem[]
   certifications   Certification[]

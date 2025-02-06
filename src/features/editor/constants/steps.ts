@@ -10,6 +10,7 @@ import CertificationsForm from "../forms/CertificationsForm";
 import CourseForm from "../forms/CourseForm";
 import HobbyForm from "../forms/HobbyForm";
 import SocialLinksForm from "../forms/SocialLinksForm";
+import ProjectForm from "../forms/ProjectForm";
 
 export const steps: {
   title: string;
@@ -40,6 +41,11 @@ export const steps: {
     title: "Skills",
     component: SkillForm,
     key: "skills",
+  },
+  {
+    title: "Projects",
+    component: ProjectForm,
+    key: "projects",
   },
   {
     title: "Certifications",

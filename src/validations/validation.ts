@@ -172,6 +172,21 @@ export const HobbySchema = z.object({
 
 export type HobbyValues = z.infer<typeof HobbySchema>;
 
+export const ProjectSchema = z.object({
+  projects: z
+    .array(
+      z.object({
+        name: optionalString,
+        link: optionalString,
+        description: optionalString,
+        date: optionalString,
+      }),
+    )
+    .optional(),
+});
+
+export type ProjectValues = z.infer<typeof ProjectSchema>;
+
 export const TemplateSchema = z.object({
   templateId: optionalString,
   textHex: optionalString,
@@ -193,6 +208,7 @@ export const resumeSchema = z.object({
   ...CerificationsSchema.shape,
   ...CourseSchema.shape,
   ...HobbySchema.shape,
+  ...ProjectSchema.shape,
   ...projectTitleSchema.shape,
   socialLinks: z.object({
     ...SocialLinksSchema.shape,

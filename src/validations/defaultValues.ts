@@ -41,6 +41,13 @@ export const educationDetailsDefValues = {
   description: "",
 };
 
+export const projectDetailsDefValues = {
+  name: "",
+  date: "",
+  description: "",
+  link: "",
+};
+
 export const workExperienceDefValues = {
   position: "",
   employer: "",
@@ -96,6 +103,7 @@ export const resumeDataDefValues: resumeSchemaType = {
   hardSkills: [skillDefValues],
   softSkills: [skillDefValues],
   courses: [courseDefValues],
+  projects: [projectDetailsDefValues],
   certifications: [certificationDefValues],
   hobbies: [hobbyDefValues],
   template: templateDefValues,
