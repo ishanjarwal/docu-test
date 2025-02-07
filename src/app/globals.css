@@ -71,6 +71,23 @@
   }
 }
 
+@media print {
+  #resumePreviewContent {
+    zoom: 1 !important;
+    padding: 0;
+  }
+}
+
+#resumePreviewContent {
+  font-family: Inter;
+}
+
+/* important for print */
+@page {
+  size: A4;
+  margin: 0cm;
+}
+
 /* fonts */
 @font-face {
   font-family: "aesthetic_beauty";

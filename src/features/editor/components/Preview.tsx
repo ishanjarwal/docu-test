@@ -61,7 +61,7 @@ const Preview = ({ className }: { className?: string }) => {
           )}
         >
           <div
-            className="h-full"
+            // className="h-full"
             style={{
               zoom: (1 / 794) * width,
             }}
