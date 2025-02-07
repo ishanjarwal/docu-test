@@ -62,12 +62,6 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
       </div>
       <div className="flex items-center justify-start space-x-2">
         <Button
-          className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
-          variant={"destructive"}
-        >
-          Cancel
-        </Button>
-        <Button
           onClick={addPreviewParam}
           className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
           variant={"secondary"}

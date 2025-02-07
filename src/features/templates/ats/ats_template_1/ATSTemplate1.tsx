@@ -39,27 +39,25 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
       style={{
         color: template.textHex,
         backgroundColor: template.backdropHex,
+        fontFamily: template?.fontFace || "Inter",
       }}
     >
-      <pre> {JSON.stringify(resumeData, null, 2)}</pre>
+      {/* <pre> {JSON.stringify(resumeData, null, 2)}</pre> */}
       <Header resumeData={resumeData} borderRadiusValue={borderRadiusValue} />
       <div className="grid grid-cols-4 gap-8">
         <div className="col-span-3">
           <div className="flex flex-col space-y-4">
             <Summary resumeData={resumeData} />
+            {resumeData.personalDetails.summary && (
+              <hr style={{ borderColor: template.textHex }} />
+            )}
+            <WorkExperience resumeData={resumeData} />
             {resumeData.workExperiences &&
               resumeData.workExperiences.length > 0 &&
-              resumeData.workExperiences.length === 1 &&
-              resumeData.workExperiences[0] !== workExperienceDefValues && (
-                <hr style={{ borderColor: template.textHex }} />
-              )}
-            <WorkExperience resumeData={resumeData} />
-            {resumeData.educationDetails &&
-              resumeData.educationDetails.length > 0 &&
-              resumeData.educationDetails.length === 1 &&
-              resumeData.educationDetails[0] !== educationDetailsDefValues && (
-                <hr style={{ borderColor: template.textHex }} />
-              )}
+              !isEqual(
+                resumeData.workExperiences[0],
+                workExperienceDefValues,
+              ) && <hr style={{ borderColor: template.textHex }} />}
             <Educations resumeData={resumeData} />
             {resumeData.certifications &&
               resumeData.certifications.length > 0 &&

@@ -70,3 +70,109 @@
     @apply !h-6 !w-6 !cursor-grab duration-100 active:scale-125;
   }
 }
+
+/* fonts */
+@font-face {
+  font-family: "aesthetic_beauty";
+  src: url("../assets/fonts/Aesthetic Beauty.otf");
+}
+
+@font-face {
+  font-family: "babelsans";
+  src: url("../assets/fonts/BabelSans.ttf");
+}
+
+@font-face {
+  font-family: "bebasneue_regular";
+  src: url("../assets/fonts/BebasNeue-Regular.ttf");
+}
+
+@font-face {
+  font-family: "benedict_sans_regular";
+  src: url("../assets/fonts/Benedict Sans Regular.otf");
+}
+
+@font-face {
+  font-family: "birds_of_paradise";
+  src: url("../assets/fonts/Birds of Paradise.ttf");
+}
+
+@font-face {
+  font-family: "caviardreams";
+  src: url("../assets/fonts/CaviarDreams.ttf");
+}
+
+@font-face {
+  font-family: "classyvogueregular";
+  src: url("../assets/fonts/Classyvogueregular.ttf");
+}
+
+@font-face {
+  font-family: "comfortaa_regular";
+  src: url("../assets/fonts/Comfortaa-Regular.ttf");
+}
+
+@font-face {
+  font-family: "creatodisplay_regular";
+  src: url("../assets/fonts/CreatoDisplay-Regular.otf");
+}
+
+@font-face {
+  font-family: "draken";
+  src: url("../assets/fonts/Draken.ttf");
+}
+
+@font-face {
+  font-family: "frenstyle";
+  src: url("../assets/fonts/Frenstyle.otf");
+}
+
+@font-face {
+  font-family: "galvanizer_regular";
+  src: url("../assets/fonts/Galvanizer-Regular.ttf");
+}
+
+@font-face {
+  font-family: "kingsans_free";
+  src: url("../assets/fonts/KingSans-FREE.otf");
+}
+
+@font-face {
+  font-family: "lemonmilk_regular";
+  src: url("../assets/fonts/LEMONMILK-Regular.otf");
+}
+
+@font-face {
+  font-family: "louis_george_cafe";
+  src: url("../assets/fonts/Louis George Cafe.ttf");
+}
+
+@font-face {
+  font-family: "madina";
+  src: url("../assets/fonts/Madina.otf");
+}
+
+@font-face {
+  font-family: "roboto_regular";
+  src: url("../assets/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: "simple_michael";
+  src: url("../assets/fonts/Simple Michael.otf");
+}
+
+@font-face {
+  font-family: "smith_buck";
+  src: url("../assets/fonts/Smith Buck.otf");
+}
+
+@font-face {
+  font-family: "tangosans";
+  src: url("../assets/fonts/TangoSans.ttf");
+}
+
+@font-face {
+  font-family: "thenextfont";
+  src: url("../assets/fonts/TheNextFont.ttf");
+}

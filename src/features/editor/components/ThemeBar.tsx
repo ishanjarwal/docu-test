@@ -27,6 +27,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { templateDefValues } from "@/validations/defaultValues";
+import { fonts } from "../constants/fonts";
 
 const ThemeBar = () => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
@@ -207,32 +208,46 @@ const ThemeBar = () => {
             </CustomTooltip>
           )}
         />
-        <Select>
-          <CustomTooltip
-            className="z-[1000]"
-            text="Change font"
-            delayDuration={0}
-            side="bottom"
-          >
-            <SelectTrigger className="!h-auto !w-auto p-0 focus:ring-0 [&>svg]:hidden">
-              <Button
-                className="active:scale-90"
-                variant="outline"
-                size="icon"
-                asChild
+        <FormField
+          name="fontFace"
+          control={form.control}
+          render={({ field }) => (
+            <Select onValueChange={(value) => field.onChange(value)}>
+              <CustomTooltip
+                className="z-[1000]"
+                text="Change font"
+                delayDuration={0}
+                side="bottom"
               >
-                <span className="!flex items-center justify-center">
-                  <RxText />
-                </span>
-              </Button>
-            </SelectTrigger>
-          </CustomTooltip>
-          <SelectContent className="z-[1000]">
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
+                <SelectTrigger className="!h-auto !w-auto p-0 focus:ring-0 [&>svg]:hidden">
+                  <Button
+                    className="active:scale-90"
+                    variant="outline"
+                    size="icon"
+                    asChild
+                  >
+                    <span className="!flex items-center justify-center">
+                      <RxText />
+                    </span>
+                  </Button>
+                </SelectTrigger>
+              </CustomTooltip>
+              <SelectContent className="z-[1000]">
+                {fonts.map((font, idx) => (
+                  <SelectItem key={"font-" + idx} value={font.slug}>
+                    <span
+                      style={{
+                        fontFamily: font.slug,
+                      }}
+                    >
+                      {font.name}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
       </Form>
     </div>
   );
