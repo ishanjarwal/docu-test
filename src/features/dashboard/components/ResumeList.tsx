@@ -2,7 +2,7 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import React, { useState, useTransition } from "react";
 import { FiTrash } from "react-icons/fi";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineEdit, MdOutlineFileDownload } from "react-icons/md";
 import { BiExpandAlt } from "react-icons/bi";
 import {
   DropdownMenu,
@@ -34,6 +34,7 @@ import { deleteResume } from "@/app/(main)/resumes/action";
 import { LuLoaderCircle } from "react-icons/lu";
 import { usePrintable } from "@/hooks/usePrintable";
 import { DotPattern } from "@/components/ui/dot-pattern";
+import CustomTooltip from "@/components/custom/CustomTooltip";
 
 interface ResumeListProps {
   resumes: Prisma.ResumeGetPayload<object>[];
@@ -83,7 +84,6 @@ const ResumeItem = ({
   ) as React.RefObject<HTMLElement>;
 
   const printableRef = React.useRef<HTMLDivElement>(null);
-  const savePDF = usePrintable(printableRef);
 
   const { width } = useDimensions(containerRef);
   return (
@@ -95,7 +95,6 @@ const ResumeItem = ({
         >
           <div
             id="resumePreviewContent"
-            ref={printableRef}
             style={{
               height: "100%",
               zoom: (1 / 794) * width,
@@ -146,6 +145,13 @@ const ResumeItem = ({
             <MdOutlineEdit />
             Edit
           </Link>
+          <CustomTooltip text="Download PDF" delayDuration={0}>
+            <Button variant="ghost" className="bg-foreground/5 px-2" asChild>
+              <Link href={`/preview?id=${id}`} target="_blank">
+                <MdOutlineFileDownload />
+              </Link>
+            </Button>
+          </CustomTooltip>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="bg-foreground/5 px-2">
@@ -153,9 +159,11 @@ const ResumeItem = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuItem onClick={() => savePDF()}>
-                <VscFilePdf />
-                <span>Download PDF</span>
+              <DropdownMenuItem asChild>
+                <Link href={`/preview?id=${id}`} target="_blank">
+                  <VscFilePdf />
+                  <span>Download PDF</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="mt-2">
                 <IoShareSocialOutline />

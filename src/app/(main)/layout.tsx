@@ -14,7 +14,7 @@ const layout = async ({ children }: Readonly<{ children: ReactNode }>) => {
 
   return (
     <SubscriptionLevelProvider subscriptionLevel={subscriptionLevel}>
-      <div>{subscriptionLevel}</div>
+      {/* <div>{subscriptionLevel}</div> */}
       {children}
     </SubscriptionLevelProvider>
   );

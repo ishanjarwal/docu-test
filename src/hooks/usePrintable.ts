@@ -1,78 +1,77 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import React from "react";
+import React, { useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import { Previewer } from "pagedjs";
 
 export const usePrintable = (
   printableRef: React.RefObject<HTMLDivElement | null>,
+  outputRef: React.RefObject<HTMLDivElement | null>,
 ) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const saver = useReactToPrint({
     contentRef: printableRef,
     print: async (frame: HTMLIFrameElement) => {
-      const document = frame.contentDocument;
-      if (document) {
-        const content = document.getElementById("resumePreviewContent");
-        if (!content) return;
-        content.style.zoom = "1";
-        content.style.width = "100%";
-
-        const canvas = await html2canvas(content, { scale: 2 });
-        const pdf = new jsPDF("p", "mm", "a4");
-
-        const pageWidth = 210; // A4 width in mm
-        const pageHeight = 297; // A4 height in mm
-        const margin = 10; // Margin in mm
-        const contentWidth = pageWidth - margin * 2;
-        const contentHeight = pageHeight - margin * 2;
-
-        const imgWidth = contentWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        // Calculate the number of pages needed
-        const totalPages = Math.ceil(imgHeight / contentHeight);
-
-        for (let page = 0; page < totalPages; page++) {
-          const pageCanvas = document.createElement("canvas");
-          pageCanvas.width = canvas.width;
-          pageCanvas.height = (contentHeight * canvas.width) / contentWidth;
-
-          const context = pageCanvas.getContext("2d");
-          if (context) {
-            // Draw the portion of the content for the current page
-            context.fillStyle = "#f0f0f0"; // Background color
-            context.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-            context.drawImage(
-              canvas,
-              0,
-              -(page * pageCanvas.height),
-              canvas.width,
-              canvas.height,
-            );
-
-            const pageImage = pageCanvas.toDataURL("image/png");
-            if (page > 0) pdf.addPage();
-
-            // Add margin and draw the content
-            pdf.setFillColor(240, 240, 240); // Background color in RGB
-            pdf.rect(0, 0, pageWidth, pageHeight, "F"); // Draw background
-            pdf.addImage(
-              pageImage,
-              "PNG",
-              margin,
-              margin,
-              imgWidth,
-              contentHeight,
-            );
-          }
+      try {
+        if (!printableRef.current || !outputRef.current) {
+          return;
         }
 
-        // Generate the PDF and open in a new tab
-        const pdfBlob = pdf.output("blob");
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        window.open(pdfUrl, "_blank");
+        setLoading(true);
+        const document = frame.contentDocument;
+        if (document) {
+          const content = document.getElementById("resumePreviewContent");
+          if (!content) return;
+          // content.style.width = "794px"; // important for zooming
+          content.style.zoom = "1";
+          // content.style.aspectRatio = "210/297";
+
+          const previewer = new Previewer();
+          // Run Paged.js in memory (without rendering)
+          const result = await previewer.preview(
+            content.innerHTML,
+            ["/pagedjs.css"],
+            outputRef.current,
+          );
+          console.log("Paged.js finished processing");
+
+          // Get the paged content
+          const pages = result.pages;
+          if (!pages || pages.length === 0) {
+            console.error("No pages generated!");
+            return;
+          }
+          // Create PDF
+          const pdf = new jsPDF("p", "px", [794, 1122]); // A4 size
+
+          for (let i = 0; i < pages.length; i++) {
+            // Convert each page into an image using html2canvas
+            const element = pages[i].element;
+            element.style.zoom = "1";
+            const canvas = await html2canvas(element);
+            const imgData = canvas.toDataURL("image/png");
+
+            if (i > 0) pdf.addPage();
+            pdf.addImage(imgData, "PNG", 0, 0, 794, 1122);
+
+            console.log(`Added page ${i + 1}`);
+          }
+
+          // Automatically download the PDF
+          //   pdf.save("document.pdf");
+          const pdfBlob = pdf.output("blob");
+          const pdfURL = URL.createObjectURL(pdfBlob);
+          window.open(pdfURL, "_blank");
+
+          console.log("PDF downloaded!");
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
     },
   });
 
-  return saver;
+  return { saver, loading };
 };

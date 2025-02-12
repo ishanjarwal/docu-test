@@ -16,7 +16,6 @@ import {
 import {
   certificationDefValues,
   courseDefValues,
-  educationDetailsDefValues,
   hobbyDefValues,
   skillDefValues,
   workExperienceDefValues,
@@ -43,7 +42,9 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
       }}
     >
       {/* <pre> {JSON.stringify(resumeData, null, 2)}</pre> */}
-      <Header resumeData={resumeData} borderRadiusValue={borderRadiusValue} />
+      <div>
+        <Header resumeData={resumeData} borderRadiusValue={borderRadiusValue} />
+      </div>
       <div className="grid grid-cols-4 gap-8">
         <div className="col-span-3">
           <div className="flex flex-col space-y-4">
@@ -163,10 +164,7 @@ const Summary = ({ resumeData }: TemplateProps) => {
 
 const WorkExperience = ({ resumeData }: TemplateProps) => {
   const { workExperiences } = resumeData;
-  return workExperiences &&
-    workExperiences?.length > 0 &&
-    workExperiences.length === 1 &&
-    workExperiences[0] != workExperienceDefValues ? (
+  return workExperiences && workExperiences?.length > 0 ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Work Experiences</p>
       <div className="flex flex-col space-y-4">
@@ -215,9 +213,7 @@ const WorkExperience = ({ resumeData }: TemplateProps) => {
 
 const Educations = ({ resumeData }: TemplateProps) => {
   const { educationDetails } = resumeData;
-  return educationDetails &&
-    educationDetails?.length > 0 &&
-    educationDetails[0] != educationDetailsDefValues ? (
+  return educationDetails && educationDetails?.length > 0 ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Qualifications</p>
       <div className="flex flex-col space-y-4">
@@ -281,7 +277,7 @@ const Skills = ({ resumeData }: TemplateProps) => {
       {hardSkills && hardSkills.length > 0 && (
         <div>
           <p className={styles.heading}>Skills</p>
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-2">
             {hardSkills?.map((item, index) =>
               !isEqual(item, skillDefValues) ? (
                 <div key={"hardSkills-" + index}>
@@ -316,7 +312,7 @@ const Skills = ({ resumeData }: TemplateProps) => {
       {softSkills && softSkills.length > 0 && (
         <div>
           <p className={styles.heading}>Soft skills</p>
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-2">
             {softSkills?.map((item, index) =>
               !isEqual(item, skillDefValues) ? (
                 <div key={"hardSkills-" + index}>
@@ -438,10 +434,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
 
 const Certifications = ({ resumeData }: TemplateProps) => {
   const { certifications } = resumeData;
-  return certifications &&
-    certifications?.length > 0 &&
-    certifications.length === 1 &&
-    certifications[0] != certificationDefValues ? (
+  return certifications && certifications?.length > 0 ? (
     <div className="flex flex-col space-y-2">
       <p className={styles.heading}>Certifications</p>
       <div className="flex flex-col space-y-4">

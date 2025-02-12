@@ -81,14 +81,14 @@ export function mapToResumeSchemaType(
     hardSkills: hardSkills
       ? hardSkills.map((item) => ({
           level: item.level || undefined,
-          levelDisabled: item.levelDisabled || undefined,
+          levelDisabled: item.levelDisabled == null || undefined,
           name: item.name || undefined,
         }))
       : undefined,
     softSkills: softSkills
       ? softSkills.map((item) => ({
           level: item.level || undefined,
-          levelDisabled: item.levelDisabled || undefined,
+          levelDisabled: item.levelDisabled == null || undefined,
           name: item.name || undefined,
         }))
       : undefined,
