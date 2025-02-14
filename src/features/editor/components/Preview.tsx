@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { IoMdClose } from "react-icons/io";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { templates } from "../constants/templates";
 
 const Preview = ({ className }: { className?: string }) => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
@@ -27,6 +28,10 @@ const Preview = ({ className }: { className?: string }) => {
     null,
   ) as React.RefObject<HTMLElement>;
   const { width } = useDimensions(containerRef);
+
+  const Template =
+    templates.find((el) => el.id === resumeData.template.templateId)
+      ?.template || ATSTemplate1;
 
   return (
     <div
@@ -66,10 +71,7 @@ const Preview = ({ className }: { className?: string }) => {
               zoom: (1 / 794) * width,
             }}
           >
-            <ATSTemplate1
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-            />
+            <Template resumeData={resumeData} setResumeData={setResumeData} />
           </div>
         </div>
       </div>

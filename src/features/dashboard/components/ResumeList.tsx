@@ -32,7 +32,7 @@ import {
 import toast from "react-hot-toast";
 import { deleteResume } from "@/app/(main)/resumes/action";
 import { LuLoaderCircle } from "react-icons/lu";
-import { usePrintable } from "@/hooks/usePrintable";
+// import { usePrintable } from "@/hooks/usePrintable";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import CustomTooltip from "@/components/custom/CustomTooltip";
 
@@ -83,7 +83,7 @@ const ResumeItem = ({
     null,
   ) as React.RefObject<HTMLElement>;
 
-  const printableRef = React.useRef<HTMLDivElement>(null);
+  // const printableRef = React.useRef<HTMLDivElement>(null);
 
   const { width } = useDimensions(containerRef);
   return (

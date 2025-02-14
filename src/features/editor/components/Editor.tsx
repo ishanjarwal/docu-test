@@ -10,6 +10,7 @@ import { ResumeDataContext } from "../providers/ResumeData";
 import useUnloadWarning from "@/hooks/useUnloadWarning";
 import useAutoSaveResume from "../hooks/useAutoSaveResume";
 import toast, { Toaster } from "react-hot-toast";
+import TemplateSwitcher from "./TemplateSwitcher";
 
 const Editor = () => {
   const searchParams = useSearchParams();
@@ -49,6 +50,7 @@ const Editor = () => {
 
   return (
     <>
+      <TemplateSwitcher />
       <EditorHeader />
       <Toaster />
       <div

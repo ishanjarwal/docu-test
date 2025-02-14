@@ -28,21 +28,25 @@ import {
 } from "@/components/ui/select";
 import { templateDefValues } from "@/validations/defaultValues";
 import { fonts } from "../constants/fonts";
+import { useTemplateSwitch } from "../providers/TemplateSwitchContext";
+import { PiDrop } from "react-icons/pi";
 
 const ThemeBar = () => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
-
+  const { toggleOpen } = useTemplateSwitch();
   const form = useForm<TemplateValues>({
     mode: "onChange",
     resolver: zodResolver(TemplateSchema),
     defaultValues: resumeData.template || templateDefValues,
   });
-
   useEffect(() => {
     const { unsubscribe } = form.watch(async (values) => {
       const isValid = await form.trigger();
       if (!isValid) return;
-      setResumeData({ ...resumeData, template: { ...values } });
+      setResumeData({
+        ...resumeData,
+        template: { ...values, templateId: resumeData.template.templateId },
+      });
     });
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
@@ -67,6 +71,7 @@ const ThemeBar = () => {
           className="z-[1000]"
         >
           <Button
+            onClick={toggleOpen}
             className="text-xs active:scale-90"
             variant="outline"
             size={"icon"}
@@ -74,6 +79,59 @@ const ThemeBar = () => {
             <MdOutlineGridView />
           </Button>
         </CustomTooltip>
+        <Popover>
+          <CustomTooltip
+            className="z-[1000]"
+            text="Change accent color"
+            delayDuration={0}
+            side="bottom"
+          >
+            <PopoverTrigger>
+              <Button
+                className="active:scale-90"
+                variant="outline"
+                size="icon"
+                asChild
+              >
+                <span>
+                  <PiDrop />
+                </span>
+              </Button>
+            </PopoverTrigger>
+          </CustomTooltip>
+          <PopoverContent
+            className="z-[1000] border-none bg-transparent shadow-none"
+            align="start"
+          >
+            <FormField
+              control={form.control}
+              name={"accentHex"}
+              render={({ field }) => (
+                <FormItem>
+                  <TwitterPicker
+                    color={field.value}
+                    onChange={(color) => {
+                      field.onChange(color.hex);
+                    }}
+                    triangle="top-left"
+                    colors={[
+                      "#000000",
+                      "#FFFFFF",
+                      "#333333",
+                      "#F5F5F5",
+                      "#FF5733",
+                      "#28A745",
+                      "#007BFF",
+                      "#6F42C1",
+                      "#FFC107",
+                      "#DC3545",
+                    ]}
+                  />
+                </FormItem>
+              )}
+            />
+          </PopoverContent>
+        </Popover>
         <Popover>
           <CustomTooltip
             className="z-[1000]"
@@ -95,7 +153,7 @@ const ThemeBar = () => {
             </PopoverTrigger>
           </CustomTooltip>
           <PopoverContent
-            className="z-[10000] border-none bg-transparent shadow-none"
+            className="z-[1000] border-none bg-transparent shadow-none"
             align="start"
           >
             <FormField

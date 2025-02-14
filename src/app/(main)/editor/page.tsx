@@ -7,6 +7,9 @@ import PreviewRenderer from "@/features/editor/components/PreviewRenderer";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import joyrideSteps from "@/features/editor/constants/joyride_steps";
+import Joyride from "react-joyride";
+import { TemplateSwitchProvider } from "@/features/editor/providers/TemplateSwitchContext";
 
 const page = async ({
   searchParams,
@@ -26,27 +29,30 @@ const page = async ({
       : null;
     return (
       <ResumeData existingResume={existingResume}>
-        <main className="flex min-h-screen w-full lg:max-h-screen">
-          <PreviewRenderer />
-          <div className="relative mx-auto flex w-full max-w-[1600px] grow bg-card">
-            <div className="flex w-full lg:absolute lg:bottom-0 lg:top-0">
-              <div className="relative flex min-w-0 flex-1 flex-col bg-card">
-                <Editor />
+        <TemplateSwitchProvider>
+          <main className="flex min-h-screen w-full lg:max-h-screen">
+            {/* <Joyride key={"joyride"} steps={joyrideSteps} /> */}
+            <PreviewRenderer />
+            <div className="relative mx-auto flex w-full max-w-[1800px] grow bg-card">
+              <div className="flex w-full lg:absolute lg:bottom-0 lg:top-0">
+                <div className="relative flex min-w-0 flex-1 flex-col bg-card">
+                  <Editor />
+                </div>
+                <Separator
+                  orientation="vertical"
+                  className="ms-1 hidden lg:block"
+                />
+                <div className="hidden flex-1 lg:block">
+                  <Preview />
+                </div>
+                <Separator
+                  orientation="vertical"
+                  className="ms-1 hidden lg:block"
+                />
               </div>
-              <Separator
-                orientation="vertical"
-                className="ms-1 hidden lg:block"
-              />
-              <div className="hidden flex-1 lg:block">
-                <Preview />
-              </div>
-              <Separator
-                orientation="vertical"
-                className="ms-1 hidden lg:block"
-              />
             </div>
-          </div>
-        </main>
+          </main>
+        </TemplateSwitchProvider>
       </ResumeData>
     );
   } catch (error) {

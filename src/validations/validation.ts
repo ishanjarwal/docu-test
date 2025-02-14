@@ -190,6 +190,7 @@ export type ProjectValues = z.infer<typeof ProjectSchema>;
 export const TemplateSchema = z.object({
   templateId: optionalString,
   textHex: optionalString,
+  accentHex: optionalString,
   backdropHex: optionalString,
   borderStyle: z.enum(["circle", "square", "squircle"]).optional(),
   fontFace: optionalString,

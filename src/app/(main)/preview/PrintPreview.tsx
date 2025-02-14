@@ -1,6 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { templates } from "@/features/editor/constants/templates";
 import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
+import ModernTemplate1 from "@/features/templates/modern/modern_template_1/ModernTemplate1";
 import useDimensions from "@/hooks/useDimensions";
 import { resumeSchemaType } from "@/validations/validation";
 import React, { useRef } from "react";
@@ -65,6 +67,10 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
   //   handlePrint();
   // }, []);
 
+  const Template =
+    templates.find((el) => el.id === resumeData.template.templateId)
+      ?.template || ATSTemplate1;
+
   return (
     <>
       <div className="flex items-center justify-center">
@@ -85,7 +91,8 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
             zoom: (1 / 794) * width,
           }}
         >
-          <ATSTemplate1 resumeData={resumeData} />
+          {/* <ATSTemplate1 resumeData={resumeData} /> */}
+          <Template resumeData={resumeData} />
         </div>
       </div>
       <div ref={outputRef as React.RefObject<HTMLDivElement>}></div>

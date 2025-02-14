@@ -63,7 +63,7 @@ export const saveResume = async (values: resumeSchemaType) => {
         newPhotoURL = existingResume.personalDetails.profilePicture;
       }
     }
-
+    console.log("newphotourl", newPhotoURL);
     if (id) {
       // update
 

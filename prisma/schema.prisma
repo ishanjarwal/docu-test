@@ -103,9 +103,10 @@ type Project {
 }
 
 type TemplateDetails {
-  templateId  String?      @default("ats-template-1")
+  templateId  String       @default("ats-template-1")
   textHex     String       @default("#000000")
-  backdropHex String?      @default("#FFFFFF")
+  accentHex   String       @default("#000000")
+  backdropHex String       @default("#FFFFFF")
   fontFace    String?
   borderStyle borderStyles @default(squircle)
 }

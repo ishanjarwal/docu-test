@@ -32,6 +32,7 @@ export function mapToResumeSchemaType(
     courses,
     hobbies,
     template,
+    projects,
   } = data;
 
   const validJobTypes = ["on-site", "hybrid", "remote"] as const;
@@ -122,12 +123,19 @@ export function mapToResumeSchemaType(
       description: item.description || undefined,
       name: item.name || undefined,
     })),
+    projects: projects.map((project) => ({
+      name: project.name || undefined,
+      description: project.description || undefined,
+      date: project.date || undefined,
+      link: project.link || undefined,
+    })),
     template: {
+      textHex: template.textHex || undefined,
+      accentHex: template.accentHex || undefined,
       backdropHex: template.backdropHex || undefined,
       borderStyle: template.borderStyle || undefined,
       fontFace: template.fontFace || undefined,
       templateId: template.templateId || undefined,
-      textHex: template.textHex || undefined,
     },
   };
 }

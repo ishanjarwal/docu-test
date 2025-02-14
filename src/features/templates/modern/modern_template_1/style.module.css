@@ -1,0 +1,40 @@
+.title {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.heading {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.subHeading {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.para {
+  font-size: 12px;
+}
+
+.progress_bullet {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 100px;
+  left: -16px;
+  top: 4px;
+  outline: 4px;
+}
+
+.progress_line {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: -13px;
+  top: 4px;
+}
+
+.bullet_lister:last-of-type .progress_line {
+  display: none;
+}
