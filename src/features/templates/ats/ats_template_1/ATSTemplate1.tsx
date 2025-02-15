@@ -49,37 +49,11 @@ const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
         <div className="col-span-3">
           <div className="flex flex-col space-y-4">
             <Summary resumeData={resumeData} />
-            {resumeData.personalDetails.summary && (
-              <hr style={{ borderColor: template.textHex }} />
-            )}
             <WorkExperience resumeData={resumeData} />
-            {resumeData.workExperiences &&
-              resumeData.workExperiences.length > 0 &&
-              !isEqual(
-                resumeData.workExperiences[0],
-                workExperienceDefValues,
-              ) && <hr style={{ borderColor: template.textHex }} />}
             <Educations resumeData={resumeData} />
-            {resumeData.certifications &&
-              resumeData.certifications.length > 0 &&
-              resumeData.certifications.length === 1 &&
-              resumeData.certifications[0] !== certificationDefValues && (
-                <hr style={{ borderColor: template.textHex }} />
-              )}
             <Certifications resumeData={resumeData} />
-            {resumeData.courses &&
-              resumeData.courses.length > 0 &&
-              resumeData.courses.length === 1 &&
-              resumeData.courses[0] !== courseDefValues && (
-                <hr style={{ borderColor: template.textHex }} />
-              )}
+            <Projects resumeData={resumeData} />
             <Courses resumeData={resumeData} />
-            {resumeData.hobbies &&
-              resumeData.hobbies.length > 0 &&
-              resumeData.hobbies.length === 1 &&
-              resumeData.hobbies[0] !== hobbyDefValues && (
-                <hr style={{ borderColor: template.textHex }} />
-              )}
             <Hobbies resumeData={resumeData} />
           </div>
         </div>
@@ -105,7 +79,7 @@ const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
     profilePicture,
   } = resumeData.personalDetails;
   const photoURL = usePhotoURL(profilePicture);
-
+  const { template } = resumeData;
   return (
     <div>
       <div className="flex items-start justify-start space-x-8">
@@ -123,12 +97,15 @@ const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
           </div>
         )}
         <div className="flex flex-col">
-          <p className={styles.title}>
+          <p
+            style={{ color: template.accentHex }}
+            className={cn(styles.title, "uppercase")}
+          >
             {firstName && <span>{firstName}</span>}
             {firstName && lastName && <span>&nbsp;</span>}
             {lastName && <span>{lastName}</span>}
           </p>
-          <p className={styles.heading}>
+          <p style={{ color: template.accentHex }} className={styles.heading}>
             {jobTitle && <span>{jobTitle}</span>}
           </p>
           <p className={styles.para}>
@@ -154,48 +131,71 @@ const Header = ({ resumeData, borderRadiusValue }: TemplateProps) => {
 
 const Summary = ({ resumeData }: TemplateProps) => {
   const { summary } = resumeData.personalDetails;
+  const { template } = resumeData;
   return summary ? (
     <div className="flex break-inside-avoid flex-col space-y-1">
-      <p className={styles.heading}>Professional Summary</p>
-      <p className={styles.para}>{summary}</p>
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Professional Summary
+      </p>
+      <div
+        className={cn(styles.para)}
+        dangerouslySetInnerHTML={{
+          __html: convertToUlORP(summary),
+        }}
+      />
     </div>
   ) : null;
 };
 
 const WorkExperience = ({ resumeData }: TemplateProps) => {
   const { workExperiences } = resumeData;
+  const { template } = resumeData;
+
   return workExperiences && workExperiences?.length > 0 ? (
-    <div className="flex flex-col space-y-2">
-      <p className={styles.heading}>Work Experiences</p>
+    <div
+      style={{ borderColor: template.accentHex }}
+      className="flex flex-col space-y-2 border-t pt-4"
+    >
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Experience
+      </p>
       <div className="flex flex-col space-y-4">
         {workExperiences.map((item, index) => (
           <div
             key={"workexp+" + index}
             className="flex break-inside-avoid flex-col"
           >
-            <p className={styles.subHeading}>
-              {item.position && <span>{item.position}</span>}
-              {item.employer && <span>{" at "}</span>}
-              {item.employer && <span>{item.employer}</span>}
-              {item.jobType && (
-                <span className="capitalize">
-                  {" • "}
-                  {item.jobType}
-                </span>
-              )}
-              {item.location && (
-                <span>
-                  {", "}
-                  {item.location}
-                </span>
-              )}
-            </p>
-            <p className={styles.para}>
-              {item.startDate && <span>{item.startDate}</span>}
-              {(item.endDate || item.current) && <span>{" — "}</span>}
-              {item.endDate && !item.current && <span>{item.endDate}</span>}
-              {item.current && <span>Working</span>}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className={styles.subHeading}>
+                {item.position && <span>{item.position}</span>}
+                {item.employer && <span>{" at "}</span>}
+                {item.employer && <span>{item.employer}</span>}
+                {item.jobType && (
+                  <span className="capitalize">
+                    {" • "}
+                    {item.jobType}
+                  </span>
+                )}
+                {item.location && (
+                  <span>
+                    {", "}
+                    {item.location}
+                  </span>
+                )}
+              </p>
+              <p className={styles.para}>
+                {item.startDate && <span>{item.startDate}</span>}
+                {(item.endDate || item.current) && <span>{" — "}</span>}
+                {item.endDate && !item.current && <span>{item.endDate}</span>}
+                {item.current && <span>Working</span>}
+              </p>
+            </div>
             {item.description && (
               <div
                 className={cn(styles.para, "mt-1")}
@@ -212,40 +212,50 @@ const WorkExperience = ({ resumeData }: TemplateProps) => {
 };
 
 const Educations = ({ resumeData }: TemplateProps) => {
-  const { educationDetails } = resumeData;
+  const { educationDetails, template } = resumeData;
   return educationDetails && educationDetails?.length > 0 ? (
-    <div className="flex flex-col space-y-2">
-      <p className={styles.heading}>Qualifications</p>
+    <div
+      style={{ borderColor: template.accentHex }}
+      className="flex flex-col space-y-2 border-t pt-4"
+    >
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Education
+      </p>
       <div className="flex flex-col space-y-4">
         {educationDetails.map((item, index) => (
           <div
             key={"educations+" + index}
             className="flex break-inside-avoid flex-col"
           >
-            <p className={styles.subHeading}>
-              {item.degree && <span>{item.degree}</span>}
-            </p>
-            <p className={styles.para}>
-              {item.institution && <span>{item.institution}</span>}
-              {item.startDate && (
-                <span>
-                  {" • "}
-                  {item.startDate}
-                </span>
-              )}
-              {item.endDate && !item.current && (
-                <span>
-                  {" - "}
-                  {item.endDate}
-                </span>
-              )}
-              {item.current && (
-                <span>
-                  {" - "}
-                  {"Studying"}
-                </span>
-              )}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className={styles.subHeading}>
+                {item.degree && <span>{item.degree}</span>}
+              </p>
+              <p className={styles.para}>
+                {item.institution && <span>{item.institution}</span>}
+                {item.startDate && (
+                  <span>
+                    {" • "}
+                    {item.startDate}
+                  </span>
+                )}
+                {item.endDate && !item.current && (
+                  <span>
+                    {" - "}
+                    {item.endDate}
+                  </span>
+                )}
+                {item.current && (
+                  <span>
+                    {" - "}
+                    {"Studying"}
+                  </span>
+                )}
+              </p>
+            </div>
             <p className={styles.para}>
               {item.score && (
                 <span>
@@ -270,13 +280,17 @@ const Educations = ({ resumeData }: TemplateProps) => {
 };
 
 const Skills = ({ resumeData }: TemplateProps) => {
-  const { hardSkills, softSkills } = resumeData;
-  const { textHex } = resumeData.template;
+  const { hardSkills, softSkills, template } = resumeData;
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-8">
       {hardSkills && hardSkills.length > 0 && (
         <div>
-          <p className={styles.heading}>Skills</p>
+          <p
+            style={{ color: template.accentHex }}
+            className={cn(styles.heading, "mb-2 uppercase")}
+          >
+            Core skills
+          </p>
           <div className="flex flex-col space-y-2">
             {hardSkills?.map((item, index) =>
               !isEqual(item, skillDefValues) ? (
@@ -288,7 +302,7 @@ const Skills = ({ resumeData }: TemplateProps) => {
                         <span
                           className="absolute left-0 top-0 h-full w-full rounded-full"
                           style={{
-                            backgroundColor: textHex,
+                            backgroundColor: template.accentHex,
                             opacity: "25%",
                           }}
                         ></span>
@@ -296,7 +310,7 @@ const Skills = ({ resumeData }: TemplateProps) => {
                           className="absolute left-0 top-0 h-full"
                           style={{
                             width: (item.level + 1) * 20 + "%",
-                            backgroundColor: textHex,
+                            backgroundColor: template.accentHex,
                           }}
                         ></span>
                       </span>
@@ -311,7 +325,12 @@ const Skills = ({ resumeData }: TemplateProps) => {
 
       {softSkills && softSkills.length > 0 && (
         <div>
-          <p className={styles.heading}>Soft skills</p>
+          <p
+            style={{ color: template.accentHex }}
+            className={cn(styles.heading, "mb-2 uppercase")}
+          >
+            Soft skills
+          </p>
           <div className="flex flex-col space-y-2">
             {softSkills?.map((item, index) =>
               !isEqual(item, skillDefValues) ? (
@@ -323,7 +342,7 @@ const Skills = ({ resumeData }: TemplateProps) => {
                         <span
                           className="absolute left-0 top-0 h-full w-full rounded-full"
                           style={{
-                            backgroundColor: textHex,
+                            backgroundColor: template.accentHex,
                             opacity: "25%",
                           }}
                         ></span>
@@ -331,7 +350,7 @@ const Skills = ({ resumeData }: TemplateProps) => {
                           className="absolute left-0 top-0 h-full"
                           style={{
                             width: (item.level + 1) * 20 + "%",
-                            backgroundColor: textHex,
+                            backgroundColor: template.accentHex,
                           }}
                         ></span>
                       </span>
@@ -364,7 +383,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <FaLinkedin />
             <span className={styles.subHeading}>LinkedIn</span>
           </div>
-          <p className={styles.para}>{linkedin}</p>
+          <p className={cn(styles.para, "break-words")}>{linkedin}</p>
         </div>
       )}
       {github && (
@@ -373,7 +392,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <FaGithub />
             <span className={styles.subHeading}>Github</span>
           </div>
-          <p className={styles.para}>{github}</p>
+          <p className={cn(styles.para, "break-words")}>{github}</p>
         </div>
       )}
       {instagram && (
@@ -382,7 +401,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <FaInstagram />
             <span className={styles.subHeading}>Instagram</span>
           </div>
-          <p className={styles.para}>{instagram}</p>
+          <p className={cn(styles.para, "break-words")}>{instagram}</p>
         </div>
       )}
 
@@ -392,7 +411,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <FaXTwitter />
             <span className={styles.subHeading}>Twitter/X</span>
           </div>
-          <p className={styles.para}>{twitter}</p>
+          <p className={cn(styles.para, "break-words")}>{twitter}</p>
         </div>
       )}
 
@@ -402,7 +421,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <FaThreads />
             <span className={styles.subHeading}>Threads</span>
           </div>
-          <p className={styles.para}>{threads}</p>
+          <p className={cn(styles.para, "break-words")}>{threads}</p>
         </div>
       )}
 
@@ -412,7 +431,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
             <FaGlobe />
             <span className={styles.subHeading}>My Website</span>
           </div>
-          <p className={styles.para}>{website}</p>
+          <p className={cn(styles.para, "break-words")}>{website}</p>
         </div>
       )}
 
@@ -423,7 +442,7 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
               <div className="flex items-center justify-start space-x-1">
                 <span className={styles.subHeading}>{item.label}</span>
               </div>
-              <p className={styles.para}>{item.link}</p>
+              <p className={cn(styles.para, "break-words")}>{item.link}</p>
             </div>
           ))}
         </div>
@@ -432,11 +451,59 @@ const SocialLinks = ({ resumeData }: TemplateProps) => {
   ) : null;
 };
 
+const Projects = ({ resumeData }: TemplateProps) => {
+  const { projects, template } = resumeData;
+  return projects && projects?.length > 0 ? (
+    <div
+      style={{ borderColor: template.accentHex }}
+      className="flex flex-col space-y-2 border-t pt-4"
+    >
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Projects
+      </p>
+      <div className="flex flex-col space-y-4">
+        {projects.map((item, index) => (
+          <div
+            key={"project-" + index}
+            className="flex break-inside-avoid flex-col"
+          >
+            <p className={styles.subHeading}>
+              {item.name && <span>{item.name}</span>}
+            </p>
+            <p className={styles.para}>
+              {item.link && <span>{item.link}</span>}
+            </p>
+            {item.description && (
+              <div
+                className={cn(styles.para, "mt-1")}
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(item.description),
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : null;
+};
+
 const Certifications = ({ resumeData }: TemplateProps) => {
-  const { certifications } = resumeData;
+  const { certifications, template } = resumeData;
   return certifications && certifications?.length > 0 ? (
-    <div className="flex flex-col space-y-2">
-      <p className={styles.heading}>Certifications</p>
+    <div
+      style={{ borderColor: template.accentHex }}
+      className="flex flex-col space-y-2 border-t pt-4"
+    >
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Certifications
+      </p>
       <div className="flex flex-col space-y-4">
         {certifications.map((item, index) => (
           <div
@@ -482,13 +549,18 @@ const Certifications = ({ resumeData }: TemplateProps) => {
 };
 
 const Courses = ({ resumeData }: TemplateProps) => {
-  const { courses } = resumeData;
-  return courses &&
-    courses?.length > 0 &&
-    courses.length === 1 &&
-    courses[0] != courseDefValues ? (
-    <div className="flex flex-col space-y-2">
-      <p className={styles.heading}>Courses</p>
+  const { courses, template } = resumeData;
+  return courses && courses.length > 0 ? (
+    <div
+      style={{ borderColor: template.accentHex }}
+      className="flex flex-col space-y-2 border-t pt-4"
+    >
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Courses
+      </p>
       <div className="flex flex-col space-y-4">
         {courses.map((item, index) => (
           <div
@@ -534,13 +606,18 @@ const Courses = ({ resumeData }: TemplateProps) => {
 };
 
 const Hobbies = ({ resumeData }: TemplateProps) => {
-  const { hobbies } = resumeData;
-  return hobbies &&
-    hobbies?.length > 0 &&
-    hobbies.length === 1 &&
-    hobbies[0] != hobbyDefValues ? (
-    <div className="flex flex-col space-y-2">
-      <p className={styles.heading}>Hobbies</p>
+  const { hobbies, template } = resumeData;
+  return hobbies && hobbies?.length > 0 ? (
+    <div
+      style={{ borderColor: template.accentHex }}
+      className="flex flex-col space-y-2 border-t pt-4"
+    >
+      <p
+        style={{ color: template.accentHex }}
+        className={cn(styles.heading, "uppercase")}
+      >
+        Hobbies
+      </p>
       <div className="grid grid-cols-2 gap-4">
         {hobbies.map((item, index) => (
           <div

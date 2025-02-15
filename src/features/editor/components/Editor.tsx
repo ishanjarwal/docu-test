@@ -11,6 +11,7 @@ import useUnloadWarning from "@/hooks/useUnloadWarning";
 import useAutoSaveResume from "../hooks/useAutoSaveResume";
 import toast, { Toaster } from "react-hot-toast";
 import TemplateSwitcher from "./TemplateSwitcher";
+import { useTour } from "@reactour/tour";
 
 const Editor = () => {
   const searchParams = useSearchParams();
@@ -48,6 +49,11 @@ const Editor = () => {
     };
   }, [isSaving]);
 
+  const { setIsOpen } = useTour();
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
+
   return (
     <>
       <TemplateSwitcher />
@@ -67,7 +73,11 @@ const Editor = () => {
           />
         )}
       </div>
-      <EditorFooter currStep={currStep} setCurrStep={setStep} />
+      <EditorFooter
+        currStep={currStep}
+        setCurrStep={setStep}
+        resumeId={resumeData?.id}
+      />
     </>
   );
 };

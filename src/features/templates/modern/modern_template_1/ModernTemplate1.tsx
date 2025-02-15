@@ -255,7 +255,12 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
               >
                 Professional Summary
               </p>
-              <p className={cn(styles.para)}>{personalDetails.summary}</p>
+              <div
+                className="text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: convertToUlORP(personalDetails.summary),
+                }}
+              />
             </div>
           )}
 
@@ -424,7 +429,7 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
               style={{ borderColor: template.accentHex }}
               className="mt-4 border-b-2 pb-4"
             >
-              <div className="flex flex-col gap-y-2">
+              <div className="flex break-inside-avoid flex-col gap-y-2">
                 <p
                   style={{ color: template.accentHex }}
                   className={cn(styles.heading, "uppercase")}

@@ -22,6 +22,7 @@ const BreadCrumbs = ({ currStep, setCurrStep }: BreadCrumbProps) => {
   return (
     <div
       className={clsx(
+        "step2",
         { "scrollbar-thin scrollbar-h-1": isDesktop },
         "sticky top-0 z-50 max-w-full overflow-auto bg-card-foreground/5 p-4 backdrop-blur-md",
       )}

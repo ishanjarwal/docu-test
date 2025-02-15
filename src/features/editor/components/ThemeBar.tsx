@@ -30,6 +30,7 @@ import { templateDefValues } from "@/validations/defaultValues";
 import { fonts } from "../constants/fonts";
 import { useTemplateSwitch } from "../providers/TemplateSwitchContext";
 import { PiDrop } from "react-icons/pi";
+import { cn } from "@/lib/utils";
 
 const ThemeBar = () => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
@@ -62,7 +63,7 @@ const ThemeBar = () => {
     );
 
   return (
-    <div className="flex items-center justify-start space-x-2">
+    <div className={cn("step5", "flex items-center justify-start space-x-2")}>
       <Form {...form}>
         <CustomTooltip
           text="Choose template"

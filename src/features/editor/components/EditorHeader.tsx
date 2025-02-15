@@ -36,7 +36,7 @@ const EditorHeader = () => {
           </h1> */}
         </div>
       </div>
-      <div className="basis-3/4">
+      <div className="step1 basis-3/4">
         {/* for title of the current resume (editable) */}
         <TitleForm />
       </div>

@@ -2,15 +2,30 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 
-import { IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
+import { IoMdArrowBack, IoMdArrowForward, IoMdMore } from "react-icons/io";
 import { steps } from "../constants/steps";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { IoRocketOutline } from "react-icons/io5";
+import { MdOutlineFileDownload } from "react-icons/md";
+import Link from "next/link";
+import { useTour } from "@reactour/tour";
+import { cn } from "@/lib/utils";
 
 interface FooterProps {
   currStep: string;
   setCurrStep: (key: string) => void;
+  resumeId?: string;
 }
 
-const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
+const EditorFooter = ({ currStep, setCurrStep, resumeId }: FooterProps) => {
+  const { setIsOpen } = useTour();
+
   const addPreviewParam = () => {
     const newSearchParams = new URLSearchParams(window.location.search);
     newSearchParams.set("preview", "true");
@@ -27,7 +42,7 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
 
   return (
     <div className="fixed bottom-0 flex w-full items-center justify-between border-t bg-background p-4 lg:relative lg:bottom-auto">
-      <div className="flex items-center justify-start space-x-2">
+      <div className={cn("step3", "flex items-center justify-start space-x-2")}>
         {prevStep && (
           <Button
             onClick={
@@ -60,7 +75,7 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
           </Button>
         )}
       </div>
-      <div className="flex items-center justify-start space-x-2">
+      <div className={cn("step4", "flex items-center justify-start space-x-2")}>
         <Button
           onClick={addPreviewParam}
           className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
@@ -68,6 +83,36 @@ const EditorFooter = ({ currStep, setCurrStep }: FooterProps) => {
         >
           Preview
         </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size={"icon"} variant={"secondary"}>
+              <IoMdMore />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Button
+                className="w-full justify-start bg-transparent text-foreground shadow-none hover:bg-transparent"
+                asChild
+              >
+                <Link href={`/preview?id=${resumeId}`} target="_blank">
+                  <MdOutlineFileDownload />
+                  <span>Download PDF</span>
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Button
+                onClick={() => setIsOpen(true)}
+                className="w-full justify-start bg-transparent text-foreground shadow-none hover:bg-transparent"
+              >
+                <IoRocketOutline />
+                <span>Launch tour guide</span>
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ export async function generateSummary(input: GenerateSummaryValues) {
 
     const prompt = `
     You are an AI Resume generator. Create a professional summary in under 50 - 100 words based on the data provided by the user. keep the language very professional and concise.
+    Create it in bullet points represented by '-' and new line for every point
 
     Data provided by user :
     role : ${jobTitle || "N/A"}
