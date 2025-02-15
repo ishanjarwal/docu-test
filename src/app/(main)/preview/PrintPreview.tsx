@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { templates } from "@/features/editor/constants/templates";
 import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 import ModernTemplate1 from "@/features/templates/modern/modern_template_1/ModernTemplate1";
+import useTemplate from "@/features/templates/useTemplate";
 import useDimensions from "@/hooks/useDimensions";
 import { resumeSchemaType } from "@/validations/validation";
 import React, { useRef } from "react";
@@ -67,9 +68,7 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
   //   handlePrint();
   // }, []);
 
-  const Template =
-    templates.find((el) => el.id === resumeData.template.templateId)
-      ?.template || ATSTemplate1;
+  const Template = useTemplate(resumeData);
 
   return (
     <>

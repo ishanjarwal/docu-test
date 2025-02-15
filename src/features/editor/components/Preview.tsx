@@ -11,6 +11,7 @@ import { IoMdClose } from "react-icons/io";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { templates } from "../constants/templates";
+import useTemplate from "@/features/templates/useTemplate";
 
 const Preview = ({ className }: { className?: string }) => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
@@ -29,9 +30,7 @@ const Preview = ({ className }: { className?: string }) => {
   ) as React.RefObject<HTMLElement>;
   const { width } = useDimensions(containerRef);
 
-  const Template =
-    templates.find((el) => el.id === resumeData.template.templateId)
-      ?.template || ATSTemplate1;
+  const Template = useTemplate(resumeData);
 
   return (
     <div
