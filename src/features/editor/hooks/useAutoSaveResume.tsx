@@ -11,7 +11,7 @@ const useAutoSaveResume = (resumeData: resumeSchemaType) => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const debouncedData = useDebounce(resumeData, 1500);
+  const debouncedData = useDebounce(resumeData, 3000);
   const [resumeId, setResumeId] = useState(resumeData.id);
 
   const [lastSaved, setLastSaved] = useState(structuredClone(resumeData));

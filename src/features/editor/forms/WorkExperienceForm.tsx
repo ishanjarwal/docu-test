@@ -1,27 +1,31 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { EditorFormProps } from "../constants/types";
-import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
-import {
-  GenerateWorkExperienceSchema,
-  GenerateWorkExperienceValues,
-  WorkExperienceSchema,
-  WorkExperienceType,
-} from "@/validations/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import CustomFormField from "../components/CustomFormField";
-import { IoMdAdd } from "react-icons/io";
-import { MdDragIndicator } from "react-icons/md";
+import AIButton from "@/components/custom/AIButton";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FiTrash } from "react-icons/fi";
-import { FaChevronDown, FaWandMagicSparkles } from "react-icons/fa6";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Form } from "@/components/ui/form";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { workExperienceDefValues } from "@/validations/defaultValues";
+import {
+  GenerateWorkExperienceSchema,
+  GenerateWorkExperienceValues,
+  WorkExperienceSchema,
+  WorkExperienceType,
+} from "@/validations/validation";
 import {
   closestCenter,
   DndContext,
@@ -32,6 +36,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
@@ -39,25 +44,25 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
-import { workExperienceDefValues } from "@/validations/defaultValues";
-import AIButton from "@/components/custom/AIButton";
-import { generateWorkExperience } from "./action";
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
+import { FiTrash } from "react-icons/fi";
+import { IoMdAdd } from "react-icons/io";
 import { LuLoaderCircle } from "react-icons/lu";
+import { MdDragIndicator } from "react-icons/md";
+import CustomFormField from "../components/CustomFormField";
+import { EditorFormProps } from "../constants/types";
+import { generateWorkExperience } from "./action";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+  const { canUseAI } = usePremiumFeatures(subscriptionLevel);
   const form = useForm<WorkExperienceType>({
     resolver: zodResolver(WorkExperienceSchema),
     defaultValues: {
@@ -122,6 +127,7 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               >
                 {fields.map((field, index) => (
                   <WorkExperienceItem
+                    canUseAI={canUseAI}
                     id={field.id}
                     index={index}
                     form={form}
@@ -147,6 +153,7 @@ interface WorkExperienceItemProps {
   form: UseFormReturn<WorkExperienceType>;
   index: number;
   remove: (index: number) => void;
+  canUseAI: boolean;
 }
 
 const WorkExperienceItem = ({
@@ -154,6 +161,7 @@ const WorkExperienceItem = ({
   form,
   index,
   remove,
+  canUseAI,
 }: WorkExperienceItemProps) => {
   const {
     attributes,
@@ -218,7 +226,11 @@ const WorkExperienceItem = ({
               <div className="flex-1 px-2 py-4 md:px-4">
                 <div className="mt-4 grid grid-cols-1 gap-y-4">
                   <div className="flex justify-end">
-                    <AIWorkExperienceGenerator form={form} index={index} />
+                    <AIWorkExperienceGenerator
+                      canUseAI={canUseAI}
+                      form={form}
+                      index={index}
+                    />
                   </div>
                   <CustomFormField
                     props={{
@@ -329,13 +341,14 @@ export default WorkExperienceForm;
 const AIWorkExperienceGenerator = ({
   form,
   index,
+  canUseAI,
 }: {
   form: UseFormReturn<WorkExperienceType>;
   index: number;
+  canUseAI: boolean;
 }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
-
   const descForm = useForm<GenerateWorkExperienceValues>({
     resolver: zodResolver(GenerateWorkExperienceSchema),
     defaultValues: { description: "" },
@@ -416,7 +429,7 @@ const AIWorkExperienceGenerator = ({
     }
   }
 
-  return (
+  return canUseAI ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div>
@@ -468,5 +481,20 @@ const AIWorkExperienceGenerator = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  ) : (
+    <div className="relative">
+      <AIButton />
+      <Link
+        href={"/plans"}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      >
+        <p className="flex items-center justify-center space-x-1 text-center">
+          <span className="text-xs leading-none">Unlock AI</span>
+          <span className="text-yellow-400">
+            <FaCrown />
+          </span>
+        </p>
+      </Link>
+    </div>
   );
 };

@@ -1,14 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import Link from "next/link";
 import React from "react";
 import { IoAddOutline } from "react-icons/io5";
 
 const CreateNewButton = ({ count }: { count: number }) => {
   const { setOpen } = usePremiumModal();
-
-  if (count >= 3) {
+  const subscriptionLevel = useSubscriptionLevel();
+  const { resumeLimit } = usePremiumFeatures(subscriptionLevel);
+  if (count >= resumeLimit) {
     return (
       <Button
         onClick={() => setOpen(true)}

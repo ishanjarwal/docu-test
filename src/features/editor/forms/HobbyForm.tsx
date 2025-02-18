@@ -1,4 +1,11 @@
 "use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
   GenerateHobbiesSchema,
@@ -7,7 +14,7 @@ import {
   HobbyValues,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Control,
   useFieldArray,
@@ -15,20 +22,26 @@ import {
   useForm,
   UseFormReturn,
 } from "react-hook-form";
-import { EditorFormProps } from "../constants/types";
+import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
+import { FiTrash } from "react-icons/fi";
+import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
-import { Button } from "@/components/ui/button";
-import { IoMdAdd } from "react-icons/io";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { FaChevronDown, FaWandMagicSparkles } from "react-icons/fa6";
-import { FiTrash } from "react-icons/fi";
+import { EditorFormProps } from "../constants/types";
 
+import AIButton from "@/components/custom/AIButton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { hobbyDefValues } from "@/validations/defaultValues";
 import {
   closestCenter,
   DndContext,
@@ -39,6 +52,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
@@ -46,25 +60,17 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
-import { hobbyDefValues } from "@/validations/defaultValues";
-import { generateHobbies } from "./action";
+import clsx from "clsx";
+import Link from "next/link";
 import toast from "react-hot-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { LuLoaderCircle } from "react-icons/lu";
-import AIButton from "@/components/custom/AIButton";
+import { generateHobbies } from "./action";
 
 const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+  const { canUseAI } = usePremiumFeatures(subscriptionLevel);
+
   const form = useForm<HobbyValues>({
     resolver: zodResolver(HobbySchema),
     defaultValues: {
@@ -119,7 +125,7 @@ const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
         <Form {...form}>
           <div className="flex flex-col gap-y-8">
             <div className="flex justify-end">
-              <AIHobbiesGenerator form={form} />
+              <AIHobbiesGenerator canUseAI={canUseAI} form={form} />
             </div>
             <DndContext
               sensors={sensors}
@@ -258,7 +264,13 @@ const HobbyItem = ({ id, form, index, remove, control }: HobbyItemProps) => {
 
 export default HobbyForm;
 
-const AIHobbiesGenerator = ({ form }: { form: UseFormReturn<HobbyValues> }) => {
+const AIHobbiesGenerator = ({
+  form,
+  canUseAI,
+}: {
+  form: UseFormReturn<HobbyValues>;
+  canUseAI: boolean;
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -271,34 +283,26 @@ const AIHobbiesGenerator = ({ form }: { form: UseFormReturn<HobbyValues> }) => {
     description: GenerateHobbiesValues["description"],
   ) {
     try {
-      try {
-        setLoading(true);
-        const result = await generateHobbies({ description });
-        if (result.error) {
-          const tID = toast.error(
-            <div className="flex items-center justify-between space-x-1 ps-1">
-              <p className="text-sm">{result.error}</p>
-              <Button
-                className="text-xs"
-                size={"sm"}
-                variant={"secondary"}
-                onClick={() => toast.dismiss(tID)}
-              >
-                Cancel
-              </Button>
-            </div>,
-            { position: "bottom-center" },
-          );
-        } else if (result.success) {
-          const arr = result.success.content;
-          form.setValue("hobbies", arr);
-        }
-      } catch (error) {
-        toast.error("Something went wrong", { position: "bottom-center" });
-        console.log(error);
-      } finally {
-        setLoading(false);
-        setOpen(false);
+      setLoading(true);
+      const result = await generateHobbies({ description });
+      if (result.error) {
+        const tID = toast.error(
+          <div className="flex items-center justify-between space-x-1 ps-1">
+            <p className="text-sm">{result.error}</p>
+            <Button
+              className="text-xs"
+              size={"sm"}
+              variant={"secondary"}
+              onClick={() => toast.dismiss(tID)}
+            >
+              Cancel
+            </Button>
+          </div>,
+          { position: "bottom-center" },
+        );
+      } else if (result.success) {
+        const arr = result.success.content;
+        form.setValue("hobbies", arr);
       }
     } catch (error) {
       toast.error("Something went wrong", { position: "bottom-center" });
@@ -309,7 +313,7 @@ const AIHobbiesGenerator = ({ form }: { form: UseFormReturn<HobbyValues> }) => {
     }
   }
 
-  return (
+  return canUseAI ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div>
@@ -361,5 +365,20 @@ const AIHobbiesGenerator = ({ form }: { form: UseFormReturn<HobbyValues> }) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  ) : (
+    <div className="relative">
+      <AIButton />
+      <Link
+        href={"/plans"}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      >
+        <p className="flex items-center justify-center space-x-1 text-center">
+          <span className="text-xs leading-none">Unlock AI</span>
+          <span className="text-yellow-400">
+            <FaCrown />
+          </span>
+        </p>
+      </Link>
+    </div>
   );
 };

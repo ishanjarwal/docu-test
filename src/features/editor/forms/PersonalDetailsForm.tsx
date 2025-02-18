@@ -27,11 +27,18 @@ import { useDeviceType } from "@/hooks/useDeviceType";
 import AIButton from "@/components/custom/AIButton";
 import { generateSummary } from "./action";
 import toast from "react-hot-toast";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import { SubscriptionLevel } from "@/features/premium/actions";
+import { FaCrown } from "react-icons/fa6";
+import Link from "next/link";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 
 const PersonalDetailsForm = ({
   resumeData,
   setResumeData,
 }: EditorFormProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+
   const form = useForm<personalDetailsType>({
     mode: "onChange",
     resolver: zodResolver(personalDetailsSchema),
@@ -235,7 +242,11 @@ const PersonalDetailsForm = ({
             <div className="flex flex-col space-y-2">
               <div className="flex items-center justify-between">
                 <p>Professional summary</p>
-                <AISummaryGenerator resumeData={resumeData} form={form} />
+                <AISummaryGenerator
+                  subscriptionLevel={subscriptionLevel}
+                  resumeData={resumeData}
+                  form={form}
+                />
               </div>
               <CustomFormField
                 props={{
@@ -275,12 +286,14 @@ export default PersonalDetailsForm;
 export const AISummaryGenerator = ({
   resumeData,
   form,
+  subscriptionLevel,
 }: {
   form: UseFormReturn<personalDetailsType>;
   resumeData: resumeSchemaType;
+  subscriptionLevel: SubscriptionLevel;
 }) => {
   const [loading, setLoading] = useState(false);
-
+  const { canUseAI } = usePremiumFeatures(subscriptionLevel);
   async function handleClick() {
     try {
       setLoading(true);
@@ -315,5 +328,22 @@ export const AISummaryGenerator = ({
     }
   }
 
-  return <AIButton onClick={() => handleClick()} loading={loading} />;
+  return canUseAI ? (
+    <AIButton onClick={() => handleClick()} loading={loading} />
+  ) : (
+    <div className="relative">
+      <AIButton />
+      <Link
+        href={"/plans"}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      >
+        <p className="flex items-center justify-center space-x-1 text-center">
+          <span className="text-xs leading-none">Unlock AI</span>
+          <span className="text-yellow-400">
+            <FaCrown />
+          </span>
+        </p>
+      </Link>
+    </div>
+  );
 };

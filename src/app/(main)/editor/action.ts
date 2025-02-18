@@ -1,9 +1,16 @@
 "use server";
 
+import {
+  canUseCustomizations,
+  getUserSubscriptionLevel,
+  SubscriptionLevel,
+} from "@/features/premium/actions";
 import prisma from "@/lib/prisma";
 import { resumeSchema, resumeSchemaType } from "@/validations/validation";
 import { auth } from "@clerk/nextjs/server";
 import { del, head, put } from "@vercel/blob";
+import { cloneDeep } from "lodash";
+import isEqual from "lodash.isequal";
 import path from "path";
 
 export const saveResume = async (values: resumeSchemaType) => {
@@ -18,6 +25,19 @@ export const saveResume = async (values: resumeSchemaType) => {
     }
 
     //   TODO : check resume count for non-premium users
+    const resumeLimits: Record<SubscriptionLevel, number> = {
+      free: 1,
+      hobby: 3,
+      pro: 10,
+    };
+    const subscriptionLevel = await getUserSubscriptionLevel(userId);
+    if (!id) {
+      // resume limit check
+      const count = await prisma.resume.count({ where: { userId } });
+      if (count >= resumeLimits[subscriptionLevel]) {
+        throw new Error("Maximum resume limit reached for this account");
+      }
+    }
 
     const existingResume = id
       ? await prisma.resume.findUnique({ where: { id, userId } })
@@ -25,6 +45,16 @@ export const saveResume = async (values: resumeSchemaType) => {
 
     if (id && !existingResume) {
       throw new Error("resume not found, invalid id");
+    }
+
+    // can use customizations check
+    const hasCustomizations = !isEqual(
+      cloneDeep(existingResume?.template),
+      cloneDeep(values.template),
+    );
+    const customizationsPermission = await canUseCustomizations(userId);
+    if (hasCustomizations && !customizationsPermission) {
+      throw new Error("Cannot use customizations for this account");
     }
 
     //  photo undefined means no photo and null means delete existing photo

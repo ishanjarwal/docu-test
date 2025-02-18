@@ -22,7 +22,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FaChevronDown, FaWandMagicSparkles } from "react-icons/fa6";
+import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
 import clsx from "clsx";
 
 import {
@@ -58,8 +58,13 @@ import {
 } from "@/components/ui/dialog";
 import { LuLoaderCircle } from "react-icons/lu";
 import AIButton from "@/components/custom/AIButton";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import Link from "next/link";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+  const { canUseAI } = usePremiumFeatures(subscriptionLevel);
   const form = useForm<EducationDetailsType>({
     resolver: zodResolver(EducationDetailsSchema),
     defaultValues: {
@@ -126,6 +131,7 @@ const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               >
                 {fields.map((field, index) => (
                   <EducationItem
+                    canUseAI={canUseAI}
                     id={field.id}
                     index={index}
                     form={form}
@@ -154,9 +160,16 @@ interface EducationItemProps {
   form: UseFormReturn<EducationDetailsType>;
   index: number;
   remove: (index: number) => void;
+  canUseAI: boolean;
 }
 
-const EducationItem = ({ id, form, index, remove }: EducationItemProps) => {
+const EducationItem = ({
+  id,
+  form,
+  index,
+  remove,
+  canUseAI,
+}: EducationItemProps) => {
   const {
     attributes,
     listeners,
@@ -222,7 +235,11 @@ const EducationItem = ({ id, form, index, remove }: EducationItemProps) => {
               <div className="flex-1 px-2 py-4 md:px-4">
                 <div className="mt-4 grid grid-cols-1 gap-y-4">
                   <div className="flex justify-end">
-                    <AIEdicationDetailsGenerator form={form} index={index} />
+                    <AIEdicationDetailsGenerator
+                      canUseAI={canUseAI}
+                      form={form}
+                      index={index}
+                    />
                   </div>
                   <CustomFormField
                     props={{
@@ -313,13 +330,14 @@ export default EducationForm;
 const AIEdicationDetailsGenerator = ({
   form,
   index,
+  canUseAI,
 }: {
   form: UseFormReturn<EducationDetailsType>;
   index: number;
+  canUseAI: boolean;
 }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
-
   const descForm = useForm<GenerateEducationDetailsValues>({
     resolver: zodResolver(GenerateEducationDetailsSchema),
     defaultValues: { description: "" },
@@ -395,7 +413,7 @@ const AIEdicationDetailsGenerator = ({
     }
   }
 
-  return (
+  return canUseAI ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div>
@@ -447,5 +465,20 @@ const AIEdicationDetailsGenerator = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  ) : (
+    <div className="relative">
+      <AIButton />
+      <Link
+        href={"/plans"}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      >
+        <p className="flex items-center justify-center space-x-1 text-center">
+          <span className="text-xs leading-none">Unlock AI</span>
+          <span className="text-yellow-400">
+            <FaCrown />
+          </span>
+        </p>
+      </Link>
+    </div>
   );
 };

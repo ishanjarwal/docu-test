@@ -30,7 +30,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FaChevronDown, FaWandMagicSparkles } from "react-icons/fa6";
+import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
 
 import {
   closestCenter,
@@ -66,8 +66,14 @@ import {
 import { LuLoaderCircle } from "react-icons/lu";
 import AIButton from "@/components/custom/AIButton";
 import { generateSkills } from "./action";
+import Link from "next/link";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+  const { canUseAI } = usePremiumFeatures(subscriptionLevel);
+
   const form = useForm<SkillType>({
     resolver: zodResolver(SkillSchema),
     defaultValues: {
@@ -143,7 +149,11 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             <div>
               <div className="flex flex-col gap-y-8">
                 <div className="flex justify-end">
-                  <AISkillGenerator form={form} type={"hard"} />
+                  <AISkillGenerator
+                    canUseAI={canUseAI}
+                    form={form}
+                    type={"hard"}
+                  />
                 </div>
                 <DndContext
                   sensors={sensors}
@@ -190,7 +200,11 @@ const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             <div>
               <div className="flex flex-col gap-y-8">
                 <div className="flex justify-end">
-                  <AISkillGenerator form={form} type={"soft"} />
+                  <AISkillGenerator
+                    canUseAI={canUseAI}
+                    form={form}
+                    type={"soft"}
+                  />
                 </div>
                 <DndContext
                   sensors={sensors}
@@ -364,13 +378,14 @@ export default SkillForm;
 const AISkillGenerator = ({
   form,
   type,
+  canUseAI,
 }: {
   form: UseFormReturn<SkillType>;
   type: GenerateSkillsValues["type"];
+  canUseAI: boolean;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
   const descForm = useForm({
     mode: "onChange",
     resolver: zodResolver(GenerateSkillsSchema),
@@ -419,7 +434,7 @@ const AISkillGenerator = ({
     }
   }
 
-  return (
+  return canUseAI ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div>
@@ -471,5 +486,20 @@ const AISkillGenerator = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  ) : (
+    <div className="relative">
+      <AIButton />
+      <Link
+        href={"/plans"}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      >
+        <p className="flex items-center justify-center space-x-1 text-center">
+          <span className="text-xs leading-none">Unlock AI</span>
+          <span className="text-yellow-400">
+            <FaCrown />
+          </span>
+        </p>
+      </Link>
+    </div>
   );
 };

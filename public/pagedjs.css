@@ -2,3 +2,7 @@
   size: A4;
   margin: 0mm;
 }
+
+.pagedjs_page {
+  background-color: white;
+}

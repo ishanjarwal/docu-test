@@ -1,6 +1,7 @@
 "use server";
 
 import { env } from "@/env";
+import { canUseAI } from "@/features/premium/actions";
 import { isValidJSON } from "@/lib/utils";
 import {
   GenerateEducationDetailsSchema,
@@ -13,10 +14,20 @@ import {
   GenerateWorkExperienceSchema,
   GenerateWorkExperienceValues,
 } from "@/validations/validation";
+import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function generateSummary(input: GenerateSummaryValues) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    const AIAccess = await canUseAI(userId);
+    if (!AIAccess) {
+      return { error: "Upgrade your plan to Pro to use AI" };
+    }
+
     const { jobTitle, educationDetails, workExperiences } = input;
 
     const prompt = `
@@ -88,6 +99,15 @@ export async function generateWorkExperience(
   input: GenerateWorkExperienceValues,
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    const AIAccess = await canUseAI(userId);
+    if (!AIAccess) {
+      return { error: "Upgrade your plan to Pro to use AI" };
+    }
+
     const { description } = GenerateWorkExperienceSchema.parse(input);
 
     const prompt = `
@@ -150,6 +170,15 @@ export async function generateEducationDetails(
   input: GenerateEducationDetailsValues,
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    const AIAccess = await canUseAI(userId);
+    if (!AIAccess) {
+      return { error: "Upgrade your plan to Pro to use AI" };
+    }
+
     const { description } = GenerateEducationDetailsSchema.parse(input);
 
     const prompt = `
@@ -209,6 +238,15 @@ export async function generateEducationDetails(
 
 export async function generateSkills(input: GenerateSkillsValues) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    const AIAccess = await canUseAI(userId);
+    if (!AIAccess) {
+      return { error: "Upgrade your plan to Pro to use AI" };
+    }
+
     const { description, type } = GenerateSkillsSchema.parse(input);
     const prompt = `
     You are an AI Resume generator. Create a ${type} skills array based on the description and/or data provided by the user. keep the language very professional and concise.
@@ -263,6 +301,15 @@ export async function generateSkills(input: GenerateSkillsValues) {
 
 export async function generateHobbies(input: GenerateHobbiesValues) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    const AIAccess = await canUseAI(userId);
+    if (!AIAccess) {
+      return { error: "Upgrade your plan to Pro to use AI" };
+    }
+
     const { description } = GenerateHobbiesSchema.parse(input);
     const prompt = `
     You are an AI Resume generator. Create a hobbies array based on the description provided by the user. keep the language very professional and concise.

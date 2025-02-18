@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, ReactNode } from "react";
-import { SubscriptionLevel } from "../../stripe/actions";
+import { SubscriptionLevel } from "../../premium/actions";
 
 interface SubscriptionLevelProviderProps {
   children: ReactNode;

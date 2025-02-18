@@ -1,4 +1,4 @@
-import { getUserSubscriptionLevel } from "@/features/stripe/actions";
+import { getUserSubscriptionLevel } from "@/features/premium/actions";
 import { SubscriptionLevelProvider } from "@/features/premium/providers/SubscriptionLevelProvider";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
