@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import ThemeProvider from "@/features/theme_toggle/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as ReactHotToaster } from "react-hot-toast";
 import PremiumModal from "@/features/premium/components/PremiumModal";
 
 const inter = Inter({
@@ -38,6 +39,7 @@ export default function RootLayout({
           >
             {children}
             <Toaster />
+            <ReactHotToaster position="bottom-center" />
             {/* temporary */}
             <PremiumModal />
           </ThemeProvider>

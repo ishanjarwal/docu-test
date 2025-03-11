@@ -88,6 +88,7 @@ export const hobbyDefValues = {
 
 export const templateDefValues: TemplateValues = {
   textHex: "#000000",
+  accentHex: "#000000",
   backdropHex: "#FFFFFF",
   borderStyle: "squircle",
   templateId: "ats-template-1",

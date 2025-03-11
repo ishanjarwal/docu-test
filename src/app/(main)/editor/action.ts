@@ -48,13 +48,17 @@ export const saveResume = async (values: resumeSchemaType) => {
     }
 
     // can use customizations check
-    const hasCustomizations = !isEqual(
-      cloneDeep(existingResume?.template),
-      cloneDeep(values.template),
-    );
-    const customizationsPermission = await canUseCustomizations(userId);
-    if (hasCustomizations && !customizationsPermission) {
-      throw new Error("Cannot use customizations for this account");
+    const hasCustomizations = existingResume
+      ? !isEqual(
+          cloneDeep(existingResume?.template),
+          cloneDeep(values.template),
+        )
+      : false;
+    if (hasCustomizations) {
+      const customizationsPermission = await canUseCustomizations(userId);
+      if (!customizationsPermission) {
+        throw new Error("Cannot use customizations for this account");
+      }
     }
 
     //  photo undefined means no photo and null means delete existing photo
@@ -125,5 +129,32 @@ export const saveResume = async (values: resumeSchemaType) => {
     throw new Error(
       (error instanceof Error && error.message) || "Something went wrong",
     );
+  }
+};
+
+export const isFirstVisit = async (): Promise<boolean> => {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+    const existingUser = await prisma.user.findUnique({
+      where: { clerkId: userId },
+    });
+    if (!existingUser) {
+      throw new Error("Not found");
+    }
+    if (existingUser.firstVisit) {
+      await prisma.user.update({
+        where: { clerkId: userId },
+        data: { firstVisit: false },
+      });
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("Cannot update user : ", error);
+    return true;
   }
 };

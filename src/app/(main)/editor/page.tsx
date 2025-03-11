@@ -9,6 +9,7 @@ import { resumeLimitExceeded } from "@/features/premium/actions";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { isFirstVisit } from "./action";
 
 const page = async ({
   searchParams,
@@ -32,10 +33,11 @@ const page = async ({
         where: { id, userId },
       })
     : null;
+  const firstVisit = await isFirstVisit();
   return (
     <ResumeData existingResume={existingResume}>
       <TemplateSwitchProvider>
-        <Tour>
+        <Tour firstVisit={firstVisit}>
           <main className="flex min-h-screen w-full lg:max-h-screen">
             {/* <Joyride key={"joyride"} steps={joyrideSteps} /> */}
             <PreviewRenderer />

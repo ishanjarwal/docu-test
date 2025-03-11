@@ -10,13 +10,22 @@ export const createCheckoutSession = async (priceId: string) => {
     if (!user) {
       return { error: "Unauthorized" };
     }
+    const stripeCustomerId = user.privateMetadata.stripeCustomerId as
+      | string
+      | undefined;
 
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
-      success_url: `${env.NEXT_PUBLIC_BASE_URL}/plans/success?success_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${env.NEXT_PUBLIC_BASE_URL}/plans/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${env.NEXT_PUBLIC_BASE_URL}/plans/failed`,
-      customer_email: user.emailAddresses[0].emailAddress,
+      customer: stripeCustomerId,
+      customer_email: stripeCustomerId
+        ? undefined
+        : user.emailAddresses[0].emailAddress,
+      metadata: {
+        userId: user.id,
+      },
       subscription_data: {
         metadata: {
           userId: user.id,
@@ -43,12 +52,26 @@ export const createCheckoutSession = async (priceId: string) => {
   }
 };
 
-export const retrieveCheckoutSession = async () => {
+import Stripe from "stripe";
+
+export const retrieveCheckoutSession = async (sessionId: string) => {
   try {
-    // check if the session id is valid
-    return { success: "12345678" };
+    // Check if the session ID is provided
+    if (!sessionId) {
+      return { error: "Session ID is required" };
+    }
+
+    // Fetch the checkout session from Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    // Check if the session is valid and return success
+    if (session && session.id === sessionId) {
+      return { success: true, session };
+    } else {
+      return { success: false, error: "Invalid session ID" };
+    }
   } catch (error) {
-    console.log(error);
+    console.error("Stripe Error:", error);
     return { error: "Unexpected error occurred" };
   }
 };

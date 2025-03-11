@@ -3,8 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Confetti } from "@/components/ui/confetti";
 import Link from "next/link";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import Stripe from "stripe";
 
-const SuccessComponent = ({ session_id }: { session_id: string }) => {
+const SuccessComponent = ({
+  session,
+}: {
+  session: Stripe.Checkout.Session;
+}) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Confetti className="pointer-events-none absolute left-0 top-0 z-0 size-full" />
@@ -15,7 +20,7 @@ const SuccessComponent = ({ session_id }: { session_id: string }) => {
         <h1 className="mb-4 text-4xl font-bold text-primary">
           Payment Successful!
         </h1>
-        <h2 className="mb-4 text-xl text-primary">Payment ID : {session_id}</h2>
+        <h2 className="mb-4 text-xl text-primary">Payment ID : {session.id}</h2>
         <p className="mb-6 text-lg text-muted-foreground">
           Thank you for your purchase. Your payment has been processed
           successfully.

@@ -39,7 +39,11 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
   return (
     <div
       className="p-8"
-      style={{ color: template.textHex, backgroundColor: template.backdropHex }}
+      style={{
+        color: template.textHex,
+        backgroundColor: template.backdropHex,
+        fontFamily: template?.fontFace || "Inter",
+      }}
     >
       {/* Header */}
       <div className="flex flex-col items-center justify-center gap-y-2">

@@ -10,6 +10,7 @@ import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import TitleForm from "../forms/TitleForm";
 import Link from "next/link";
+import CustomUserButton from "@/components/custom/CustomUserButton";
 
 const EditorHeader = () => {
   const { theme, systemTheme } = useTheme();
@@ -42,17 +43,7 @@ const EditorHeader = () => {
       </div>
       <div className="flex basis-3/12 items-center justify-end space-x-4">
         <ThemeToggleButton />
-        <UserButton
-          appearance={{
-            baseTheme:
-              theme === "dark" || (systemTheme === "dark" && theme === "system")
-                ? dark
-                : undefined,
-            elements: {
-              avatarBox: "w-8 h-8",
-            },
-          }}
-        />{" "}
+        <CustomUserButton />{" "}
       </div>
     </header>
   );

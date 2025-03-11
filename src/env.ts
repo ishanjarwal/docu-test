@@ -8,6 +8,13 @@ export const env = createEnv({
     CLERK_SECRET_KEY: z.string().min(1),
     GEMINI_API_KEY: z.string().min(1),
     STRIPE_SECRET_KEY: z.string().min(1),
+    EMAIL_HOST: z.string().min(1),
+    EMAIL_PORT: z.string().min(1),
+    EMAIL_USER: z.string().min(1),
+    EMAIL_PASS: z.string().min(1),
+    EMAIL_FROM: z.string().email(),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1),
+    CLERK_SIGNING_SECRET: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_API_URL: z.string().url(),

@@ -6,7 +6,13 @@ import { PopoverStylesObj } from "@reactour/popover";
 import { MaskStylesObj } from "@reactour/mask";
 import { Button } from "@/components/ui/button";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
-const Tour = ({ children }: { children: ReactNode }) => {
+const Tour = ({
+  children,
+  firstVisit,
+}: {
+  children: ReactNode;
+  firstVisit: boolean;
+}) => {
   const styles: StylesObj & PopoverStylesObj & MaskStylesObj = {
     popover: (base) => ({
       ...base,
@@ -23,6 +29,7 @@ const Tour = ({ children }: { children: ReactNode }) => {
 
   return (
     <TourProvider
+      defaultOpen={firstVisit}
       afterOpen={() => {
         const newSearchParams = new URLSearchParams(window.location.search);
         newSearchParams.delete("preview");

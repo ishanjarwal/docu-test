@@ -83,3 +83,20 @@ export const canUseAI = async (userId: string): Promise<boolean> => {
     return false;
   }
 };
+
+export const removeWatermark = async (userId: string): Promise<boolean> => {
+  try {
+    const subscriptionLevel = await getUserSubscriptionLevel(userId);
+    switch (subscriptionLevel) {
+      case "free":
+        return false;
+      case "hobby":
+        return true;
+      case "pro":
+        return true;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

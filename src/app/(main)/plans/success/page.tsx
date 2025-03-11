@@ -11,17 +11,11 @@ const SuccessPage = async ({
   if (!session_id) {
     redirect("/plans");
   }
-  try {
-    const result = await retrieveCheckoutSession();
-    if (!result || result.error) {
-      redirect("/plans");
-    } else {
-      return <SuccessComponent session_id={result.success!} />;
-    }
-  } catch (error) {
-    console.log(error);
-    redirect("/plans");
+  const result = await retrieveCheckoutSession(session_id as string);
+  if (!result || result.error || !result.session) {
+    return redirect("/plans");
   }
+  return <SuccessComponent session={result.session} />;
 };
 
 export default SuccessPage;

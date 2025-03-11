@@ -193,14 +193,7 @@
   src: url("../assets/fonts/TheNextFont.ttf");
 }
 
-@page {
-  size: A4;
-  margin: 12mm 0mm;
-}
-
-@media print {
-  #resumePreviewContent {
-    zoom: 1 !important;
-    padding: 0;
-  }
+footer p.outlined_text {
+  color: transparent;
+  -webkit-text-stroke: 2px hsl(var(--primary));
 }

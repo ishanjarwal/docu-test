@@ -48,7 +48,7 @@ const Navbar = () => {
       >
         {/* mobile menu */}
         {open && (
-          <div className="absolute left-0 top-full w-full rounded-b-lg bg-card/85 p-8 shadow-lg backdrop-blur-sm">
+          <div className="absolute left-0 top-full w-full rounded-b-lg bg-card p-8 shadow-lg">
             <nav
               className={clsx(
                 styles.mobile_navlinks_container,

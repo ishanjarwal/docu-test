@@ -1,0 +1,14 @@
+.testimonial_swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+.testimonial_swiper .swiper_overlay {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary)) 0%,
+    rgba(0, 0, 0, 0) 10%,
+    rgba(0, 0, 0, 0) 90%,
+    hsl(var(--primary)) 100%
+  );
+  pointer-events: none;
+}

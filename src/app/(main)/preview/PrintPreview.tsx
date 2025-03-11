@@ -15,6 +15,78 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
   const saver = useReactToPrint({
     contentRef: containerRef,
     documentTitle: resumeData.title || "Resume",
+    pageStyle: `
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      background-color: ${resumeData.template.backdropHex} !important;
+    }
+    @page {
+      size: A4;
+      padding: 12mm 0mm 12mm 0mm;
+      margin: 0mm;
+      background-color: ${resumeData.template.backdropHex} !important;
+      @top-left-corner {
+        content: "";
+      }
+      @top-left {
+        content: "";
+      }
+      @top-center {
+        content: "";
+      }
+      @top-right {
+        content: "";
+      }
+      @top-right-corner {
+        content: "";
+      }
+      @left-top {
+        content: "";
+      }
+      @left-middle {
+        content: "";
+      }
+      @left-bottom {
+        content: "";
+      }
+      @right-top {
+        content: "";
+      }
+      @right-middle {
+        content: "";
+      }
+      @right-bottom {
+        content: "";
+      }
+      @bottom-left-corner {
+        content: "";
+      }
+      @bottom-left {
+        content: "";
+      }
+      @bottom-center {
+        content: "";
+      }
+      @bottom-right {
+        content: "";
+      }
+      @bottom-right-corner {
+        content: "";
+      }
+}
+
+@page:first {
+  size: A4;
+  padding: 0mm 0mm 12mm 0mm;
+}
+
+@media print {
+  #resumePreviewContent {
+    zoom: 1 !important;
+    padding: 0;
+  }
+  `,
   });
   // const handlePrint = async () => {
   //   try {
@@ -78,7 +150,7 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
       <div
         ref={containerRef as React.RefObject<HTMLDivElement>}
         // style={{ display: "none" }}
-        className={"mx-auto mt-4 max-w-3xl overflow-hidden bg-white shadow-2xl"}
+        className={"mx-auto mt-4 max-w-3xl overflow-hidden bg-white"}
       >
         <div
           id="resumePreviewContent"

@@ -24,7 +24,7 @@ const page = async ({
       return redirect("/resumes");
     }
     return (
-      <main className="p-4 sm:py-8 md:py-16">
+      <main className="bg-background-muted p-4 sm:py-8 md:py-16">
         <PrintPreview resumeData={mapToResumeSchemaType(currentResume)} />
       </main>
     );

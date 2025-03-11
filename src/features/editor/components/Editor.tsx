@@ -49,11 +49,6 @@ const Editor = () => {
     };
   }, [isSaving]);
 
-  const { setIsOpen } = useTour();
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
-
   return (
     <>
       <TemplateSwitcher />
