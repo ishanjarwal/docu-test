@@ -50,7 +50,7 @@ const CourseForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CourseValues>({
     resolver: zodResolver(CourseSchema),
     defaultValues: {
-      courses: resumeData.courses || [courseDefValues],
+      courses: resumeData.courses || [],
     },
   });
 

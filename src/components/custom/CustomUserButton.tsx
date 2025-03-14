@@ -1,16 +1,11 @@
 "use client";
-import stripe from "@/lib/stripe";
+import ActivePlan from "@/features/stripe/components/ActivePlan";
 import { UserButton } from "@clerk/nextjs";
-import { auth, clerkClient } from "@clerk/nextjs/server";
 import { dark } from "@clerk/themes";
-import { formatDate } from "date-fns";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { FaCrown } from "react-icons/fa6";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { LiaUserLockSolid } from "react-icons/lia";
-import { Button } from "../ui/button";
-import Link from "next/link";
 
 const CustomUserButton = () => {
   const { theme, systemTheme } = useTheme();
@@ -29,10 +24,10 @@ const CustomUserButton = () => {
     >
       <UserButton.UserProfilePage
         label="My plan"
-        url={"/my-plan"}
+        url={"/user/active-plan"}
         labelIcon={<LiaUserLockSolid />}
       >
-        <MyPlan />
+        <ActivePlan />
       </UserButton.UserProfilePage>
       <UserButton.MenuItems>
         <UserButton.Link
@@ -51,27 +46,3 @@ const CustomUserButton = () => {
 };
 
 export default CustomUserButton;
-
-const MyPlan = () => {
-  const [currPlan, setCurrPlan] = useState(null);
-
-  return (
-    <div>
-      <h2 className="mb-4 text-xl font-bold">Your Plan</h2>
-      <div>
-        <p className="text-sm">
-          <strong>Current Plan</strong>&nbsp;:&nbsp;{"Pro Monthly"}
-        </p>
-        <p className="text-sm">
-          <strong>Plan expiry</strong>&nbsp;:&nbsp;
-          {formatDate(new Date(), "dd mm yyyy")}
-        </p>
-        <div className="mt-8">
-          <Button asChild>
-            <Link href={"/plans"}>{"Buy Subscription"}</Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};

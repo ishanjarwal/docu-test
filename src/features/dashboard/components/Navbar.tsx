@@ -7,9 +7,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaCrown } from "react-icons/fa6";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
+import { LuUser } from "react-icons/lu";
+import ActivePlan from "@/features/stripe/components/ActivePlan";
 const Navbar = () => {
   const { isSignedIn } = useUser();
+  const { openUserProfile } = useClerk();
 
   return (
     <div className="flex h-16 items-center bg-foreground/5">

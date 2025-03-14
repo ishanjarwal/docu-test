@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import useTemplate from "@/features/templates/useTemplate";
 import useDimensions from "@/hooks/useDimensions";
 import { resumeSchemaType } from "@/validations/validation";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { useReactToPrint } from "react-to-print";
 
@@ -23,7 +23,7 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
     }
     @page {
       size: A4;
-      padding: 12mm 0mm 12mm 0mm;
+      padding: 3mm 0mm 3mm 0mm;
       margin: 0mm;
       background-color: ${resumeData.template.backdropHex} !important;
       @top-left-corner {
@@ -78,7 +78,7 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
 
 @page:first {
   size: A4;
-  padding: 0mm 0mm 12mm 0mm;
+  padding: 0mm 0mm 3mm 0mm;
 }
 
 @media print {
@@ -137,6 +137,10 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
   // }, []);
 
   const Template = useTemplate(resumeData);
+
+  useEffect(() => {
+    saver();
+  }, []);
 
   return (
     <>

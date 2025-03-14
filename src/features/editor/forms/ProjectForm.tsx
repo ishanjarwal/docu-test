@@ -48,7 +48,7 @@ const ProjectForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<ProjectValues>({
     resolver: zodResolver(ProjectSchema),
     defaultValues: {
-      projects: resumeData.projects || [projectDetailsDefValues],
+      projects: resumeData.projects || [],
     },
   });
 

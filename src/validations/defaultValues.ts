@@ -1,5 +1,6 @@
 import {
   resumeSchemaType,
+  SkillType,
   SocialLinksValues,
   TemplateValues,
 } from "./validation";
@@ -62,7 +63,7 @@ export const workExperienceDefValues = {
 export const skillDefValues = {
   name: "",
   level: 0,
-  levelDisabled: false,
+  levelDisabled: true,
 };
 
 export const certificationDefValues = {
@@ -99,13 +100,13 @@ export const resumeDataDefValues: resumeSchemaType = {
   title: "Untitled",
   personalDetails: personalDetailsDefValues,
   socialLinks: socialLinksDefValues,
-  educationDetails: [educationDetailsDefValues],
-  workExperiences: [workExperienceDefValues],
-  hardSkills: [skillDefValues],
-  softSkills: [skillDefValues],
-  courses: [courseDefValues],
-  projects: [projectDetailsDefValues],
-  certifications: [certificationDefValues],
-  hobbies: [hobbyDefValues],
+  educationDetails: [],
+  workExperiences: [],
+  hardSkills: [],
+  softSkills: [],
+  courses: [],
+  projects: [],
+  certifications: [],
+  hobbies: [],
   template: templateDefValues,
 };

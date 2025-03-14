@@ -15,11 +15,19 @@ export const getUserSubscriptionLevel = cache(
         return "free";
       }
       if (
-        subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRICE_ID_HOBBY
+        subscription.stripePriceId ===
+          env.NEXT_PUBLIC_STRIPE_PRICE_ID_HOBBY_MONTHLY ||
+        subscription.stripePriceId ===
+          env.NEXT_PUBLIC_STRIPE_PRICE_ID_HOBBY_ANNUAL
       ) {
         return "hobby";
       }
-      if (subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO) {
+      if (
+        subscription.stripePriceId ===
+          env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_ANNUAL ||
+        subscription.stripePriceId ===
+          env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_ANNUAL
+      ) {
         return "pro";
       }
       return "free";

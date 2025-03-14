@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { tiers } from "@/constants/plans";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { monthlyTiers, annualTiers } from "@/constants/plans";
 import { createCheckoutSession } from "@/features/stripe/actions";
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
@@ -38,56 +39,155 @@ const Plans = () => {
         Choose an affordable plan that&#39;s packed with the best features for
         you, creating a highlighting resume.
       </p>
-      <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
-        {tiers.map((tier, tierIdx) => (
-          <div
-            key={tier.id}
-            className={cn(
-              tier.featured
-                ? "relative bg-background-muted shadow-2xl"
-                : "bg-background sm:mx-8 lg:mx-0",
-              tier.featured
-                ? ""
-                : tierIdx === 0
-                  ? "rounded-t-3xl sm:rounded-b-none lg:rounded-bl-3xl lg:rounded-tr-none"
-                  : "sm:rounded-t-none lg:rounded-bl-none lg:rounded-tr-3xl",
-              "rounded-3xl p-8 ring-1 ring-border sm:p-10",
-            )}
-          >
-            <h3 id={tier.id} className="text-base/7 font-semibold text-primary">
-              {tier.name}
-            </h3>
-            <p className="mt-4 flex items-baseline gap-x-2">
-              <span className="text-5xl font-semibold tracking-tight">
-                {tier.priceMonthly}
-              </span>
-              <span className="text-base text-muted-foreground">/month</span>
-            </p>
-            <p className="mt-6 text-base/7">{tier.description}</p>
-            <ul role="list" className="mt-8 space-y-3 text-sm/6 sm:mt-10">
-              {tier.features.map((feature) => (
-                <li key={feature} className="flex gap-x-3">
-                  <CheckIcon
-                    aria-hidden="true"
-                    className="h-6 w-5 flex-none text-primary"
-                  />
-                  {feature}
-                </li>
+      <div className="mx-auto mt-8 flex items-center justify-center">
+        <Tabs defaultValue="annually">
+          <TabsList className="mx-auto grid !h-auto w-[250px] grid-cols-2 gap-2">
+            <TabsTrigger value="annually" asChild>
+              <Button
+                className="data-[state=active]:bg-primary data-[state=active]:hover:bg-primary"
+                variant={"ghost"}
+              >
+                Annually
+              </Button>
+            </TabsTrigger>
+            <TabsTrigger value="monthly" asChild>
+              <Button
+                className="data-[state=active]:bg-primary data-[state=active]:hover:bg-primary"
+                variant={"ghost"}
+              >
+                Monthly
+              </Button>
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="annually">
+            <div className="mx-auto mt-8 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+              {annualTiers.map((tier, tierIdx) => (
+                <div
+                  key={tier.id}
+                  className={cn(
+                    tier.featured
+                      ? "relative bg-background-muted shadow-2xl"
+                      : "bg-background sm:mx-8 lg:mx-0",
+                    tier.featured
+                      ? ""
+                      : tierIdx === 0
+                        ? "rounded-t-3xl sm:rounded-b-none lg:rounded-bl-3xl lg:rounded-tr-none"
+                        : "sm:rounded-t-none lg:rounded-bl-none lg:rounded-tr-3xl",
+                    "rounded-3xl p-8 ring-1 ring-border sm:p-10",
+                  )}
+                >
+                  <h3
+                    id={tier.id}
+                    className="text-base/7 font-semibold text-primary"
+                  >
+                    {tier.name}
+                  </h3>
+                  <p className="text-muted-foreground line-through">
+                    <span className="text-lg tracking-tight">
+                      {"$"}
+                      <strong>{tier.strikedPrice}</strong>
+                      /month
+                    </span>
+                  </p>
+                  <p className="mt-4 flex items-baseline gap-x-2">
+                    <span className="text-5xl font-semibold tracking-tight">
+                      {"$"}
+                      {tier.price}
+                    </span>
+                    <span className="text-base text-muted-foreground">
+                      /month
+                    </span>
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Billed annually (You pay ${12 * tier.price})
+                  </p>
+                  <p className="mt-6 text-base/7">{tier.description}</p>
+                  <ul role="list" className="mt-8 space-y-3 text-sm/6 sm:mt-10">
+                    {tier.features.map((feature) => (
+                      <li key={feature} className="flex gap-x-3">
+                        <CheckIcon
+                          aria-hidden="true"
+                          className="h-6 w-5 flex-none text-primary"
+                        />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    onClick={() => handleCheckout(tier.priceId!)}
+                    variant={tier.featured ? "default" : "outline"}
+                    className={cn(
+                      "mt-6 w-full duration-150 hover:scale-105",
+                      tier.featured && "text-white",
+                    )}
+                    disabled={loading}
+                  >
+                    Get Started
+                  </Button>
+                </div>
               ))}
-            </ul>
-            <Button
-              onClick={() => handleCheckout(tier.priceId!)}
-              variant={tier.featured ? "default" : "outline"}
-              className={cn(
-                "mt-6 w-full duration-150 hover:scale-105",
-                tier.featured && "text-white",
-              )}
-              disabled={loading}
-            >
-              Get Started
-            </Button>
-          </div>
-        ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="monthly">
+            <div className="mx-auto mt-8 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+              {monthlyTiers.map((tier, tierIdx) => (
+                <div
+                  key={tier.id}
+                  className={cn(
+                    tier.featured
+                      ? "relative bg-background-muted shadow-2xl"
+                      : "bg-background sm:mx-8 lg:mx-0",
+                    tier.featured
+                      ? ""
+                      : tierIdx === 0
+                        ? "rounded-t-3xl sm:rounded-b-none lg:rounded-bl-3xl lg:rounded-tr-none"
+                        : "sm:rounded-t-none lg:rounded-bl-none lg:rounded-tr-3xl",
+                    "rounded-3xl p-8 ring-1 ring-border sm:p-10",
+                  )}
+                >
+                  <h3
+                    id={tier.id}
+                    className="text-base/7 font-semibold text-primary"
+                  >
+                    {tier.name}
+                  </h3>
+                  <p className="mt-4 flex items-baseline gap-x-2">
+                    <span className="text-5xl font-semibold tracking-tight">
+                      {"$"}
+                      {tier.price}
+                    </span>
+                    <span className="text-base text-muted-foreground">
+                      /month
+                    </span>
+                  </p>
+                  <p className="mt-6 text-base/7">{tier.description}</p>
+                  <ul role="list" className="mt-8 space-y-3 text-sm/6 sm:mt-10">
+                    {tier.features.map((feature) => (
+                      <li key={feature} className="flex gap-x-3">
+                        <CheckIcon
+                          aria-hidden="true"
+                          className="h-6 w-5 flex-none text-primary"
+                        />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    onClick={() => handleCheckout(tier.priceId!)}
+                    variant={tier.featured ? "default" : "outline"}
+                    className={cn(
+                      "mt-6 w-full duration-150 hover:scale-105",
+                      tier.featured && "text-white",
+                    )}
+                    disabled={loading}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

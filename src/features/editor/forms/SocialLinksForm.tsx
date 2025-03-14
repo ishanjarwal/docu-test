@@ -31,7 +31,6 @@ const SocialLinksForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
   useEffect(() => {
     const { unsubscribe } = form.watch(async (values) => {
-      console.log(values);
       const isValid = await form.trigger();
       if (!isValid) return;
       setResumeData({

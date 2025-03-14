@@ -53,7 +53,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CertificationType>({
     resolver: zodResolver(CerificationsSchema),
     defaultValues: {
-      certifications: resumeData.certifications || [certificationDefValues],
+      certifications: resumeData.certifications || [],
     },
   });
 

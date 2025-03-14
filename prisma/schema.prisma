@@ -143,7 +143,7 @@ model Subscriptions {
   userId                  String   @unique
   stripeCustomerId        String   @unique
   stripeSubscriptionId    String   @unique
-  stripePriceId           String   @unique
+  stripePriceId           String   
   stripeCurrentPeriodEnd  DateTime
   stripeCancelAtPeriodEnd Boolean  @default(false)
 

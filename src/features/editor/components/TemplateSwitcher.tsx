@@ -59,6 +59,7 @@ const TemplateSwitcher = () => {
             <div className="mg:gap-8 grid grid-cols-2 gap-4 lg:grid-cols-3">
               {templates.map((template, index) => (
                 <div
+                  key={"template-" + index}
                   onClick={() => {
                     form.setValue("templateId", template.id);
                     form.setValue("accentHex", template.accentHex);

@@ -47,7 +47,7 @@ const ProfessionalTemplate1 = ({ resumeData }: TemplateProps) => {
         fontFamily: template?.fontFace || "Inter",
       }}
     >
-      <div className="mt-8 grid grid-cols-6">
+      <div className="grid grid-cols-6">
         <div
           className="col-span-2 h-full px-8 py-8"
           style={{ backgroundColor: template.accentHex }}

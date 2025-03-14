@@ -69,6 +69,7 @@ import { generateSkills } from "./action";
 import Link from "next/link";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -386,6 +387,7 @@ const AISkillGenerator = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const { setOpen: setPremiumOpen } = usePremiumModal();
   const descForm = useForm({
     mode: "onChange",
     resolver: zodResolver(GenerateSkillsSchema),
@@ -489,9 +491,10 @@ const AISkillGenerator = ({
   ) : (
     <div className="relative">
       <AIButton />
-      <Link
-        href={"/plans"}
-        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      <Button
+        variant={"ghost"}
+        onClick={() => setPremiumOpen(true)}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center !rounded-md text-white opacity-0 !duration-100 hover:opacity-100"
       >
         <p className="flex items-center justify-center space-x-1 text-center">
           <span className="text-xs leading-none">Unlock AI</span>
@@ -499,7 +502,7 @@ const AISkillGenerator = ({
             <FaCrown />
           </span>
         </p>
-      </Link>
+      </Button>
     </div>
   );
 };

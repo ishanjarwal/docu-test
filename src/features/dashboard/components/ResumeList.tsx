@@ -35,6 +35,7 @@ import { LuLoaderCircle } from "react-icons/lu";
 // import { usePrintable } from "@/hooks/usePrintable";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import CustomTooltip from "@/components/custom/CustomTooltip";
+import { templates } from "@/features/editor/constants/templates";
 
 interface ResumeListProps {
   resumes: Prisma.ResumeGetPayload<object>[];
@@ -82,7 +83,9 @@ const ResumeItem = ({
   const containerRef = React.useRef<HTMLDivElement>(
     null,
   ) as React.RefObject<HTMLElement>;
-
+  const Template =
+    templates.find((item) => item.id === resumeData.template.templateId)
+      ?.template || ATSTemplate1;
   // const printableRef = React.useRef<HTMLDivElement>(null);
 
   const { width } = useDimensions(containerRef);
@@ -100,7 +103,7 @@ const ResumeItem = ({
               zoom: (1 / 794) * width,
             }}
           >
-            <ATSTemplate1 resumeData={mapToResumeSchemaType(resumeData)} />
+            <Template resumeData={mapToResumeSchemaType(resumeData)} />
           </div>
         </div>
         <div className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center bg-card/75 opacity-0 backdrop-blur-sm duration-150 group-hover:opacity-100">

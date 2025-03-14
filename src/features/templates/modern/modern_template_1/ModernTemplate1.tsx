@@ -68,7 +68,9 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
             style={{ color: template.accentHex }}
             className="text-center text-xl font-bold capitalize"
           >
-            {personalDetails.firstName + " " + personalDetails.lastName}
+            {personalDetails.firstName &&
+              personalDetails.firstName + " " + personalDetails.lastName &&
+              personalDetails.lastName}
           </h1>
           <p
             style={{ color: template.accentHex }}
@@ -82,14 +84,18 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
               "flex items-center justify-center gap-x-2 text-center",
             )}
           >
-            <span className="flex items-center justify-center gap-x-1">
-              <Mail className="size-3" />
-              {personalDetails.email}
-            </span>
-            <span className="flex items-center justify-center gap-x-1">
-              <Phone className="size-3" />
-              {personalDetails.phone}
-            </span>
+            {personalDetails.email && (
+              <span className="flex items-center justify-center gap-x-1">
+                <Mail className="size-3" />
+                {personalDetails.email}
+              </span>
+            )}
+            {personalDetails.phone && (
+              <span className="flex items-center justify-center gap-x-1">
+                <Phone className="size-3" />
+                {personalDetails.phone}
+              </span>
+            )}
           </p>
           <p className={cn(styles.para, "text-center")}>
             <span>{personalDetails.country}</span>

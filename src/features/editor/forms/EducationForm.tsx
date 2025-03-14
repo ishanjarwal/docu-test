@@ -61,6 +61,7 @@ import AIButton from "@/components/custom/AIButton";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import Link from "next/link";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -338,6 +339,7 @@ const AIEdicationDetailsGenerator = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
+  const { setOpen: setPremiumOpen } = usePremiumModal();
   const descForm = useForm<GenerateEducationDetailsValues>({
     resolver: zodResolver(GenerateEducationDetailsSchema),
     defaultValues: { description: "" },
@@ -468,9 +470,10 @@ const AIEdicationDetailsGenerator = ({
   ) : (
     <div className="relative">
       <AIButton />
-      <Link
-        href={"/plans"}
-        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      <Button
+        variant={"ghost"}
+        onClick={() => setPremiumOpen(true)}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center !rounded-md text-white opacity-0 !duration-100 hover:opacity-100"
       >
         <p className="flex items-center justify-center space-x-1 text-center">
           <span className="text-xs leading-none">Unlock AI</span>
@@ -478,7 +481,7 @@ const AIEdicationDetailsGenerator = ({
             <FaCrown />
           </span>
         </p>
-      </Link>
+      </Button>
     </div>
   );
 };

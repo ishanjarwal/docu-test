@@ -32,6 +32,7 @@ import { SubscriptionLevel } from "@/features/premium/actions";
 import { FaCrown } from "react-icons/fa6";
 import Link from "next/link";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const PersonalDetailsForm = ({
   resumeData,
@@ -294,6 +295,7 @@ export const AISummaryGenerator = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const { canUseAI } = usePremiumFeatures(subscriptionLevel);
+  const { setOpen } = usePremiumModal();
   async function handleClick() {
     try {
       setLoading(true);
@@ -333,9 +335,10 @@ export const AISummaryGenerator = ({
   ) : (
     <div className="relative">
       <AIButton />
-      <Link
-        href={"/plans"}
-        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      <Button
+        variant={"ghost"}
+        onClick={() => setOpen(true)}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center !rounded-md text-white opacity-0 !duration-100 hover:opacity-100"
       >
         <p className="flex items-center justify-center space-x-1 text-center">
           <span className="text-xs leading-none">Unlock AI</span>
@@ -343,7 +346,7 @@ export const AISummaryGenerator = ({
             <FaCrown />
           </span>
         </p>
-      </Link>
+      </Button>
     </div>
   );
 };

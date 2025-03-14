@@ -66,6 +66,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { LuLoaderCircle } from "react-icons/lu";
 import { generateHobbies } from "./action";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -74,7 +75,7 @@ const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<HobbyValues>({
     resolver: zodResolver(HobbySchema),
     defaultValues: {
-      hobbies: resumeData.hobbies || [hobbyDefValues],
+      hobbies: resumeData.hobbies || [],
     },
   });
 
@@ -272,6 +273,7 @@ const AIHobbiesGenerator = ({
   canUseAI: boolean;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const { setOpen: setPremiumOpen } = usePremiumModal();
   const [loading, setLoading] = useState<boolean>(false);
 
   const descForm = useForm({
@@ -368,9 +370,10 @@ const AIHobbiesGenerator = ({
   ) : (
     <div className="relative">
       <AIButton />
-      <Link
-        href={"/plans"}
-        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-sm bg-foreground/50 text-white opacity-0 backdrop-blur-sm duration-100 hover:opacity-100"
+      <Button
+        variant={"ghost"}
+        onClick={() => setPremiumOpen(true)}
+        className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center !rounded-md text-white opacity-0 !duration-100 hover:opacity-100"
       >
         <p className="flex items-center justify-center space-x-1 text-center">
           <span className="text-xs leading-none">Unlock AI</span>
@@ -378,7 +381,7 @@ const AIHobbiesGenerator = ({
             <FaCrown />
           </span>
         </p>
-      </Link>
+      </Button>
     </div>
   );
 };
