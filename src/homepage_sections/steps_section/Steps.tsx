@@ -1,4 +1,5 @@
 "use client";
+import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -35,16 +36,20 @@ const Steps = () => {
       <div className="mx-auto max-w-7xl px-4 py-16">
         <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row lg:space-x-8">
           <div className="flex w-full flex-1 flex-col space-y-4">
-            <Badge
-              className="w-max rounded-full border-primary bg-transparent px-3 py-1"
-              variant={"outline"}
-            >
-              <span className="me-2 scale-125 text-primary">•</span>
-              <span>How to use</span>
-            </Badge>
-            <h1 className="text-3xl md:text-5xl">
-              Lorem ipsum dolor sit amet consectetur
-            </h1>
+            <AnimateUpOnAppear>
+              <Badge
+                className="w-max rounded-full border-primary bg-transparent px-3 py-1"
+                variant={"outline"}
+              >
+                <span className="me-2 scale-125 text-primary">•</span>
+                <span>How to use</span>
+              </Badge>
+            </AnimateUpOnAppear>
+            <AnimateUpOnAppear delay={0.2}>
+              <h1 className="text-3xl font-semibold md:text-5xl">
+                No magic wand needed
+              </h1>
+            </AnimateUpOnAppear>
           </div>
           <div className="flex-1">
             <p className="text-lg text-muted-foreground">

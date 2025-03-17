@@ -7,6 +7,7 @@ import { BsFiletypePdf } from "react-icons/bs";
 import { IoIosTimer } from "react-icons/io";
 import { FiUserCheck } from "react-icons/fi";
 import { Badge } from "@/components/ui/badge";
+import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
 
 const Features = () => {
   const features = [
@@ -65,29 +66,31 @@ const Features = () => {
         </h2>
         <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => (
-            <div
-              key={"feature-" + index}
-              className="overflow-hidden rounded-xl border border-border bg-foreground/5 duration-150 hover:scale-105 hover:bg-foreground/10"
-            >
-              <div className="relative aspect-video overflow-hidden bg-white">
-                <Image
-                  src={item.img}
-                  className="h-full w-full object-cover object-center"
-                  fill
-                  alt={item.title}
-                />
+            <AnimateUpOnAppear delay={0.1 * index}>
+              <div
+                key={"feature-" + index}
+                className="overflow-hidden rounded-xl border border-border bg-foreground/5 duration-150 hover:scale-105 hover:bg-foreground/10"
+              >
+                <div className="relative aspect-video overflow-hidden bg-white">
+                  <Image
+                    src={item.img}
+                    className="h-full w-full object-cover object-center"
+                    fill
+                    alt={item.title}
+                  />
+                </div>
+                <div className="p-4">
+                  <p className="mt-4 text-primary">
+                    {item.icon &&
+                      React.cloneElement(item.icon, { className: "size-8" })}
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold">{item.title}</h2>
+                  <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-              <div className="p-4">
-                <p className="mt-4 text-primary">
-                  {item.icon &&
-                    React.cloneElement(item.icon, { className: "size-8" })}
-                </p>
-                <h2 className="mt-2 text-2xl font-bold">{item.title}</h2>
-                <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
+            </AnimateUpOnAppear>
           ))}
         </div>
       </div>
