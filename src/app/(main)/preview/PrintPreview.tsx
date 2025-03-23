@@ -140,7 +140,7 @@ const ResumePreview = ({ resumeData }: { resumeData: resumeSchemaType }) => {
 
   useEffect(() => {
     saver();
-  }, []);
+  }, [saver]);
 
   return (
     <>

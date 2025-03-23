@@ -1,13 +1,12 @@
-import Image from "next/image";
+import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
+import { Badge } from "@/components/ui/badge";
 import React from "react";
+import { BsFiletypePdf } from "react-icons/bs";
 import { FaMagic } from "react-icons/fa";
+import { FiUserCheck } from "react-icons/fi";
+import { IoIosTimer } from "react-icons/io";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import { LuFiles } from "react-icons/lu";
-import { BsFiletypePdf } from "react-icons/bs";
-import { IoIosTimer } from "react-icons/io";
-import { FiUserCheck } from "react-icons/fi";
-import { Badge } from "@/components/ui/badge";
-import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
 
 const Features = () => {
   const features = [

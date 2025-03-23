@@ -1,18 +1,12 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { useState } from "react";
-import { categories, examples } from "./constants";
-import Image from "next/image";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Image from "next/image";
+import { useState } from "react";
+import { categories, examples } from "./constants";
 
 const ResumeExamples = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -79,6 +73,7 @@ const ResumeExamples = () => {
                   <CardContent className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-5">
                     {list.map((listItem, idx) => (
                       <Card
+                        key={"example-" + idx}
                         onClick={() => {
                           setSrc(listItem.image);
                         }}

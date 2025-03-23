@@ -1,11 +1,11 @@
 "use client";
-import { ReactNode } from "react";
-import steps from "../constants/guide_steps";
-import { StylesObj, TourProvider, useTour } from "@reactour/tour";
-import { PopoverStylesObj } from "@reactour/popover";
-import { MaskStylesObj } from "@reactour/mask";
 import { Button } from "@/components/ui/button";
+import { MaskStylesObj } from "@reactour/mask";
+import { PopoverStylesObj } from "@reactour/popover";
+import { StylesObj, TourProvider } from "@reactour/tour";
+import { ReactNode } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import steps from "../constants/guide_steps";
 const Tour = ({
   children,
   firstVisit,
@@ -47,7 +47,7 @@ const Tour = ({
         setCurrentStep(0);
         setIsOpen(false);
       }}
-      prevButton={({ currentStep, setCurrentStep, steps }) => {
+      prevButton={({ currentStep, setCurrentStep }) => {
         const first = currentStep === 0;
         return !first ? (
           <Button

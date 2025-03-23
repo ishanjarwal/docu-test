@@ -9,29 +9,24 @@ const page = async ({
 }: {
   searchParams: Promise<{ id?: string }>;
 }) => {
-  try {
-    const { userId } = await auth();
-    if (!userId) {
-      return redirect("/sign-in");
-    }
-    const { id } = await searchParams;
-    const currentResume = id
-      ? await prisma.resume.findUnique({
-          where: { id, userId },
-        })
-      : null;
-    if (!currentResume) {
-      return redirect("/resumes");
-    }
-    return (
-      <main className="bg-background-muted p-4 sm:py-8 md:py-16">
-        <PrintPreview resumeData={mapToResumeSchemaType(currentResume)} />
-      </main>
-    );
-  } catch (error) {
-    console.log(error);
+  const { userId } = await auth();
+  if (!userId) {
     return redirect("/sign-in");
   }
+  const { id } = await searchParams;
+  const currentResume = id
+    ? await prisma.resume.findUnique({
+        where: { id, userId },
+      })
+    : null;
+  if (!currentResume) {
+    return redirect("/resumes");
+  }
+  return (
+    <main className="bg-background-muted p-4 sm:py-8 md:py-16">
+      <PrintPreview resumeData={mapToResumeSchemaType(currentResume)} />
+    </main>
+  );
 };
 
 export default page;

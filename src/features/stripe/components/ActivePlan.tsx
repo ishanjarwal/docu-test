@@ -1,17 +1,17 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import { retrievePriceDetails } from "../actions";
-import toast from "react-hot-toast";
-import { formatDate } from "date-fns";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import ManageSubscriptionButton from "./ManageSubscriptionButton";
-import { env } from "@/env";
 import { features } from "@/constants/plans";
+import { env } from "@/env";
+import { useUser } from "@clerk/nextjs";
+import { formatDate } from "date-fns";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
-import { Loader, Loader2 } from "lucide-react";
+import { retrievePriceDetails } from "../actions";
+import ManageSubscriptionButton from "./ManageSubscriptionButton";
 
 const ActivePlan = () => {
   interface planValues {
@@ -21,7 +21,7 @@ const ActivePlan = () => {
     expiry: Date | undefined;
     startDate: Date | undefined;
   }
-  const { user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [currPlan, setCurrPlan] = useState<planValues>({
     id: undefined,
@@ -43,7 +43,7 @@ const ActivePlan = () => {
           startDate: plan.subscription.createdAt,
         });
       }
-    } catch (error) {
+    } catch (_) {
       toast.error("Error fetching plan details");
     } finally {
       setLoading(false);

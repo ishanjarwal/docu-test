@@ -40,6 +40,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import { hobbyDefValues } from "@/validations/defaultValues";
 import {
@@ -62,11 +63,9 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import clsx from "clsx";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import { LuLoaderCircle } from "react-icons/lu";
 import { generateHobbies } from "./action";
-import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const HobbyForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();

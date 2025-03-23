@@ -3,7 +3,6 @@ import Contact from "@/homepage_sections/contact/Contact";
 import Features from "@/homepage_sections/features_section/Features";
 import Footer from "@/homepage_sections/footer/Footer";
 import Hero from "@/homepage_sections/hero/Hero";
-import ResumeExamples from "@/homepage_sections/resume_examples/ResumeExamples";
 import Steps from "@/homepage_sections/steps_section/Steps";
 import Testimonial from "@/homepage_sections/testimonial_section/Testimonial";
 

@@ -1,20 +1,14 @@
 "use client";
+import CustomUserButton from "@/components/custom/CustomUserButton";
 import { Button } from "@/components/ui/button";
 import { images } from "@/constants/images";
 import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
-import { UserButton } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
-import { useTheme } from "next-themes";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import TitleForm from "../forms/TitleForm";
-import Link from "next/link";
-import CustomUserButton from "@/components/custom/CustomUserButton";
 
 const EditorHeader = () => {
-  const { theme, systemTheme } = useTheme();
-
   return (
     <header className="flex w-full items-center justify-between border-b p-2">
       <div className="flex basis-3/12 items-center justify-start space-x-2">

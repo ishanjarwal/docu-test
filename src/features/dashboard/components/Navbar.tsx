@@ -3,16 +3,12 @@ import CustomUserButton from "@/components/custom/CustomUserButton";
 import { Button } from "@/components/ui/button";
 import { images } from "@/constants/images";
 import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
+import { useClerk, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { FaCrown } from "react-icons/fa6";
-import { useClerk, useUser } from "@clerk/nextjs";
-import { LuUser } from "react-icons/lu";
-import ActivePlan from "@/features/stripe/components/ActivePlan";
 const Navbar = () => {
   const { isSignedIn } = useUser();
-  const { openUserProfile } = useClerk();
 
   return (
     <div className="flex h-16 items-center bg-foreground/5">

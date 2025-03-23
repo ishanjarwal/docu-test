@@ -1,6 +1,6 @@
 "use client";
 import { motion, TargetAndTransition, VariantLabels } from "framer-motion";
-import { Key, ReactNode } from "react";
+import { ReactNode } from "react";
 
 const AnimateUpOnAppear = ({
   children,

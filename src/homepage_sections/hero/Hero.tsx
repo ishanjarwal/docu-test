@@ -1,19 +1,17 @@
 "use client";
 import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
+import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
 import { LuPartyPopper } from "react-icons/lu";
 import "swiper/css";
 import "swiper/css/effect-cards";
-import HeroBackground from "./HeroBackground";
-import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
-import { useTheme } from "next-themes";
-import { env } from "@/env";
-import { DotPattern } from "@/components/ui/dot-pattern";
-import { cn } from "@/lib/utils";
 
 const Hero = () => {
   const { isSignedIn } = useUser();

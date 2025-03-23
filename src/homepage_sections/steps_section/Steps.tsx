@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, easeInOut } from "framer-motion";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import React, { act, useState } from "react";
+import { useState } from "react";
 
 const steps = [
   {

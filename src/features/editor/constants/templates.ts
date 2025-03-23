@@ -4,7 +4,7 @@ import ProfessionalTemplate1 from "@/features/templates/professional/professiona
 import SimpleTemplate1 from "@/features/templates/simple/simple-template-1/SimpleTemplate1";
 import { TemplateProps } from "@/features/templates/types";
 import { TemplateValues } from "@/validations/validation";
-import React, { ReactNode } from "react";
+import React from "react";
 
 interface ChooseTemplateProps {
   id: string;

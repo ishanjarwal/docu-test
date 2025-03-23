@@ -1,10 +1,9 @@
 "use client";
-import React from "react";
-import { TemplateProps } from "../../types";
-import Image from "next/image";
 import usePhotoURL from "@/hooks/usePhotoURL";
-import styles from "./styles.module.css";
 import { cn, convertToUlORP } from "@/lib/utils";
+import { skillDefValues } from "@/validations/defaultValues";
+import isEqual from "lodash.isequal";
+import Image from "next/image";
 import {
   FaGithub,
   FaGlobe,
@@ -13,14 +12,8 @@ import {
   FaThreads,
   FaXTwitter,
 } from "react-icons/fa6";
-import {
-  certificationDefValues,
-  courseDefValues,
-  hobbyDefValues,
-  skillDefValues,
-  workExperienceDefValues,
-} from "@/validations/defaultValues";
-import isEqual from "lodash.isequal";
+import { TemplateProps } from "../../types";
+import styles from "./styles.module.css";
 
 const ATSTemplate1 = ({ resumeData }: TemplateProps) => {
   const { template } = resumeData;

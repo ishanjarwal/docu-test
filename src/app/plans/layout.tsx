@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 const layout = async ({ children }: { children: ReactNode }) => {
   const { userId } = await auth();

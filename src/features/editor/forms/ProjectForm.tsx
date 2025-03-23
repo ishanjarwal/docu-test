@@ -20,10 +20,7 @@ import {
 import clsx from "clsx";
 import { FaChevronDown } from "react-icons/fa6";
 
-import {
-  educationDetailsDefValues,
-  projectDetailsDefValues,
-} from "@/validations/defaultValues";
+import { educationDetailsDefValues } from "@/validations/defaultValues";
 import {
   closestCenter,
   DndContext,

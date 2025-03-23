@@ -1,6 +1,5 @@
 import {
   resumeSchemaType,
-  SkillType,
   SocialLinksValues,
   TemplateValues,
 } from "./validation";

@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { EditorFormProps } from "../constants/types";
-import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 import {
   EducationDetailsSchema,
   EducationDetailsType,
@@ -9,12 +8,13 @@ import {
   GenerateEducationDetailsValues,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import CustomFormField from "../components/CustomFormField";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
+import { FiTrash } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
-import { FiTrash } from "react-icons/fi";
+import CustomFormField from "../components/CustomFormField";
+import { EditorFormProps } from "../constants/types";
 
 import {
   Accordion,
@@ -22,9 +22,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
 import clsx from "clsx";
+import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
 
+import AIButton from "@/components/custom/AIButton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { educationDetailsDefValues } from "@/validations/defaultValues";
 import {
   closestCenter,
   DndContext,
@@ -44,24 +58,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { educationDetailsDefValues } from "@/validations/defaultValues";
-import { generateEducationDetails } from "./action";
 import toast from "react-hot-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { LuLoaderCircle } from "react-icons/lu";
-import AIButton from "@/components/custom/AIButton";
-import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
-import Link from "next/link";
-import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
-import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
+import { generateEducationDetails } from "./action";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();

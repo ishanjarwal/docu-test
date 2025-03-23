@@ -1,17 +1,15 @@
 "use client";
 import React, { useContext } from "react";
 import { ResumeDataContext } from "../providers/ResumeData";
-import ATSTemplate1 from "@/features/templates/ats/ats_template_1/ATSTemplate1";
 
-import useDimensions from "@/hooks/useDimensions";
-import clsx from "clsx";
-import ThemeBar from "./ThemeBar";
 import { Button } from "@/components/ui/button";
-import { IoMdClose } from "react-icons/io";
-import { useSearchParams } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { templates } from "../constants/templates";
 import useTemplate from "@/features/templates/useTemplate";
+import useDimensions from "@/hooks/useDimensions";
+import { cn } from "@/lib/utils";
+import clsx from "clsx";
+import { useSearchParams } from "next/navigation";
+import { IoMdClose } from "react-icons/io";
+import ThemeBar from "./ThemeBar";
 
 const Preview = ({ className }: { className?: string }) => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);

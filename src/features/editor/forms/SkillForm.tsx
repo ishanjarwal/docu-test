@@ -1,4 +1,11 @@
 "use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
   GenerateSkillsSchema,
@@ -7,7 +14,7 @@ import {
   SkillType,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrayPath,
   Control,
@@ -18,20 +25,27 @@ import {
   useForm,
   UseFormReturn,
 } from "react-hook-form";
-import { EditorFormProps } from "../constants/types";
-import CustomFormField from "../components/CustomFormField";
-import { Button } from "@/components/ui/button";
+import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
+import { FiTrash } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
-import { FiTrash } from "react-icons/fi";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
+import CustomFormField from "../components/CustomFormField";
+import { EditorFormProps } from "../constants/types";
 
+import AIButton from "@/components/custom/AIButton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { skillDefValues } from "@/validations/defaultValues";
 import {
   closestCenter,
   DndContext,
@@ -42,6 +56,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
@@ -49,27 +64,11 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
-import { skillDefValues } from "@/validations/defaultValues";
+import clsx from "clsx";
 import toast from "react-hot-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { LuLoaderCircle } from "react-icons/lu";
-import AIButton from "@/components/custom/AIButton";
 import { generateSkills } from "./action";
-import Link from "next/link";
-import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
-import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
-import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();

@@ -1,23 +1,10 @@
 "use client";
-import React from "react";
-import { TemplateProps } from "../../types";
-import Image from "next/image";
 import usePhotoURL from "@/hooks/usePhotoURL";
-import styles from "./style.module.css";
 import { cn, convertToUlORP } from "@/lib/utils";
-import { Mail, Phone } from "lucide-react";
-import {
-  FaGithub,
-  FaGlobe,
-  FaInstagram,
-  FaLinkedin,
-  FaThreads,
-  FaXTwitter,
-} from "react-icons/fa6";
-import isEqual from "lodash.isequal";
-import { skillDefValues } from "@/validations/defaultValues";
-import { number } from "zod";
 import { SocialLinksValues } from "@/validations/validation";
+import Image from "next/image";
+import { TemplateProps } from "../../types";
+import styles from "./style.module.css";
 
 const SimpleTemplate1 = ({ resumeData }: TemplateProps) => {
   const {

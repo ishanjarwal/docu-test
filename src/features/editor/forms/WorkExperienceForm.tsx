@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import { workExperienceDefValues } from "@/validations/defaultValues";
 import {
@@ -47,7 +48,6 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -59,7 +59,6 @@ import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
 import { generateWorkExperience } from "./action";
-import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();

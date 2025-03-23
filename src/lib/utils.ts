@@ -144,7 +144,7 @@ export const isValidJSON = (input: string) => {
   try {
     JSON.parse(input);
     return true;
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 };

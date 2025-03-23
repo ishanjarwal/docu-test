@@ -1,13 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import CustomFormField from "../components/CustomFormField";
-import { useForm, UseFormReturn } from "react-hook-form";
-import {
-  personalDetailsSchema,
-  personalDetailsType,
-  resumeSchemaType,
-} from "@/validations/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import AIButton from "@/components/custom/AIButton";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,23 +9,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { EditorFormProps } from "../constants/types";
-import { useDropzone } from "react-dropzone";
-import usePhotoURL from "@/hooks/usePhotoURL";
-import Image from "next/image";
-import { CiImageOn } from "react-icons/ci";
-import clsx from "clsx";
-import { Button } from "@/components/ui/button";
-import { useDeviceType } from "@/hooks/useDeviceType";
-import AIButton from "@/components/custom/AIButton";
-import { generateSummary } from "./action";
-import toast from "react-hot-toast";
-import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import { SubscriptionLevel } from "@/features/premium/actions";
-import { FaCrown } from "react-icons/fa6";
-import Link from "next/link";
-import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { useDeviceType } from "@/hooks/useDeviceType";
+import usePhotoURL from "@/hooks/usePhotoURL";
+import {
+  personalDetailsSchema,
+  personalDetailsType,
+  resumeSchemaType,
+} from "@/validations/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { useForm, UseFormReturn } from "react-hook-form";
+import toast from "react-hot-toast";
+import { CiImageOn } from "react-icons/ci";
+import { FaCrown } from "react-icons/fa6";
+import CustomFormField from "../components/CustomFormField";
+import { EditorFormProps } from "../constants/types";
+import { generateSummary } from "./action";
 
 const PersonalDetailsForm = ({
   resumeData,

@@ -87,9 +87,10 @@ export const saveResume = async (values: resumeSchemaType) => {
       newPhotoURL = null;
     } else if (typeof profilePicture === "string") {
       try {
-        const isValid = await head(profilePicture);
+        await head(profilePicture);
         newPhotoURL = profilePicture;
       } catch (error) {
+        console.log(error);
         newPhotoURL = existingResume?.personalDetails.profilePicture;
       }
     } else if (profilePicture === undefined) {

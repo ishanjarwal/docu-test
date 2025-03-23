@@ -1,17 +1,16 @@
 "use client";
-import React, { useContext, useEffect } from "react";
-import EditorHeader from "./EditorHeader";
-import EditorFooter from "./EditorFooter";
+import useUnloadWarning from "@/hooks/useUnloadWarning";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
-import { steps } from "../constants/steps";
-import BreadCrumbs from "./BreadCrumbs";
-import { ResumeDataContext } from "../providers/ResumeData";
-import useUnloadWarning from "@/hooks/useUnloadWarning";
-import useAutoSaveResume from "../hooks/useAutoSaveResume";
+import { useContext, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { steps } from "../constants/steps";
+import useAutoSaveResume from "../hooks/useAutoSaveResume";
+import { ResumeDataContext } from "../providers/ResumeData";
+import BreadCrumbs from "./BreadCrumbs";
+import EditorFooter from "./EditorFooter";
+import EditorHeader from "./EditorHeader";
 import TemplateSwitcher from "./TemplateSwitcher";
-import { useTour } from "@reactour/tour";
 
 const Editor = () => {
   const searchParams = useSearchParams();

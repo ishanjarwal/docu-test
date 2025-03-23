@@ -20,7 +20,7 @@ const Plans = () => {
       } else if (result.success) {
         window.location.href = result.success;
       }
-    } catch (error) {
+    } catch (_) {
       toast.error("Unexpected error occurred");
     } finally {
       setLoading(false);
