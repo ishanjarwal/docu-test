@@ -1,23 +1,27 @@
 const navlinks = [
   {
     display: "Features",
-    href: "/",
+    href: "/#features",
   },
-  {
-    display: "Resume Templates",
-    href: "/",
-  },
+  // {
+  //   display: "Resume Templates",
+  //   href: "/",
+  // },
   {
     display: "Resume Examples",
-    href: "/",
+    href: "/#examples",
   },
   {
     display: "Plans",
     href: "/plans",
   },
   {
+    display: "Testimonials",
+    href: "/#testimonials",
+  },
+  {
     display: "Contact",
-    href: "/",
+    href: "/#contact",
   },
 ];
 

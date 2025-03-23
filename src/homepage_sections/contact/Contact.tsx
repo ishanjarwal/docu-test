@@ -48,7 +48,7 @@ const Contact = () => {
   };
 
   return (
-    <section>
+    <section id="contact">
       <div className="mx-auto max-w-7xl px-4 py-16">
         <div className="flex items-center justify-center">
           <AnimateUpOnAppear>

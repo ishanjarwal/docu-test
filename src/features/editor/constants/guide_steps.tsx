@@ -6,7 +6,7 @@ export const joyrideSteps: StepType[] = [
     position: "center",
     content: (
       <div>
-        <h2 className="font-bold">👋🏻 Hey folk, let's take a tour</h2>
+        <h2 className="font-bold">👋🏻 Hey folk, let&apos;s take a tour</h2>
         <p className="text-sm">learn the basics of using the app</p>
       </div>
     ),

@@ -24,7 +24,7 @@ export const getUserSubscriptionLevel = cache(
       }
       if (
         subscription.stripePriceId ===
-          env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_ANNUAL ||
+          env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY ||
         subscription.stripePriceId ===
           env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_ANNUAL
       ) {

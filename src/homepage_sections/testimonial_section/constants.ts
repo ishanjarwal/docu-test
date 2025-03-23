@@ -1,3 +1,9 @@
+export interface TestimonialValues {
+  name: string;
+  message: string;
+  img: string;
+  rating: number;
+}
 const testimonials = [
   {
     name: "Alice Johnson",

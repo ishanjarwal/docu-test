@@ -38,7 +38,7 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
 
   return (
     <div
-      className="p-8"
+      className="h-full p-8"
       style={{
         color: template.textHex,
         backgroundColor: template.backdropHex,

@@ -59,3 +59,13 @@ export const annualTiers = [
     featured: true,
   },
 ];
+
+export const features = {
+  hobby: ["Upto 5 Resumes", "Limited templates", "Limited AI Features"],
+  pro: [
+    "Upto 15 Resumes",
+    "Access to all templates",
+    "Access to all AI Features",
+    "No Watermark on Downloads",
+  ],
+};

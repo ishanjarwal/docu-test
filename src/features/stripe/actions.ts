@@ -4,7 +4,7 @@ import { env } from "@/env";
 import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { Prisma, Subscriptions } from "@prisma/client";
+import { Subscriptions } from "@prisma/client";
 
 export const createCheckoutSession = async (priceId: string) => {
   try {
@@ -91,7 +91,10 @@ export const retrievePriceDetails = async (): Promise<{
       where: { userId },
     });
     if (!subscription) {
-      throw new Error("Invalid subscription");
+      return {
+        priceDetails: null,
+        subscription: null,
+      };
     }
     const priceDetails = await stripe.prices.retrieve(
       subscription.stripePriceId,
@@ -112,28 +115,33 @@ export const retrievePriceDetails = async (): Promise<{
   }
 };
 
-export async function createCustomerPortalSession(): Promise<string> {
-  const user = await currentUser();
-  if (!user) {
-    throw new Error("Unauthorized");
+export async function createCustomerPortalSession(): Promise<string | null> {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+
+    const stripeCustomerId = user.privateMetadata.stripeCustomerId as
+      | string
+      | undefined;
+
+    if (!stripeCustomerId) {
+      throw new Error("Stripe customer ID not found");
+    }
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: stripeCustomerId,
+      return_url: `${env.NEXT_PUBLIC_BASE_URL}/resumes`,
+    });
+
+    if (!session.url) {
+      throw new Error("Failed to create customer portal session");
+    }
+
+    return session.url;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
-
-  const stripeCustomerId = user.privateMetadata.stripeCustomerId as
-    | string
-    | undefined;
-
-  if (!stripeCustomerId) {
-    throw new Error("Stripe customer ID not found");
-  }
-
-  const session = await stripe.billingPortal.sessions.create({
-    customer: stripeCustomerId,
-    return_url: `${env.NEXT_PUBLIC_BASE_URL}/resumes`,
-  });
-
-  if (!session.url) {
-    throw new Error("Failed to create customer portal session");
-  }
-
-  return session.url;
 }

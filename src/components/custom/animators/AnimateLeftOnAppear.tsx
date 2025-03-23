@@ -2,32 +2,34 @@
 import { motion, TargetAndTransition, VariantLabels } from "framer-motion";
 import { ReactNode } from "react";
 
-const AnimateDownOnAppear = ({
+const AnimateLeftOnAppear = ({
   children,
   delay = 0,
   duration = 0.6,
-  yOffset = 20,
+  xOffset = 50,
   exit,
   uniqueKey,
 }: {
   children: ReactNode;
   delay?: number;
   duration?: number;
-  yOffset?: number;
+  xOffset?: number;
   exit?: TargetAndTransition | VariantLabels | undefined;
   uniqueKey?: string | undefined;
 }) => {
   return (
     <motion.div
-      exit={exit}
       key={uniqueKey}
-      initial={{ opacity: 0, y: -yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
+      exit={exit}
+      initial={{ opacity: 0, x: xOffset }}
+      whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration, delay, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.5 }}
+      className="bg-transparent"
     >
       {children}
     </motion.div>
   );
 };
 
-export default AnimateDownOnAppear;
+export default AnimateLeftOnAppear;

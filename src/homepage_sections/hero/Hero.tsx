@@ -17,14 +17,15 @@ import { cn } from "@/lib/utils";
 
 const Hero = () => {
   const { isSignedIn } = useUser();
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
 
   return (
     <div className="relative flex justify-center">
       {/* <HeroBackground /> */}
       <DotPattern
         className={cn(
-          "[mask-image:radial-gradient(600px_circle_at_center,green,transparent)]",
+          "fill-primary/75",
+          "[mask-image:radial-gradient(750px_circle_at_center,black,transparent)]",
         )}
       />
       <div className="relative left-0 top-0 w-full max-w-limit">
@@ -48,9 +49,9 @@ const Hero = () => {
             </div>
             <AnimateUpOnAppear delay={0.1}>
               <h1 className="mx-auto mb-8 max-w-2xl text-center text-3xl md:text-5xl">
-                Create a
+                Create
                 <span className="text-primary">
-                  &nbsp;Professional Resume&nbsp;
+                  &nbsp;Professional Resumes&nbsp;
                 </span>
                 in Minutes with
                 <span className="text-primary">&nbsp;AI</span>
@@ -90,7 +91,8 @@ const Hero = () => {
                   animationStyle="from-center"
                   videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
                   thumbnailSrc={
-                    theme === "dark"
+                    theme === "dark" ||
+                    (theme === "system" && systemTheme === "dark")
                       ? "/hero-video-thumb-dark.png"
                       : "/hero-video-thumb-light.png"
                   }

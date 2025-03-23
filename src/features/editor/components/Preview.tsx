@@ -65,7 +65,7 @@ const Preview = ({ className }: { className?: string }) => {
           )}
         >
           <div
-            // className="h-full"
+            className="min-h-full"
             style={{
               zoom: (1 / 794) * width,
             }}

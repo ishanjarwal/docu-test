@@ -15,42 +15,36 @@ const Features = () => {
       icon: <FaMagic />,
       title: "AI-Powered Assistance",
       desc: "Get smart suggestions for content, formatting, and wording to craft a professional resume effortlessly.",
-      img: "/images/ai-assist.png",
     },
     {
       icon: <LuFiles />,
       title: "5+ Professional Templates",
       desc: "Choose from a variety of modern, ATS-friendly resume templates to match your style and industry.",
-      img: "/images/templates.png",
     },
     {
       icon: <IoColorPaletteOutline />,
       title: "Advanced Customization",
-      desc: "Personalize your resume with custom fonts, accent colors, and background options to make it uniquely yours.",
-      img: "/images/customization.png",
+      desc: "Personalize your resume with fonts, accent colors, and background options to make it uniquely yours.",
     },
     {
       icon: <BsFiletypePdf />,
       title: "Export to PDF",
       desc: "Download your resume instantly in a high-quality, ATS-optimized PDF format with just one click.",
-      img: "/images/export-pdf.png",
     },
     {
       icon: <IoIosTimer />,
       title: "Auto-Save",
       desc: "Never lose progress—your resume is automatically saved in real time, ensuring a seamless experience.",
-      img: "/images/auto-save.png",
     },
     {
       icon: <FiUserCheck />,
       title: "User-Friendly Interface",
       desc: "Enjoy a smooth and intuitive experience with a clean UI and support for both dark and light modes.",
-      img: "/images/user-friendly.png",
     },
   ];
 
   return (
-    <section>
+    <section id="features">
       <div className="mx-auto max-w-7xl py-16">
         <div className="flex items-center justify-center">
           <Badge
@@ -66,19 +60,8 @@ const Features = () => {
         </h2>
         <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => (
-            <AnimateUpOnAppear delay={0.1 * index}>
-              <div
-                key={"feature-" + index}
-                className="overflow-hidden rounded-xl border border-border bg-foreground/5 duration-150 hover:scale-105 hover:bg-foreground/10"
-              >
-                <div className="relative aspect-video overflow-hidden bg-white">
-                  <Image
-                    src={item.img}
-                    className="h-full w-full object-cover object-center"
-                    fill
-                    alt={item.title}
-                  />
-                </div>
+            <AnimateUpOnAppear key={"feature-" + index} delay={0.1 * index}>
+              <div className="overflow-hidden rounded-xl border border-border bg-foreground/5 duration-150 hover:scale-105 hover:bg-foreground/10">
                 <div className="p-4">
                   <p className="mt-4 text-primary">
                     {item.icon &&

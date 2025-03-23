@@ -39,7 +39,10 @@ export default function RootLayout({
           >
             {children}
             <Toaster />
-            <ReactHotToaster position="bottom-center" />
+            <ReactHotToaster
+              position="bottom-center"
+              containerClassName="z-[999999]"
+            />
             {/* temporary */}
             <PremiumModal />
           </ThemeProvider>

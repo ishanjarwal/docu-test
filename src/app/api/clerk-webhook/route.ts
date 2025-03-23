@@ -29,9 +29,7 @@ export const POST = async (req: NextRequest) => {
     const payload = await req.json();
     const body = JSON.stringify(payload);
 
-    let evt: WebhookEvent;
-
-    evt = wh.verify(body, {
+    const evt: WebhookEvent = wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,

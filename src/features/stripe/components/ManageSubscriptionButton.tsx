@@ -1,27 +1,26 @@
 "use client";
 
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
-import { createCustomerPortalSession } from "../actions";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaGear } from "react-icons/fa6";
 import { LuLoader } from "react-icons/lu";
+import { createCustomerPortalSession } from "../actions";
 
 export default function ManageSubscriptionButton() {
-  const { toast } = useToast();
-
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
     try {
       setLoading(true);
       const redirectUrl = await createCustomerPortalSession();
+      if (!redirectUrl) {
+        throw new Error("Something went wrong");
+      }
       window.location.href = redirectUrl;
     } catch (error) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        description: "Something went wrong. Please try again.",
-      });
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -29,7 +28,14 @@ export default function ManageSubscriptionButton() {
 
   return (
     <Button disabled={loading} onClick={handleClick}>
-      {loading ? <LuLoader /> : "Manage subscription"}
+      {loading ? (
+        <LuLoader />
+      ) : (
+        <>
+          <FaGear />
+          <span>Manage Subscription</span>
+        </>
+      )}
     </Button>
   );
 }

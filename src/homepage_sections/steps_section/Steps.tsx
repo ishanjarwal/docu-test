@@ -1,36 +1,43 @@
 "use client";
+import AnimateLeftOnAppear from "@/components/custom/animators/AnimateLeftOnAppear";
 import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, easeInOut } from "framer-motion";
+import { useTheme } from "next-themes";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { act, useState } from "react";
 
 const steps = [
   {
     title: "Create an account",
     desc: "Sign up for a free account to get started. No credit card required.",
-    img: "",
+    light_img: "/home-steps-1-light.png",
+    dark_img: "/home-steps-1.png",
   },
   {
     title: "Fill in your details",
     desc: "Enter your personal information, work experience, and education.",
-    img: "",
+    light_img: "/home-steps-2-light.png",
+    dark_img: "/home-steps-2.png",
   },
   {
     title: "Choose a template",
     desc: "Select a professional template that matches your style and industry.",
-    img: "",
+    light_img: "/home-steps-3-light.png",
+    dark_img: "/home-steps-3.png",
   },
   {
     title: "Download your resume",
     desc: "Export your resume in a high-quality PDF format with just one click.",
-    img: "",
+    light_img: "/home-steps-4-light.png",
+    dark_img: "/home-steps-4.png",
   },
 ];
 
 const Steps = () => {
   const [active, setActive] = useState<number>(0);
-
+  const { theme, systemTheme } = useTheme();
   return (
     <section>
       <div className="mx-auto max-w-7xl px-4 py-16">
@@ -52,12 +59,14 @@ const Steps = () => {
             </AnimateUpOnAppear>
           </div>
           <div className="flex-1">
-            <p className="text-lg text-muted-foreground">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
-              accusamus culpa minima beatae ab amet libero non cum voluptatem.
-              Quia ad numquam quam corrupti porro. Sunt eligendi quos quisquam
-              minus!
-            </p>
+            <AnimateUpOnAppear>
+              <p className="text-lg text-muted-foreground">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Voluptas accusamus culpa minima beatae ab amet libero non cum
+                voluptatem. Quia ad numquam quam corrupti porro. Sunt eligendi
+                quos quisquam minus!
+              </p>
+            </AnimateUpOnAppear>
           </div>
         </div>
         <div className="mt-8 flex flex-col items-start justify-center space-y-4 lg:flex-row lg:space-x-8 lg:space-y-0">
@@ -93,15 +102,31 @@ const Steps = () => {
             ))}
           </div>
           <div className="flex-1 self-stretch">
-            <div className="h-full overflow-hidden rounded-2xl border border-border bg-foreground">
-              <Image
-                width={500}
-                height={700}
-                src="/ats-template-1.png"
-                alt="steps"
-                className="w-full object-cover object-center"
-              />
-            </div>
+            <AnimatePresence>
+              <AnimateLeftOnAppear
+                uniqueKey={active.toString()}
+                exit={{
+                  x: -30,
+                  opacity: 0,
+                  transition: { ease: easeInOut, duration: 0.4 },
+                }}
+              >
+                <div className="h-full overflow-hidden rounded-2xl border border-border bg-background-muted">
+                  <Image
+                    width={500}
+                    height={700}
+                    src={
+                      theme === "dark" ||
+                      (systemTheme === "dark" && theme === "system")
+                        ? steps[active].dark_img
+                        : steps[active].light_img
+                    }
+                    alt="steps"
+                    className="w-full object-cover object-center"
+                  />
+                </div>
+              </AnimateLeftOnAppear>
+            </AnimatePresence>
           </div>
         </div>
       </div>

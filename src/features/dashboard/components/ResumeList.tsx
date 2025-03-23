@@ -36,6 +36,7 @@ import { LuLoaderCircle } from "react-icons/lu";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import CustomTooltip from "@/components/custom/CustomTooltip";
 import { templates } from "@/features/editor/constants/templates";
+import AnimateUpOnAppear from "@/components/custom/animators/AnimateUpOnAppear";
 
 interface ResumeListProps {
   resumes: Prisma.ResumeGetPayload<object>[];
@@ -66,7 +67,9 @@ const ResumeList = ({ resumes }: ResumeListProps) => {
         </Link>
       )}
       {resumes.map((item, idx) => (
-        <ResumeItem key={idx} resumeData={item} />
+        <AnimateUpOnAppear key={idx} delay={idx * 0.1}>
+          <ResumeItem resumeData={item} />
+        </AnimateUpOnAppear>
       ))}
     </div>
   );
