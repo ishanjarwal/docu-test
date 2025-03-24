@@ -58,7 +58,7 @@ const Steps = () => {
               </h1>
             </AnimateUpOnAppear>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 overflow-hidden">
             <AnimateUpOnAppear>
               <p className="text-lg text-muted-foreground">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
