@@ -1,4 +1,5 @@
 export const fonts: { name: string; slug: string }[] = [
+  { name: "Arial", slug: "arial" },
   { name: "Aesthetic Beauty", slug: "aesthetic_beauty" },
   { name: "BabelSans", slug: "babelsans" },
   { name: "BebasNeue-Regular", slug: "bebasneue_regular" },

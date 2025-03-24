@@ -92,6 +92,12 @@ html {
 } */
 
 /* fonts */
+
+@font-face {
+  font-family: "arial";
+  src: url("../assets/fonts/arial.ttf");
+}
+
 @font-face {
   font-family: "aesthetic_beauty";
   src: url("../assets/fonts/Aesthetic Beauty.otf");
