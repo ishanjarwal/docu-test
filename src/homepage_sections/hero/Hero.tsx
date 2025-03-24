@@ -4,6 +4,7 @@ import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DotPattern } from "@/components/ui/dot-pattern";
+import PromptInput from "@/features/ai_prompt/components/PromptInput";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
@@ -81,6 +82,13 @@ const Hero = () => {
                 </Button>
               </div>
             </AnimateUpOnAppear>
+          </div>
+          <div className="flex w-full flex-col items-center justify-center pt-16">
+            <h1 className="mb-4 text-3xl text-foreground lg:text-4xl">
+              Create with{" "}
+              <span className="text-center font-semibold text-primary">AI</span>
+            </h1>
+            <PromptInput />
           </div>
           <div className="relative w-full pt-16">
             <AnimateUpOnAppear>
