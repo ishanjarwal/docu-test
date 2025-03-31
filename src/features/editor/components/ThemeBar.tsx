@@ -13,7 +13,7 @@ import { BiSquareRounded } from "react-icons/bi";
 import { IoColorFillOutline } from "react-icons/io5";
 import { ResumeDataContext } from "../providers/ResumeData";
 import { FaCrown, FaRegSquareFull } from "react-icons/fa6";
-import { AiOutlineFontColors } from "react-icons/ai";
+import { AiOutlineFontColors, AiOutlineFontSize } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { TemplateSchema, TemplateValues } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { templateDefValues } from "@/validations/defaultValues";
-import { fonts } from "../constants/fonts";
+import { fonts, fontSizes } from "../constants/fonts";
 import { useTemplateSwitch } from "../providers/TemplateSwitchContext";
 import { PiDrop } from "react-icons/pi";
 import { cn } from "@/lib/utils";
@@ -123,16 +123,16 @@ const ThemeBar = () => {
                         }}
                         triangle="top-left"
                         colors={[
-                          "#000000",
-                          "#FFFFFF",
-                          "#333333",
-                          "#F5F5F5",
-                          "#FF5733",
-                          "#28A745",
-                          "#007BFF",
-                          "#6F42C1",
-                          "#FFC107",
-                          "#DC3545",
+                          "#1D3557", // Dark Navy Blue
+                          "#800020", // Dark Maroon
+                          "#556B2F", // Olive Green
+                          "#2C3E50", // Charcoal Gray
+                          "#4B0082", // Indigo
+                          "#2F4F4F", // Dark Slate Gray
+                          "#8B4513", // Saddle Brown
+                          "#3E2723", // Dark Coffee
+                          "#37474F", // Blue Gray
+                          "#3B3B3B", // Onyx Black
                         ]}
                       />
                     </FormItem>
@@ -176,16 +176,16 @@ const ThemeBar = () => {
                         }}
                         triangle="top-left"
                         colors={[
-                          "#000000",
-                          "#FFFFFF",
-                          "#333333",
-                          "#F5F5F5",
-                          "#FF5733",
-                          "#28A745",
-                          "#007BFF",
-                          "#6F42C1",
-                          "#FFC107",
-                          "#DC3545",
+                          "#2E2E2E", // Very Dark Gray
+                          "#4A4A4A", // Dark Gray
+                          "#3B3B3B", // Onyx Black
+                          "#1C1C1C", // Almost Black
+                          "#2C3E50", // Charcoal Gray
+                          "#2F4F4F", // Dark Slate Gray
+                          "#3E2723", // Dark Coffee
+                          "#4B0082", // Indigo (For subtle highlights)
+                          "#4F4F4F", // Medium Dark Gray
+                          "#5D5D5D", // Gray with a hint of warmth
                         ]}
                       />
                     </FormItem>
@@ -314,6 +314,40 @@ const ThemeBar = () => {
                 </Select>
               )}
             />
+            <FormField
+              name="fontSize"
+              control={form.control}
+              render={({ field }) => (
+                <Select onValueChange={(value) => field.onChange(value)}>
+                  <CustomTooltip
+                    className="z-[1000]"
+                    text="Change font size"
+                    delayDuration={0}
+                    side="bottom"
+                  >
+                    <SelectTrigger className="!h-auto !w-auto p-0 focus:ring-0 [&>svg]:hidden">
+                      <Button
+                        className="active:scale-90"
+                        variant="outline"
+                        size="icon"
+                        asChild
+                      >
+                        <span className="!flex items-center justify-center">
+                          <AiOutlineFontSize />
+                        </span>
+                      </Button>
+                    </SelectTrigger>
+                  </CustomTooltip>
+                  <SelectContent className="z-[1000]">
+                    {fontSizes.map((size, idx) => (
+                      <SelectItem key={"font-" + idx} value={size.slug}>
+                        <span>{size.name}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Form>
         </div>
       ) : (
@@ -360,6 +394,12 @@ const ThemeBar = () => {
           <Button variant="outline" size="icon" asChild>
             <span className="!flex items-center justify-center">
               <RxText />
+            </span>
+          </Button>
+
+          <Button variant="outline" size="icon" asChild>
+            <span className="!flex items-center justify-center">
+              <AiOutlineFontSize />
             </span>
           </Button>
         </div>

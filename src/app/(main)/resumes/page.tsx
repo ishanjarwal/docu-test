@@ -14,6 +14,7 @@ const page = async () => {
   const [resumes, count] = await Promise.all([
     prisma.resume.findMany({
       where: { userId },
+      orderBy: [{ updatedAt: "desc" }],
     }),
     prisma.resume.count({ where: { userId } }),
   ]);

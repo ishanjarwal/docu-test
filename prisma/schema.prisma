@@ -20,6 +20,12 @@ enum borderStyles {
   squircle
 }
 
+enum fontSizes {
+  small
+  medium
+  large
+}
+
 type CustomSocialLink {
   label String?
   link  String?
@@ -81,6 +87,8 @@ type Certification {
   link         String?
   score        String?
   description  String?
+  startDate    String?
+  endDate      String?
 }
 
 type Course {
@@ -89,6 +97,8 @@ type Course {
   link         String?
   score        String?
   description  String?
+  startDate    String?
+  endDate      String?
 }
 
 type Hobby {
@@ -97,10 +107,12 @@ type Hobby {
 }
 
 type Project {
-  name        String?
-  description String?
-  date        String?
-  link        String?
+  name         String?
+  description  String?
+  organization String?
+  startDate    String?
+  endDate      String?
+  link         String?
 }
 
 type TemplateDetails {
@@ -109,6 +121,7 @@ type TemplateDetails {
   accentHex   String       @default("#000000")
   backdropHex String       @default("#FFFFFF")
   fontFace    String?
+  fontSize    fontSizes    @default(medium)
   borderStyle borderStyles @default(squircle)
 }
 
@@ -143,7 +156,7 @@ model Subscriptions {
   userId                  String   @unique
   stripeCustomerId        String   @unique
   stripeSubscriptionId    String   @unique
-  stripePriceId           String   
+  stripePriceId           String
   stripeCurrentPeriodEnd  DateTime
   stripeCancelAtPeriodEnd Boolean  @default(false)
 

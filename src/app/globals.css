@@ -91,6 +91,57 @@ html {
   margin: 0cm;
 } */
 
+/* month input */
+
+.month-input-wrapper {
+  @apply w-full;
+}
+
+.month-input .react-datepicker {
+  @apply border border-border bg-background-muted text-foreground;
+}
+.month-input .react-datepicker__header {
+  @apply border-none bg-background text-foreground;
+}
+.month-input .react-datepicker__month-text {
+  @apply py-2 hover:bg-foreground/10;
+}
+.month-input .react-datepicker__month-text:hover {
+  @apply hover:bg-foreground/10;
+}
+
+.month-input .react-datepicker__month-text--selected {
+  @apply bg-foreground/25;
+}
+.month-input .react-datepicker__month-text--selected {
+  @apply hover:bg-foreground;
+}
+
+/* year input */
+.year-input-wrapper {
+  @apply w-full;
+}
+
+.year-input .react-datepicker {
+  @apply border border-border bg-background-muted text-foreground;
+}
+.year-input .react-datepicker__header {
+  @apply border-none bg-background text-foreground;
+}
+.year-input .react-datepicker__year-text {
+  @apply py-2 hover:bg-foreground/10;
+}
+.year-input .react-datepicker__year-text:hover {
+  @apply hover:bg-foreground/10;
+}
+
+.year-input .react-datepicker__year-text--selected {
+  @apply bg-foreground/25;
+}
+.year-input .react-datepicker__year-text--selected {
+  @apply hover:bg-foreground;
+}
+
 /* fonts */
 
 @font-face {

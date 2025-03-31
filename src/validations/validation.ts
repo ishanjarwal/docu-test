@@ -136,6 +136,8 @@ export const CerificationsSchema = z.object({
         link: optionalString,
         score: optionalString,
         description: z.string().max(300).optional(),
+        startDate: optionalString,
+        endDate: optionalString,
       }),
     )
     .optional(),
@@ -152,6 +154,8 @@ export const CourseSchema = z.object({
         link: optionalString,
         score: optionalString,
         description: z.string().max(300).optional(),
+        startDate: optionalString,
+        endDate: optionalString,
       }),
     )
     .optional(),
@@ -179,7 +183,8 @@ export const ProjectSchema = z.object({
         name: optionalString,
         link: optionalString,
         description: optionalString,
-        date: optionalString,
+        startDate: optionalString,
+        endDate: optionalString,
       }),
     )
     .optional(),
@@ -194,6 +199,7 @@ export const TemplateSchema = z.object({
   backdropHex: optionalString,
   borderStyle: z.enum(["circle", "square", "squircle"]).optional(),
   fontFace: optionalString,
+  fontSize: z.enum(["small", "medium", "large"]).optional(),
   // more values for font, colors etc.
 });
 

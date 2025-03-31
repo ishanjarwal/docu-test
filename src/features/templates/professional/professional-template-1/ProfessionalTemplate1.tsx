@@ -1,11 +1,10 @@
 "use client";
-import React from "react";
-import { TemplateProps } from "../../types";
-import Image from "next/image";
 import usePhotoURL from "@/hooks/usePhotoURL";
-import styles from "./style.module.css";
 import { cn, convertToUlORP } from "@/lib/utils";
+import { skillDefValues } from "@/validations/defaultValues";
+import isEqual from "lodash.isequal";
 import { Mail, Phone } from "lucide-react";
+import Image from "next/image";
 import {
   FaGithub,
   FaGlobe,
@@ -14,8 +13,8 @@ import {
   FaThreads,
   FaXTwitter,
 } from "react-icons/fa6";
-import isEqual from "lodash.isequal";
-import { skillDefValues } from "@/validations/defaultValues";
+import { TemplateProps } from "../../types";
+import styles from "./style.module.css";
 
 const ProfessionalTemplate1 = ({ resumeData }: TemplateProps) => {
   const {
@@ -504,12 +503,20 @@ const ProfessionalTemplate1 = ({ resumeData }: TemplateProps) => {
                         className={styles.progress_line}
                       ></span>
 
-                      <p className={styles.subHeading}>
-                        {item.name && <span>{item.name}</span>}
-                      </p>
-                      <p className={styles.para}>
-                        {item.date && <span>{item.date}</span>}
-                      </p>
+                      <div className="flex items-center justify-between gap-x-2">
+                        <p className={styles.subHeading}>
+                          {item.name && <span>{item.name}</span>}
+                        </p>
+                        <p className={styles.para}>
+                          {item.startDate && <span>{item.startDate}</span>}
+                          {item.endDate && (
+                            <span>
+                              {" — "}
+                              {item.endDate}
+                            </span>
+                          )}
+                        </p>
+                      </div>
                       {item.description && (
                         <div
                           className={cn(styles.para, "mt-1")}

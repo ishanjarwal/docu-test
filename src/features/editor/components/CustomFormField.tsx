@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/command";
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,6 +38,10 @@ import { Country } from "country-state-city";
 import { Checkbox } from "@/components/ui/checkbox";
 import clsx from "clsx";
 import { Slider } from "@/components/ui/slider";
+import { format } from "date-fns";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FaTimes } from "react-icons/fa";
 
 type FieldType =
   | "text"
@@ -46,6 +51,8 @@ type FieldType =
   | "radio"
   | "textarea"
   | "date"
+  | "month"
+  | "year"
   | "country"
   | "range";
 
@@ -54,6 +61,7 @@ interface CustomFormFieldType {
   name: string;
   fieldType: FieldType;
   label?: string;
+  description?: string;
   icon?: ReactNode;
   placeholder?: string;
   options?: { label: string; value: string }[];
@@ -145,6 +153,24 @@ const RenderInput = ({
         </FormControl>
       );
 
+    case "month":
+      return (
+        <FormControl>
+          <div>
+            <MonthInput props={props} field={field} form={props.form} />
+          </div>
+        </FormControl>
+      );
+
+    case "year":
+      return (
+        <FormControl>
+          <div>
+            <YearInput props={props} field={field} form={props.form} />
+          </div>
+        </FormControl>
+      );
+
     case "checkbox":
       return (
         <FormControl>
@@ -189,6 +215,92 @@ const RenderInput = ({
     default:
       return null;
   }
+};
+
+const MonthInput = ({
+  field,
+  form,
+  props,
+}: {
+  field: ControllerRenderProps<FieldValues, string>;
+  form: UseFormReturn | undefined;
+  props: CustomFormFieldType;
+}) => {
+  return (
+    <DatePicker
+      popperClassName="month-input"
+      wrapperClassName="month-input-wrapper"
+      // selected={field.value ? new Date(field.value || 0) : null}
+      onChange={(date: Date | null) => {
+        if (date) {
+          field.onChange(format(date, "MMM yyyy"));
+        }
+      }}
+      dateFormat="MMMM yyyy" // Display format
+      showMonthYearPicker // Show only month & year
+      customInput={
+        <div className="flex cursor-pointer items-center rounded-lg border border-border bg-foreground/5 py-1 pe-4 ring-ring focus-within:ring-1 focus-within:ring-primary">
+          {props.icon && (
+            <span className="ms-3 dark:text-white">{props.icon}</span>
+          )}
+          <Input
+            placeholder={props.placeholder}
+            className="pointer-events-none mt-0 rounded-none border-0 shadow-none focus-visible:ring-0"
+            disabled={true}
+            value={field.value}
+          />
+          {field.value && (
+            <span className="ms-1" onClick={() => field.onChange("")}>
+              <FaTimes />
+            </span>
+          )}
+        </div>
+      }
+    />
+  );
+};
+
+const YearInput = ({
+  field,
+  form,
+  props,
+}: {
+  field: ControllerRenderProps<FieldValues, string>;
+  form: UseFormReturn | undefined;
+  props: CustomFormFieldType;
+}) => {
+  return (
+    <DatePicker
+      popperClassName="year-input"
+      wrapperClassName="year-input-wrapper"
+      // selected={field.value ? new Date(field.value || 0) : null}
+      onChange={(date: Date | null) => {
+        if (date) {
+          field.onChange(format(date, "yyyy"));
+        }
+      }}
+      dateFormat="MMMM yyyy" // Display format
+      showYearPicker // Show only  year
+      customInput={
+        <div className="flex cursor-pointer items-center rounded-lg border border-border bg-foreground/5 py-1 pe-4 ring-ring focus-within:ring-1 focus-within:ring-primary">
+          {props.icon && (
+            <span className="ms-3 dark:text-white">{props.icon}</span>
+          )}
+          <Input
+            placeholder={props.placeholder}
+            className="pointer-events-none mt-0 rounded-none border-0 shadow-none focus-visible:ring-0"
+            disabled={true}
+            value={field.value}
+          />
+          {field.value && (
+            <span className="ms-1" onClick={() => field.onChange("")}>
+              <FaTimes />
+            </span>
+          )}
+        </div>
+      }
+    />
+  );
 };
 
 const CountryInput = ({
@@ -280,6 +392,13 @@ const CustomFormField = ({
             >
               {props.label}
             </FormLabel>
+          )}
+          {props.description && (
+            <FormDescription
+              className={clsx("shad-input-label text-muted-foreground")}
+            >
+              {props.description}
+            </FormDescription>
           )}
           <RenderInput field={field} props={props} />
           <FormMessage className="shad-error" />

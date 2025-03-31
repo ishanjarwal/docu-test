@@ -281,12 +281,20 @@ const SimpleTemplate1 = ({ resumeData }: TemplateProps) => {
                         "relative flex break-inside-avoid flex-col",
                       )}
                     >
-                      <p className={styles.subHeading}>
-                        {item.name && <span>{item.name}</span>}
-                      </p>
-                      <p className={styles.para}>
-                        {item.date && <span>{item.date}</span>}
-                      </p>
+                      <div className="flex items-center justify-between gap-x-2">
+                        <p className={styles.subHeading}>
+                          {item.name && <span>{item.name}</span>}
+                        </p>
+                        <p className={styles.para}>
+                          {item.startDate && <span>{item.startDate}</span>}
+                          {item.endDate && (
+                            <span>
+                              {" — "}
+                              {item.endDate}
+                            </span>
+                          )}
+                        </p>
+                      </div>
                       {item.description && (
                         <div
                           className={cn(styles.para, "mt-1")}

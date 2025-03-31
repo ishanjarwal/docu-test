@@ -43,9 +43,10 @@ export const educationDetailsDefValues = {
 
 export const projectDetailsDefValues = {
   name: "",
-  date: "",
   description: "",
   link: "",
+  startDate: "",
+  endDate: "",
 };
 
 export const workExperienceDefValues = {
@@ -71,6 +72,8 @@ export const certificationDefValues = {
   link: "",
   score: "",
   description: "",
+  startDate: "",
+  endDate: "",
 };
 
 export const courseDefValues = {
@@ -79,6 +82,8 @@ export const courseDefValues = {
   link: "",
   score: "",
   description: "",
+  startDate: "",
+  endDate: "",
 };
 
 export const hobbyDefValues = {
@@ -93,6 +98,7 @@ export const templateDefValues: TemplateValues = {
   borderStyle: "squircle",
   templateId: "ats-template-1",
   fontFace: "Inter",
+  fontSize: "small",
 };
 
 export const resumeDataDefValues: resumeSchemaType = {

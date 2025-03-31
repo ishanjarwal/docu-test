@@ -1,6 +1,7 @@
 import { resumeSchemaType } from "@/validations/validation";
 import { Prisma } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
+import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -111,6 +112,8 @@ export function mapToResumeSchemaType(
       organization: item.organization || undefined,
       score: item.score || undefined,
       title: item.title || undefined,
+      startDate: item.startDate || undefined,
+      endDate: item.endDate || undefined,
     })),
     courses: courses.map((item) => ({
       description: item.description || undefined,
@@ -118,6 +121,8 @@ export function mapToResumeSchemaType(
       organization: item.organization || undefined,
       score: item.score || undefined,
       title: item.title || undefined,
+      startDate: item.startDate || undefined,
+      endDate: item.endDate || undefined,
     })),
     hobbies: hobbies.map((item) => ({
       description: item.description || undefined,
@@ -126,7 +131,8 @@ export function mapToResumeSchemaType(
     projects: projects.map((project) => ({
       name: project.name || undefined,
       description: project.description || undefined,
-      date: project.date || undefined,
+      startDate: project.startDate || undefined,
+      endDate: project.endDate || undefined,
       link: project.link || undefined,
     })),
     template: {
@@ -135,6 +141,7 @@ export function mapToResumeSchemaType(
       backdropHex: template.backdropHex || undefined,
       borderStyle: template.borderStyle || undefined,
       fontFace: template.fontFace || undefined,
+      fontSize: template.fontSize || undefined,
       templateId: template.templateId || undefined,
     },
   };

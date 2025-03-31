@@ -22,3 +22,18 @@ export const fonts: { name: string; slug: string }[] = [
   { name: "TangoSans", slug: "tangosans" },
   { name: "TheNextFont", slug: "thenextfont" },
 ];
+
+export const fontSizes: { name: string; slug: string }[] = [
+  {
+    name: "small",
+    slug: "small",
+  },
+  {
+    name: "medium",
+    slug: "medium",
+  },
+  {
+    name: "large",
+    slug: "large",
+  },
+];

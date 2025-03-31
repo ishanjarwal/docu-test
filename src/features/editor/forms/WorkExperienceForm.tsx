@@ -51,7 +51,12 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
-import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
+import {
+  FaChevronDown,
+  FaCrown,
+  FaRegCalendar,
+  FaWandMagicSparkles,
+} from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { LuLoaderCircle } from "react-icons/lu";
@@ -59,6 +64,8 @@ import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
 import { generateWorkExperience } from "./action";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -172,6 +179,8 @@ const WorkExperienceItem = ({
     isDragging,
   } = useSortable({ id });
 
+  const [yearOnly, setYearOnly] = useState<boolean>(false);
+
   return (
     <div
       className={clsx(
@@ -255,6 +264,7 @@ const WorkExperienceItem = ({
                       name: `workExperiences.${index}.description`,
                       fieldType: "textarea",
                       label: "Description",
+                      description: "use - for points",
                       placeholder: "Describe your experience",
                     }}
                     control={form.control}
@@ -276,30 +286,78 @@ const WorkExperienceItem = ({
                         control={form.control}
                       />
                     </div>
-                    <div className="col-span-6 md:col-span-4">
-                      <CustomFormField
-                        props={{
-                          name: `workExperiences.${index}.startDate`,
-                          fieldType: "date",
-                          label: "Start Date",
+                    {yearOnly ? (
+                      <>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `workExperiences.${index}.startDate`,
+                              fieldType: "year",
+                              label: "Start Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `workExperiences.${index}.endDate`,
+                              fieldType: "year",
+                              label: "End Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `workExperiences.${index}.startDate`,
+                              fieldType: "month",
+                              label: "Start Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `workExperiences.${index}.endDate`,
+                              fieldType: "month",
+                              label: "End Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-end">
+                    <Label className="flex cursor-pointer items-center justify-center space-x-2">
+                      <span>Show year only</span>
+                      <Checkbox
+                        checked={yearOnly}
+                        onCheckedChange={() => {
+                          form.setValue(
+                            `workExperiences.${index}.startDate`,
+                            "",
+                          );
+                          form.setValue(`workExperiences.${index}.endDate`, "");
+                          setYearOnly((prev) => !prev);
                         }}
-                        control={form.control}
+                        disabled={false}
                       />
-                    </div>
-                    <div className="col-span-6 md:col-span-4">
-                      <CustomFormField
-                        props={{
-                          name: `workExperiences.${index}.endDate`,
-                          fieldType: "date",
-                          label: "End Date",
-                          disabled: form.watch("workExperiences")?.[index]
-                            .current
-                            ? true
-                            : false,
-                        }}
-                        control={form.control}
-                      />
-                    </div>
+                    </Label>
                   </div>
                   <div>
                     <CustomFormField

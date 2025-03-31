@@ -54,16 +54,17 @@ const Preview = ({ className }: { className?: string }) => {
           </Button>
         )}
       </nav>
-      <div className={cn("h-fit px-4 pb-4 pt-8", isPreviewOpen && "pt-24")}>
+      <div className={cn("px-4 pb-4 pt-8", isPreviewOpen && "pt-24")}>
         <div
           ref={containerRef as React.RefObject<HTMLDivElement>}
           className={cn(
-            "mx-auto aspect-[210/297] max-w-3xl bg-white shadow-2xl",
+            "mx-auto h-full max-w-3xl bg-white shadow-2xl",
             isPreviewOpen && "max-w-4xl",
           )}
+          style={{ minHeight: `${(297 / 210) * width}px` }}
         >
           <div
-            className="min-h-full"
+            className="h-full min-h-full"
             style={{
               zoom: (1 / 794) * width,
             }}

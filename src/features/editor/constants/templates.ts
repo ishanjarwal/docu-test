@@ -94,7 +94,7 @@ export const templates: ChooseTemplateProps[] = [
     textHex: "#000000",
     backdropHex: "#ffffff",
     borderStyle: "circle",
-    fontFace: "aesthetic_beauty",
+    fontFace: "arial",
   },
   {
     id: "professional-template-2",
@@ -105,7 +105,7 @@ export const templates: ChooseTemplateProps[] = [
     textHex: "#000000",
     backdropHex: "#ffffff",
     borderStyle: "circle",
-    fontFace: "aesthetic_beauty",
+    fontFace: "arial",
   },
   {
     id: "professional-template-3",
@@ -116,7 +116,7 @@ export const templates: ChooseTemplateProps[] = [
     textHex: "#000000",
     backdropHex: "#ffffff",
     borderStyle: "circle",
-    fontFace: "aesthetic_beauty",
+    fontFace: "arial",
   },
   {
     id: "simple-template-1",

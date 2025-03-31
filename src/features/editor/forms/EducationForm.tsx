@@ -23,7 +23,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import clsx from "clsx";
-import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
+import {
+  FaChevronDown,
+  FaCrown,
+  FaRegCalendar,
+  FaWandMagicSparkles,
+} from "react-icons/fa6";
 
 import AIButton from "@/components/custom/AIButton";
 import {
@@ -61,6 +66,8 @@ import { CSS } from "@dnd-kit/utilities";
 import toast from "react-hot-toast";
 import { LuLoaderCircle } from "react-icons/lu";
 import { generateEducationDetails } from "./action";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -179,6 +186,8 @@ const EducationItem = ({
     isDragging,
   } = useSortable({ id });
 
+  const [yearOnly, setYearOnly] = useState<boolean>(false);
+
   return (
     <div
       className={clsx(
@@ -280,32 +289,63 @@ const EducationItem = ({
                         control={form.control}
                       />
                     </div>
-                    <div className="col-span-6 md:col-span-4">
-                      <CustomFormField
-                        props={{
-                          name: `educationDetails.${index}.startDate`,
-                          fieldType: "date",
-                          label: "Start Date",
-                        }}
-                        control={form.control}
-                      />
-                    </div>
-                    <div className="col-span-6 md:col-span-4">
-                      <CustomFormField
-                        props={{
-                          name: `educationDetails.${index}.endDate`,
-                          fieldType: "date",
-                          label: "End Date",
-                          disabled: form.watch("educationDetails")?.[index]
-                            .current
-                            ? true
-                            : false,
-                        }}
-                        control={form.control}
-                      />
-                    </div>
+                    {yearOnly ? (
+                      <>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `educationDetails.${index}.startDate`,
+                              fieldType: "year",
+                              label: "Start Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `educationDetails.${index}.endDate`,
+                              fieldType: "year",
+                              label: "End Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `educationDetails.${index}.startDate`,
+                              fieldType: "month",
+                              label: "Start Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                        <div className="col-span-6 md:col-span-4">
+                          <CustomFormField
+                            props={{
+                              placeholder: "Select date",
+                              name: `educationDetails.${index}.endDate`,
+                              fieldType: "month",
+                              label: "End Date",
+                              icon: <FaRegCalendar />,
+                            }}
+                            control={form.control}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
-                  <div className="flex items-center justify-end space-x-2 px-2 py-2">
+                  <div className="flex items-center justify-end space-x-6">
                     <CustomFormField
                       props={{
                         name: `educationDetails.${index}.current`,
@@ -314,6 +354,24 @@ const EducationItem = ({
                       }}
                       control={form.control}
                     />
+                    <Label className="flex cursor-pointer items-center justify-center space-x-2">
+                      <span>Show year only</span>
+                      <Checkbox
+                        checked={yearOnly}
+                        onCheckedChange={() => {
+                          form.setValue(
+                            `educationDetails.${index}.startDate`,
+                            "",
+                          );
+                          form.setValue(
+                            `educationDetails.${index}.endDate`,
+                            "",
+                          );
+                          setYearOnly((prev) => !prev);
+                        }}
+                        disabled={false}
+                      />
+                    </Label>
                   </div>
                 </div>
               </div>

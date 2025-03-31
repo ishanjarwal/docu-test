@@ -5,7 +5,7 @@ import {
   CertificationType,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Control,
   useFieldArray,
@@ -24,7 +24,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaRegCalendar } from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
 
 import {
@@ -48,6 +48,8 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
 import { certificationDefValues } from "@/validations/defaultValues";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CertificationType>({
@@ -162,6 +164,8 @@ const CertificationItem = ({
     isDragging,
   } = useSortable({ id });
 
+  const [yearOnly, setYearOnly] = useState<boolean>(false);
+
   return (
     <div
       className={clsx(
@@ -256,7 +260,9 @@ const CertificationItem = ({
                     control={control}
                   />
                 </div>
-                <div className="col-span-2">
+              </div>
+              <div className="my-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
                   <CustomFormField
                     props={{
                       name: `certifications.${index}.score`,
@@ -267,6 +273,75 @@ const CertificationItem = ({
                     control={control}
                   />
                 </div>
+                {yearOnly ? (
+                  <>
+                    <div>
+                      <CustomFormField
+                        props={{
+                          placeholder: "Select date",
+                          name: `certifications.${index}.startDate`,
+                          fieldType: "year",
+                          label: "Start Date",
+                          icon: <FaRegCalendar />,
+                        }}
+                        control={form.control}
+                      />
+                    </div>
+                    <div>
+                      <CustomFormField
+                        props={{
+                          placeholder: "Select date",
+                          name: `certifications.${index}.endDate`,
+                          fieldType: "year",
+                          label: "End Date",
+                          icon: <FaRegCalendar />,
+                        }}
+                        control={form.control}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <CustomFormField
+                        props={{
+                          placeholder: "Select date",
+                          name: `certifications.${index}.startDate`,
+                          fieldType: "month",
+                          label: "Start Date",
+                          icon: <FaRegCalendar />,
+                        }}
+                        control={form.control}
+                      />
+                    </div>
+                    <div>
+                      <CustomFormField
+                        props={{
+                          placeholder: "Select date",
+                          name: `certifications.${index}.endDate`,
+                          fieldType: "month",
+                          label: "End Date",
+                          icon: <FaRegCalendar />,
+                        }}
+                        control={form.control}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="flex items-center justify-end">
+                <Label className="flex cursor-pointer items-center justify-center space-x-2">
+                  <span>Show year only</span>
+                  <Checkbox
+                    checked={yearOnly}
+                    onCheckedChange={() => {
+                      form.setValue(`certifications.${index}.startDate`, "");
+                      form.setValue(`certifications.${index}.endDate`, "");
+                      setYearOnly((prev) => !prev);
+                    }}
+                    disabled={false}
+                  />
+                </Label>
               </div>
             </div>
           </AccordionContent>
