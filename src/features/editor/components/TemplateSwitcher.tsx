@@ -16,18 +16,12 @@ import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { templates } from "../constants/templates";
 import { ResumeDataContext } from "../providers/ResumeData";
-import { useTemplateSwitch } from "../providers/TemplateSwitchContext";
+import { useTemplate } from "../providers/TemplateContext";
 
 const TemplateSwitcher = () => {
-  const { isOpen, toggleOpen } = useTemplateSwitch();
-  // const { resumeData, setResumeData } = useContext(ResumeDataContext);
+  const { isOpen, toggleOpen, form } = useTemplate();
 
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
-  const form = useForm<TemplateValues>({
-    mode: "onChange",
-    resolver: zodResolver(TemplateSchema),
-    defaultValues: resumeData.template || templateDefValues,
-  });
 
   useEffect(() => {
     const { unsubscribe } = form.watch(async (values) => {

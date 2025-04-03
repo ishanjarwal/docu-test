@@ -4,7 +4,7 @@ import Preview from "@/features/editor/components/Preview";
 import PreviewRenderer from "@/features/editor/components/PreviewRenderer";
 import Tour from "@/features/editor/components/Tour";
 import { ResumeData } from "@/features/editor/providers/ResumeData";
-import { TemplateSwitchProvider } from "@/features/editor/providers/TemplateSwitchContext";
+import { TemplateProvider } from "@/features/editor/providers/TemplateContext";
 import { resumeLimitExceeded } from "@/features/premium/actions";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
@@ -36,7 +36,7 @@ const page = async ({
   const firstVisit = await isFirstVisit();
   return (
     <ResumeData existingResume={existingResume}>
-      <TemplateSwitchProvider>
+      <TemplateProvider>
         <Tour firstVisit={firstVisit}>
           <main className="flex min-h-screen w-full lg:max-h-screen">
             {/* <Joyride key={"joyride"} steps={joyrideSteps} /> */}
@@ -61,7 +61,7 @@ const page = async ({
             </div>
           </main>
         </Tour>
-      </TemplateSwitchProvider>
+      </TemplateProvider>
     </ResumeData>
   );
 };

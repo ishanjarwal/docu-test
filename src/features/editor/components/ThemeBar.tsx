@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { templateDefValues } from "@/validations/defaultValues";
 import { fonts, fontSizes } from "../constants/fonts";
-import { useTemplateSwitch } from "../providers/TemplateSwitchContext";
+import { useTemplate } from "../providers/TemplateContext";
 import { PiDrop } from "react-icons/pi";
 import { cn } from "@/lib/utils";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
@@ -39,19 +39,14 @@ const ThemeBar = () => {
   const subscriptionLevel = useSubscriptionLevel();
   const { canUseCustomizations } = usePremiumFeatures(subscriptionLevel);
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
-  const { toggleOpen } = useTemplateSwitch();
-  const form = useForm<TemplateValues>({
-    mode: "onChange",
-    resolver: zodResolver(TemplateSchema),
-    defaultValues: resumeData.template || templateDefValues,
-  });
+  const { toggleOpen, form } = useTemplate();
   useEffect(() => {
     const { unsubscribe } = form.watch(async (values) => {
       const isValid = await form.trigger();
       if (!isValid) return;
       setResumeData({
         ...resumeData,
-        template: { ...values, templateId: resumeData.template.templateId },
+        template: { ...values },
       });
     });
     return unsubscribe;
@@ -278,7 +273,11 @@ const ThemeBar = () => {
               name="fontFace"
               control={form.control}
               render={({ field }) => (
-                <Select onValueChange={(value) => field.onChange(value)}>
+                <Select
+                  onValueChange={(value) => field.onChange(value)}
+                  defaultValue={resumeData.template.fontFace}
+                  value={resumeData.template.fontFace}
+                >
                   <CustomTooltip
                     className="z-[1000]"
                     text="Change font"
