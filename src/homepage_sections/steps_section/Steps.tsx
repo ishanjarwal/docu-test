@@ -70,35 +70,37 @@ const Steps = () => {
           </div>
         </div>
         <div className="mt-8 flex flex-col items-start justify-center space-y-4 lg:flex-row lg:space-x-8 lg:space-y-0">
-          <div className="flex flex-1 flex-col items-center justify-center space-y-2 lg:space-y-4">
+          <div className="flex flex-1 flex-col space-y-2 lg:space-y-4">
             {steps.map((step, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "flex w-full cursor-pointer items-start rounded-xl px-4 py-6",
-                  active === index && "border border-border bg-foreground/5",
-                )}
-                onClick={() => setActive(index)}
-              >
-                <div className="me-4">
-                  <span
-                    className={cn(
-                      "text-xl font-semibold text-foreground/25",
-                      active === index && "text-primary",
-                    )}
-                  >
-                    {"0"}
-                    {index + 1}
-                    {"."}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{step.title}</h3>
-                  {index === active && (
-                    <p className="text-muted-foreground">{step.desc}</p>
+              <AnimateUpOnAppear delay={0.1 * index}>
+                <div
+                  key={index}
+                  className={cn(
+                    "flex w-full cursor-pointer items-start rounded-xl px-4 py-6",
+                    active === index && "border border-border bg-foreground/5",
                   )}
+                  onClick={() => setActive(index)}
+                >
+                  <div className="me-4">
+                    <span
+                      className={cn(
+                        "text-xl font-semibold text-foreground/25",
+                        active === index && "text-primary",
+                      )}
+                    >
+                      {"0"}
+                      {index + 1}
+                      {"."}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{step.title}</h3>
+                    {index === active && (
+                      <p className="text-muted-foreground">{step.desc}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </AnimateUpOnAppear>
             ))}
           </div>
           <div className="flex-1 self-stretch">
@@ -112,18 +114,20 @@ const Steps = () => {
                 }}
               >
                 <div className="h-full overflow-hidden rounded-2xl border border-border bg-background-muted">
-                  <Image
-                    width={500}
-                    height={700}
-                    src={
-                      theme === "dark" ||
-                      (systemTheme === "dark" && theme === "system")
-                        ? steps[active].dark_img
-                        : steps[active].light_img
-                    }
-                    alt="steps"
-                    className="w-full object-cover object-center"
-                  />
+                  {theme && (
+                    <Image
+                      width={500}
+                      height={700}
+                      src={
+                        theme === "dark" ||
+                        (systemTheme === "dark" && theme === "system")
+                          ? steps[active].dark_img
+                          : steps[active].light_img
+                      }
+                      alt="steps"
+                      className="w-full object-cover object-center"
+                    />
+                  )}
                 </div>
               </AnimateLeftOnAppear>
             </AnimatePresence>
