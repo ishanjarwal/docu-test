@@ -29,14 +29,21 @@ const Hero = () => {
       />
       <div className="relative left-0 top-0 w-full max-w-limit">
         <div className="flex flex-col items-center justify-between px-4 pb-16 pt-32 lg:pt-36 limit:px-0">
-          {isSignedIn ? (
+          {/* check condition then render prompt input */}
+          {false ? (
             <div className="flex w-full flex-col items-center justify-center">
-              <h1 className="mb-4 text-4xl text-foreground lg:text-5xl">
-                Create Resume with{" "}
-                <span className="text-center font-semibold text-primary">
-                  AI
-                </span>
-              </h1>
+              <div className="mb-32">
+                <h1 className="mb-4 text-center text-3xl text-foreground sm:text-4xl lg:text-5xl">
+                  Create Resume with{" "}
+                  <span className="text-center font-semibold text-primary">
+                    AI
+                  </span>
+                </h1>
+                <p className="text-center">
+                  Write a prompt and provide basic details, it will auto
+                  generate a resume which you can customize
+                </p>
+              </div>
               <PromptInput />
               <div className="mx-auto mt-8 flex items-center justify-center space-x-2">
                 <Button

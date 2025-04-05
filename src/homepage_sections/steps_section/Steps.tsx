@@ -105,10 +105,9 @@ const Steps = () => {
           </div>
           <div className="flex-1 self-stretch">
             <AnimatePresence>
-              <AnimateLeftOnAppear
+              <AnimateUpOnAppear
                 uniqueKey={active.toString()}
                 exit={{
-                  x: -30,
                   opacity: 0,
                   transition: { ease: easeInOut, duration: 0.4 },
                 }}
@@ -129,7 +128,7 @@ const Steps = () => {
                     />
                   )}
                 </div>
-              </AnimateLeftOnAppear>
+              </AnimateUpOnAppear>
             </AnimatePresence>
           </div>
         </div>
