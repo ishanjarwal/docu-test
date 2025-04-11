@@ -21,6 +21,12 @@ const SimpleTemplate1 = ({ resumeData }: TemplateProps) => {
     socialLinks,
   } = resumeData;
 
+  const fontSizeFactors = {
+    small: 0.8,
+    medium: 1.2,  
+    large: 1.5,
+  };
+
   const borderRadiusValue =
     template.borderStyle == "circle"
       ? "9999px"
@@ -68,7 +74,14 @@ const SimpleTemplate1 = ({ resumeData }: TemplateProps) => {
               photoURL ? "items-start" : "items-center",
             )}
           >
-            <h1 className="w-max text-2xl font-bold capitalize">
+            <h1
+              style={{
+                fontSize: template.fontSize
+                  ? 16 * fontSizeFactors[template.fontSize]
+                  : 16,
+              }}
+              className="w-max font-bold capitalize"
+            >
               {personalDetails.firstName + " " + personalDetails.lastName}
             </h1>
             <p className={cn(styles.subHeading, "w-max")}>

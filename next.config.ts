@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         hostname: "afxjawn6uqlgl28h.public.blob.vercel-storage.com",
         protocol: "https",
       },
+      {
+        hostname: "img.clerk.com",
+        protocol: "https",
+      },
     ],
   },
 };

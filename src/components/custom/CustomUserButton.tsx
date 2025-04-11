@@ -5,11 +5,12 @@ import { useTheme } from "next-themes";
 import { FaCrown } from "react-icons/fa6";
 import { HiOutlineDocumentText } from "react-icons/hi";
 
-const CustomUserButton = () => {
+const CustomUserButton = ({ defaultOpen }: { defaultOpen?: boolean }) => {
   const { theme, systemTheme } = useTheme();
 
   return (
     <UserButton
+      defaultOpen={defaultOpen && defaultOpen}
       userProfileUrl="/profile"
       appearance={{
         baseTheme:

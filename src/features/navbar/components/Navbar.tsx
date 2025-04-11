@@ -98,8 +98,8 @@ const Navbar = () => {
               )}
             </AnimatePresence>
 
-            <div className="flex items-center">
-              <div className="relative aspect-square w-6 lg:w-12">
+            <div className="flex items-center space-x-2">
+              <div className="relative aspect-square w-6 lg:w-8">
                 <Image
                   src={images.logo}
                   alt="ResumeBuildr - Your AI Resume Builder"

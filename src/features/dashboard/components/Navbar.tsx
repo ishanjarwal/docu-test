@@ -1,33 +1,37 @@
 "use client";
 import CustomUserButton from "@/components/custom/CustomUserButton";
 import { Button } from "@/components/ui/button";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { images } from "@/constants/images";
 import ThemeToggleButton from "@/features/theme_toggle/components/ThemeToggleButton";
 import { useClerk, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCrown } from "react-icons/fa6";
+import { FiSidebar } from "react-icons/fi";
 const Navbar = () => {
   const { isSignedIn } = useUser();
-
+  const { isMobile } = useSidebar();
   return (
-    <div className="flex h-16 items-center bg-foreground/5">
-      <nav className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-4 md:px-8">
+    <div className="sticky top-0 flex h-16 items-center border-b bg-background">
+      <nav className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-4">
         <div>
-          <div className="flex items-center">
-            <div className="relative aspect-square w-6 lg:w-12">
-              <Image
-                src={images.logo}
-                alt="ResumeBuildr - Your AI Resume Builder"
-                fill
-              />
-            </div>
-            <div>
-              <h1 className="text-base font-bold md:text-xl lg:text-2xl">
-                <span>Resume</span>
-                <span className="text-primary">Buildr</span>
-              </h1>
-            </div>
+          <div className="flex items-center space-x-2">
+            <SidebarTrigger
+              size={"default"}
+              className="py-4"
+              variant={isMobile ? "secondary" : "ghost"}
+            >
+              <FiSidebar />
+            </SidebarTrigger>
+            {isMobile && (
+              <div className="flex items-center justify-start space-x-2 overflow-hidden">
+                <div className="relative aspect-square w-8 flex-shrink-0 bg-background">
+                  <Image src={images.logo} alt="logo" fill />
+                </div>
+                <span className="font-bold">ResumeBuildr</span>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex items-center justify-end gap-x-4">
