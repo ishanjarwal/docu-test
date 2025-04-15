@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -15,11 +15,14 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | ResumeBuildr - Your AI Resume Builder",
-    absolute: "ResumeBuildr - Your AI Resume Builder",
+    template: "%s | DOCU Resumes - Your AI Resume Builder",
+    absolute: "DOCU Resumes - Your AI Resume Builder",
   },
   description:
     "ResumeBuildr – Create professional, ATS-friendly resumes in minutes with AI-powered tools. Personalize templates, optimize keywords, and stand out to land your dream job. Start building today!",
+};
+export const viewport: Viewport = {
+  themeColor: "#000000",
 };
 
 export default function RootLayout({

@@ -101,8 +101,8 @@ const Footer = () => {
   return (
     <footer className="bg-background">
       <div className="relative mx-auto max-w-screen-xl overflow-hidden px-4 py-16 pb-48 sm:px-6 lg:px-8">
-        <p className="outlined_text absolute bottom-0 right-0 select-none text-[120px] leading-none opacity-50 md:text-[150px] lg:text-[200px]">
-          buildr.ai
+        <p className="outlined_text absolute bottom-0 right-0 select-none text-[80px] leading-none opacity-50 md:text-[150px] lg:text-[200px]">
+          DOCU.AI
         </p>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
@@ -166,7 +166,7 @@ const Footer = () => {
           </div>
         </div>
         <p className="mt-8 text-sm text-muted-foreground">
-          © 2022 Buildr Intelligence Limited
+          © 2022 DOCU Intelligence Limited
         </p>
       </div>
     </footer>

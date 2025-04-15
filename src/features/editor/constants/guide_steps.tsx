@@ -16,7 +16,6 @@ export const joyrideSteps: StepType[] = [
     content: (
       <div>
         <h2 className="font-bold">Change the resume title</h2>
-        {/* <p>This is the second step of the guide.</p> */}
       </div>
     ),
   },
@@ -34,7 +33,6 @@ export const joyrideSteps: StepType[] = [
     content: (
       <div>
         <h2 className="font-bold">Move to next/previous form</h2>
-        {/* <p>This is the fourth step of the guide.</p> */}
       </div>
     ),
   },
@@ -42,31 +40,25 @@ export const joyrideSteps: StepType[] = [
     selector: ".step4",
     content: (
       <div>
-        <h2 className="font-bold">See the preview of your resume</h2>
-        {/* <p>This is the fourth step of the guide.</p> */}
+        <h2 className="font-bold">
+          Change templates and customize according to your needs
+        </h2>
       </div>
     ),
   },
   {
     selector: ".step5",
-    action: () => {
-      if (document.documentElement.offsetWidth >= 1024) return;
-      const newSearchParams = new URLSearchParams(window.location.search);
-      newSearchParams.set("preview", "true");
-      window.history.pushState(null, "", `?${newSearchParams.toString()}`);
-    },
-    actionAfter: () => {
-      if (document.documentElement.offsetWidth >= 1024) return;
-      const newSearchParams = new URLSearchParams(window.location.search);
-      newSearchParams.delete("preview");
-      window.history.pushState(null, "", `?${newSearchParams.toString()}`);
-    },
     content: (
       <div>
-        <h2 className="font-bold">
-          Change templates and customize according to your needs
-        </h2>
-        {/* <p>This is the fourth step of the guide.</p> */}
+        <h2 className="font-bold">See the preview of your resume</h2>
+      </div>
+    ),
+  },
+  {
+    selector: ".step6",
+    content: (
+      <div>
+        <h2 className="font-bold">Download your Resume in High-Quality PDF.</h2>
       </div>
     ),
   },

@@ -77,11 +77,13 @@ const EditorFooter = ({ currStep, setCurrStep, resumeId }: FooterProps) => {
           </Button>
         )}
       </div>
-      <div className={cn("step4", "flex items-center justify-start space-x-2")}>
-        <StylingTrigger />
+      <div className="flex items-center justify-start space-x-2">
+        <div className="step4">
+          <StylingTrigger />
+        </div>
         <Button
           onClick={addPreviewParam}
-          className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
+          className={cn("step5", "py-1 text-xs lg:px-4 lg:py-2 lg:text-sm")}
           variant={"secondary"}
         >
           <FaRegEye />

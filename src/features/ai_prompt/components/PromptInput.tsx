@@ -48,52 +48,52 @@ const PromptInput = () => {
 
   const [listening, setListening] = useState<boolean>(false);
 
-  useEffect(() => {
-    const SpeechRecognition =
-      (window as any).webkitSpeechRecognition ||
-      (window as any).SpeechRecognition;
+  // useEffect(() => {
+  //   const SpeechRecognition =
+  //     (window as any).webkitSpeechRecognition ||
+  //     (window as any).SpeechRecognition;
 
-    if (!SpeechRecognition) {
-      alert("Speech Recognition not supported in this browser!");
-      return;
-    }
+  //   if (!SpeechRecognition) {
+  //     alert("Speech Recognition not supported in this browser!");
+  //     return;
+  //   }
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = "en-US";
+  //   const recognition = new SpeechRecognition();
+  //   recognition.continuous = false;
+  //   recognition.interimResults = false;
+  //   recognition.lang = "en-US";
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript: string = event.results[0][0].transcript;
-      const prev = form.watch("prompt");
-      form.setValue("prompt", prev + " " + transcript);
-      // console.log("Transcript:", transcript); // for testing
-    };
+  //   recognition.onresult = (event: SpeechRecognitionEvent) => {
+  //     const transcript: string = event.results[0][0].transcript;
+  //     const prev = form.watch("prompt");
+  //     form.setValue("prompt", prev + " " + transcript);
+  //     // console.log("Transcript:", transcript); // for testing
+  //   };
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      alert("Recognition Error : " + event.error);
-      console.error("Speech recognition error:", event.error);
-    };
+  //   recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+  //     alert("Recognition Error : " + event.error);
+  //     console.error("Speech recognition error:", event.error);
+  //   };
 
-    recognition.onend = () => {
-      setListening(false);
-    };
+  //   recognition.onend = () => {
+  //     setListening(false);
+  //   };
 
-    if (listening) {
-      recognition.start();
+  //   if (listening) {
+  //     recognition.start();
 
-      // Stop after 30 seconds
-      setTimeout(() => {
-        recognition.stop();
-      }, 30000);
-    } else {
-      recognition.stop();
-    }
+  //     // Stop after 30 seconds
+  //     setTimeout(() => {
+  //       recognition.stop();
+  //     }, 30000);
+  //   } else {
+  //     recognition.stop();
+  //   }
 
-    return () => {
-      recognition.stop();
-    };
-  }, [listening]);
+  //   return () => {
+  //     recognition.stop();
+  //   };
+  // }, [listening]);
 
   const toggleListening = () => {
     setListening((prev) => !prev);

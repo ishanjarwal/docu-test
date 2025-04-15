@@ -1,15 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React from "react";
-import { IoMdClose } from "react-icons/io";
-import { MdOutlineGridView } from "react-icons/md";
-import StylingTrigger from "./StylingTrigger";
-import { cn } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
-import { useTemplate } from "../providers/TemplateContext";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
-import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useContext } from "react";
+import { MdOutlineFileDownload, MdOutlineGridView } from "react-icons/md";
+import { ResumeDataContext } from "../providers/ResumeData";
+import { useTemplate } from "../providers/TemplateContext";
+import StylingTrigger from "./StylingTrigger";
 
 const PreviewHeader = () => {
   const searchParams = useSearchParams();
@@ -17,12 +18,7 @@ const PreviewHeader = () => {
   const subscriptionLevel = useSubscriptionLevel();
   const { canUseCustomizations } = usePremiumFeatures(subscriptionLevel);
   const { setOpen } = usePremiumModal();
-
-  const removePreviewParam = () => {
-    const newSearchParams = new URLSearchParams(window.location.search);
-    newSearchParams.delete("preview");
-    window.history.pushState(null, "", `?${newSearchParams.toString()}`);
-  };
+  const { resumeData } = useContext(ResumeDataContext);
 
   const { toggleOpen } = useTemplate();
 
@@ -39,19 +35,16 @@ const PreviewHeader = () => {
         variant={"secondary"}
       >
         <MdOutlineGridView />
-        <span>Change Template</span>
+        <span className="hidden 2xl:block">Change Template</span>
       </Button>
       <div className="flex items-center justify-end space-x-2">
+        <Button className="step6" variant={"secondary"} asChild>
+          <Link target="_blank" href={`/preview?id=${resumeData.id}`}>
+            <MdOutlineFileDownload />
+            <span className="hidden 2xl:block">Download PDF</span>
+          </Link>
+        </Button>
         <StylingTrigger />
-        {isPreviewOpen && (
-          <Button
-            onClick={removePreviewParam}
-            variant={"secondary"}
-            size={"icon"}
-          >
-            <IoMdClose />
-          </Button>
-        )}
       </div>
     </nav>
   );

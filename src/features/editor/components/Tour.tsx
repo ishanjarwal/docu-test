@@ -30,11 +30,6 @@ const Tour = ({
   return (
     <TourProvider
       defaultOpen={firstVisit}
-      afterOpen={() => {
-        const newSearchParams = new URLSearchParams(window.location.search);
-        newSearchParams.delete("preview");
-        window.history.pushState(null, "", `?${newSearchParams.toString()}`);
-      }}
       steps={steps}
       styles={styles}
       showBadge={false}

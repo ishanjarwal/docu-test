@@ -20,6 +20,9 @@ import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import { cn } from "@/lib/utils";
 import { TemplateValues } from "@/validations/validation";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { SketchPicker } from "react-color";
 import { ControllerRenderProps } from "react-hook-form";
@@ -37,9 +40,6 @@ import { fonts, fontSizes } from "../constants/fonts";
 import { ResumeDataContext } from "../providers/ResumeData";
 import { useTemplate } from "../providers/TemplateContext";
 import Preview from "./Preview";
-import Image from "next/image";
-import Link from "next/link";
-import { useTheme } from "next-themes";
 
 const StylingSidebar = () => {
   const { isMobile, toggleSidebar } = useSidebar();
@@ -144,6 +144,7 @@ const StylingSidebar = () => {
                   <div className="grid grid-cols-3 gap-2">
                     {borderStyles.map((bs) => (
                       <CustomTooltip
+                        key={bs.id}
                         text={bs.id.toUpperCase()}
                         delayDuration={0}
                       >
@@ -435,25 +436,27 @@ const CustomColorPicker = ({
           style={{ backgroundColor: color }}
         ></span>
       ))}
-      <CustomTooltip text="Custom color" delayDuration={0}>
-        <Popover>
-          <PopoverTrigger asChild>
-            <span className="aspect-square cursor-pointer rounded-full bg-gradient-to-br from-sky-500 via-pink-500 to-lime-400 duration-75 hover:scale-110"></span>
-          </PopoverTrigger>
-          <PopoverContent
-            side="top"
-            className="w-auto border-none bg-transparent p-0"
-          >
+      <Popover>
+        <PopoverTrigger asChild>
+          <span className="aspect-square cursor-pointer rounded-full bg-gradient-to-br from-sky-500 via-pink-500 to-lime-400 duration-75 hover:scale-110"></span>
+        </PopoverTrigger>
+        <PopoverContent
+          side="left"
+          className="w-auto border-none bg-transparent p-0 shadow-none"
+        >
+          <div>
             <SketchPicker
+              disableAlpha={true}
+              className="me-4 border border-border !bg-background shadow-xl"
               onChange={(color) => {
                 field.onChange(color.hex);
               }}
               color={field.value}
               presetColors={[]}
             />
-          </PopoverContent>
-        </Popover>
-      </CustomTooltip>
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

@@ -108,8 +108,8 @@ const Navbar = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold lg:text-2xl">
-                  <span>Resume</span>
-                  <span className="text-primary">Buildr</span>
+                  <span>DOCU</span>
+                  <span className="text-primary">Resumes</span>
                 </h1>
               </div>
             </div>

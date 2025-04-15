@@ -3,12 +3,20 @@ import DashboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import Navbar from "@/features/dashboard/components/Navbar";
 import { ReactNode } from "react";
 
+interface SidebarStyles extends React.CSSProperties {
+  "--sidebar-width"?: string;
+  "--sidebar-width-mobile"?: string;
+  "--sidebar-width-icon"?: string;
+}
+
 const layout = async ({ children }: { children: ReactNode }) => {
   return (
     <SidebarProvider
-    //   style={{
-    //     "--sidebar-width-icon": "4rem",
-    //   }}
+      style={
+        {
+          "--sidebar-width-icon": "4rem",
+        } as SidebarStyles
+      }
     >
       <DashboardSidebar />
       <main className="w-full bg-background-muted ps-0 lg:p-4 lg:ps-0">

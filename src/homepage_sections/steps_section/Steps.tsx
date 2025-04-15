@@ -72,7 +72,7 @@ const Steps = () => {
         <div className="mt-8 flex flex-col items-start justify-center space-y-4 lg:flex-row lg:space-x-8 lg:space-y-0">
           <div className="flex flex-1 flex-col space-y-2 lg:space-y-4">
             {steps.map((step, index) => (
-              <AnimateUpOnAppear delay={0.1 * index}>
+              <AnimateUpOnAppear key={"step-" + index} delay={0.1 * index}>
                 <div
                   key={index}
                   className={cn(

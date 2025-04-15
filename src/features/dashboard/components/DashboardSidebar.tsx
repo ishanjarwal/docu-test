@@ -96,7 +96,7 @@ const DashboardSidebar = () => {
                       active === item.slug && "bg-foreground/10",
                     )}
                   >
-                    <span className="text-xl">{item.icon}</span>
+                    <span className={cn("text-xl")}>{item.icon}</span>
                     <span>{item.title}</span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
@@ -122,10 +122,17 @@ const DashboardSidebarHeader = () => {
           <SidebarMenuItem>
             <div>
               <div className="flex items-center justify-start space-x-2 overflow-hidden">
-                <div className="relative aspect-square w-8 flex-shrink-0 bg-background">
-                  <Image src={images.logo} alt="logo" fill />
+                <div className="relative aspect-square w-10 flex-shrink-0">
+                  <Image
+                    src={images.logo}
+                    alt="logo"
+                    fill
+                    className="h-full w-full object-contain object-center"
+                  />
                 </div>
-                <span className="font-bold">ResumeBuildr</span>
+                <span className="whitespace-nowrap font-bold">
+                  DOCU Resumes
+                </span>
               </div>
             </div>
           </SidebarMenuItem>

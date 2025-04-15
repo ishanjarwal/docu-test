@@ -9,12 +9,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaCrown } from "react-icons/fa6";
 import { FiSidebar } from "react-icons/fi";
+import SearchInput from "./SearchInput";
 const Navbar = () => {
   const { isSignedIn } = useUser();
   const { isMobile } = useSidebar();
   return (
     <div className="sticky top-0 flex h-16 items-center border-b bg-background">
-      <nav className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-4">
+      <nav className="mx-auto flex w-full max-w-screen-2xl items-center justify-between space-x-4 px-4">
         <div>
           <div className="flex items-center space-x-2">
             <SidebarTrigger
@@ -29,13 +30,16 @@ const Navbar = () => {
                 <div className="relative aspect-square w-8 flex-shrink-0 bg-background">
                   <Image src={images.logo} alt="logo" fill />
                 </div>
-                <span className="font-bold">ResumeBuildr</span>
+                <span className="hidden font-bold md:block">ResumeBuildr</span>
               </div>
             )}
           </div>
         </div>
-        <div className="flex items-center justify-end gap-x-4">
-          <ThemeToggleButton />
+        <div className="flex items-center justify-end gap-x-2 md:gap-x-4">
+          <SearchInput />
+          <div className="flex-1">
+            <ThemeToggleButton />
+          </div>
           {!isSignedIn && (
             <Button
               className="h-6 rounded-full border border-white px-2 text-xs font-bold text-white shadow-md hover:scale-105 hover:shadow-xl md:h-9 md:border-2 md:px-4"
