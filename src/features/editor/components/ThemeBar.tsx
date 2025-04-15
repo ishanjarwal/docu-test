@@ -1,39 +1,35 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import CustomTooltip from "@/components/custom/CustomTooltip";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { TwitterPicker } from "react-color";
-import { Button } from "@/components/ui/button";
-import { RxText } from "react-icons/rx";
-import { FaRegCircle } from "react-icons/fa";
-import { BiSquareRounded } from "react-icons/bi";
-import { IoColorFillOutline } from "react-icons/io5";
-import { ResumeDataContext } from "../providers/ResumeData";
-import { FaCrown, FaRegSquareFull } from "react-icons/fa6";
-import { AiOutlineFontColors, AiOutlineFontSize } from "react-icons/ai";
-import { useForm } from "react-hook-form";
-import { TemplateSchema, TemplateValues } from "@/validations/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField, FormItem } from "@/components/ui/form";
-import CustomTooltip from "@/components/custom/CustomTooltip";
-import { MdOutlineGridView } from "react-icons/md";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { templateDefValues } from "@/validations/defaultValues";
-import { fonts, fontSizes } from "../constants/fonts";
-import { useTemplate } from "../providers/TemplateContext";
-import { PiDrop } from "react-icons/pi";
-import { cn } from "@/lib/utils";
-import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
-import Link from "next/link";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useContext, useEffect } from "react";
+import { TwitterPicker } from "react-color";
+import { AiOutlineFontColors, AiOutlineFontSize } from "react-icons/ai";
+import { BiSquareRounded } from "react-icons/bi";
+import { FaRegCircle } from "react-icons/fa";
+import { FaCrown, FaRegSquareFull } from "react-icons/fa6";
+import { IoColorFillOutline } from "react-icons/io5";
+import { MdOutlineGridView } from "react-icons/md";
+import { PiDrop } from "react-icons/pi";
+import { RxText } from "react-icons/rx";
+import { fonts, fontSizes } from "../constants/fonts";
+import { ResumeDataContext } from "../providers/ResumeData";
+import { useTemplate } from "../providers/TemplateContext";
 
 const ThemeBar = () => {
   const subscriptionLevel = useSubscriptionLevel();

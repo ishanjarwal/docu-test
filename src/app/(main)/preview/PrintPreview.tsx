@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import useTemplate from "@/features/templates/useTemplate";
+import useTemplate from "@/features/templates/currentTemplate";
 import useDimensions from "@/hooks/useDimensions";
 import { resumeSchemaType } from "@/validations/validation";
 import React, { useEffect, useRef } from "react";

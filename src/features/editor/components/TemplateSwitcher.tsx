@@ -37,7 +37,7 @@ const TemplateSwitcher = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={toggleOpen}>
-      <DialogOverlay className="z-[1001] bg-background/25">
+      <DialogOverlay className="z-[50] bg-background/25">
         {/* <DialogTrigger asChild></DialogTrigger> */}
         <DialogContent className="z-[1001] flex h-full max-h-screen w-full max-w-full flex-col gap-0 overflow-hidden p-0 md:max-h-[90vh] md:max-w-3xl lg:max-w-5xl">
           <DialogHeader className="p-8 shadow-xl">

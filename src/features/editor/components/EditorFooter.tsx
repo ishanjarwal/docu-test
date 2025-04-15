@@ -16,6 +16,8 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import Link from "next/link";
 import { useTour } from "@reactour/tour";
 import { cn } from "@/lib/utils";
+import StylingTrigger from "./StylingTrigger";
+import { FaRegEye } from "react-icons/fa6";
 
 interface FooterProps {
   currStep: string;
@@ -76,12 +78,14 @@ const EditorFooter = ({ currStep, setCurrStep, resumeId }: FooterProps) => {
         )}
       </div>
       <div className={cn("step4", "flex items-center justify-start space-x-2")}>
+        <StylingTrigger />
         <Button
           onClick={addPreviewParam}
           className="py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
           variant={"secondary"}
         >
-          Preview
+          <FaRegEye />
+          <span className="hidden sm:block">Preview</span>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

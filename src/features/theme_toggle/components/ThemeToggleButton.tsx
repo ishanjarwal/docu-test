@@ -8,12 +8,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
+import {
+  IoLaptopOutline,
+  IoMoonOutline,
+  IoSunnyOutline,
+} from "react-icons/io5";
+import { FaCheck } from "react-icons/fa6";
 
 const ThemeToggleButton = () => {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -25,14 +31,41 @@ const ThemeToggleButton = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("light")}
+          className="cursor-pointer"
+        >
+          <IoSunnyOutline />
           Light
+          {theme === "light" && (
+            <DropdownMenuShortcut>
+              <FaCheck />
+            </DropdownMenuShortcut>
+          )}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("dark")}
+          className="cursor-pointer"
+        >
+          <IoMoonOutline />
           Dark
+          {theme === "dark" && (
+            <DropdownMenuShortcut>
+              <FaCheck />
+            </DropdownMenuShortcut>
+          )}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("system")}
+          className="cursor-pointer"
+        >
+          <IoLaptopOutline />
           System
+          {theme === "system" && (
+            <DropdownMenuShortcut>
+              <FaCheck />
+            </DropdownMenuShortcut>
+          )}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
