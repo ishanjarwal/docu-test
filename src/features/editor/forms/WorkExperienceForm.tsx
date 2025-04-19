@@ -58,14 +58,18 @@ import {
   FaWandMagicSparkles,
 } from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
-import { IoMdAdd } from "react-icons/io";
-import { LuLoaderCircle } from "react-icons/lu";
+import { IoMdAdd, IoMdMic } from "react-icons/io";
+import { LuAudioLines, LuLoaderCircle } from "react-icons/lu";
 import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
 import { generateWorkExperience } from "./action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { cn } from "@/lib/utils";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -488,6 +492,28 @@ const AIWorkExperienceGenerator = ({
     }
   }
 
+  const { finalTranscript, listening, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+  if (!browserSupportsSpeechRecognition) {
+    toast.error("Browswer doesn't support speech recognition");
+  }
+
+  const toggleListening = () => {
+    if (!listening) {
+      SpeechRecognition.startListening();
+    } else {
+      SpeechRecognition.stopListening();
+    }
+  };
+
+  const promptExistingText = descForm.watch("description");
+  useEffect(() => {
+    descForm.setValue(
+      "description",
+      (promptExistingText + " " + finalTranscript).trim(),
+    );
+  }, [finalTranscript]);
+
   return canUseAI ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
@@ -523,6 +549,16 @@ const AIWorkExperienceGenerator = ({
           </Form>
         </div>
         <DialogFooter>
+          <Button
+            size={"icon"}
+            onClick={toggleListening}
+            className={cn(
+              "rounded-full bg-foreground duration-150",
+              listening && "bg-primary",
+            )}
+          >
+            {!listening ? <IoMdMic /> : <LuAudioLines />}
+          </Button>
           <Button
             disabled={loading}
             onClick={() => {

@@ -27,7 +27,7 @@ import {
 } from "react-hook-form";
 import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdMic } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
@@ -67,8 +67,12 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import clsx from "clsx";
 import toast from "react-hot-toast";
-import { LuLoaderCircle } from "react-icons/lu";
+import { LuAudioLines, LuLoaderCircle } from "react-icons/lu";
 import { generateSkills } from "./action";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { cn } from "@/lib/utils";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -387,8 +391,9 @@ const AISkillGenerator = ({
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { setOpen: setPremiumOpen } = usePremiumModal();
-  const descForm = useForm({
+  const descForm = useForm<GenerateSkillsValues>({
     mode: "onChange",
+    defaultValues: { description: "" },
     resolver: zodResolver(GenerateSkillsSchema),
   });
 
@@ -417,12 +422,20 @@ const AISkillGenerator = ({
           );
         } else if (result.success) {
           const arr = result.success.content;
-          form.setValue(type === "hard" ? "hardSkills" : "softSkills", arr);
+          const existingSkills =
+            form.getValues(type === "hard" ? "hardSkills" : "softSkills") || [];
+          const newSkills = [...existingSkills, ...arr];
+          const mergedSkills = Array.from(new Set(newSkills));
+          form.setValue(
+            type === "hard" ? "hardSkills" : "softSkills",
+            mergedSkills,
+          );
         }
       } catch (error) {
         toast.error("Something went wrong", { position: "bottom-center" });
         console.log(error);
       } finally {
+        descForm.reset();
         setLoading(false);
         setOpen(false);
       }
@@ -435,8 +448,40 @@ const AISkillGenerator = ({
     }
   }
 
+  const { finalTranscript, listening, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+  if (!browserSupportsSpeechRecognition) {
+    toast.error("Browswer doesn't support speech recognition");
+  }
+
+  const toggleListening = () => {
+    if (!listening) {
+      SpeechRecognition.startListening();
+    } else {
+      SpeechRecognition.stopListening();
+    }
+  };
+
+  const promptExistingText = descForm.watch("description");
+  useEffect(() => {
+    descForm.setValue(
+      "description",
+      (promptExistingText + " " + finalTranscript).trim(),
+    );
+  }, [finalTranscript]);
+
   return canUseAI ? (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          descForm.reset();
+          setOpen(false);
+        } else {
+          setOpen(true);
+        }
+      }}
+    >
       <DialogTrigger>
         <div>
           <AIButton text="Fill with AI" />
@@ -470,6 +515,16 @@ const AISkillGenerator = ({
           </Form>
         </div>
         <DialogFooter>
+          <Button
+            size={"icon"}
+            onClick={toggleListening}
+            className={cn(
+              "rounded-full bg-foreground duration-150",
+              listening && "bg-primary",
+            )}
+          >
+            {!listening ? <IoMdMic /> : <LuAudioLines />}
+          </Button>
           <Button
             disabled={loading}
             onClick={async () => {

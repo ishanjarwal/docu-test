@@ -122,8 +122,8 @@ export async function generateWorkExperience(
       isVague: boolean(required, if the description provided is not sufficient)
       isVulgar: boolean(required, if there is vulgarity/voilence/illegal things in the prompt)
       content : object/null (the generated object. show null if isVague or isVulgar is true) : {
-        startDate: date string(yyyy-mm-dd) or don't include (job joining date);
-        endDate: date string(yyyy-mm-dd) or don't include (job end date);
+        startDate: date string in MMM yyyy (eg: May 2024) or don't include (job joining date);
+        endDate: date string in MMM yyyy (eg: May 2024) or don't include (job end date);
         current: boolean or don't include (if working here currently);
         description: string or don't include (learnings/experiences at the institution between 30 - 80 words in bullet points (-) and seperate lines);
         position: string or don't include;
@@ -193,8 +193,8 @@ export async function generateEducationDetails(
       isVague: boolean(required, if the description provided is not sufficient)
       isVulgar: boolean(required, if there is vulgarity/voilence/illegal things in the prompt)
       content : object/null (the generated object. show null if isVague or isVulgar is true) : {
-        startDate: date string(yyyy-mm-dd) or don't include (job joining date);
-        endDate: date string(yyyy-mm-dd) or don't include (job end date);
+        startDate: date string in MMM yyyy (eg: May 2024) or don't include (job joining date);
+        endDate: date string in MMM yyyy (eg: May 2024) or don't include (job end date);
         current: boolean or don't include (if working here currently);
         description: string or don't include (learnings/experiences at the job between 30 - 80 words in bullet points (-) and seperate lines);
         degree: string or don't include (title of the degree);

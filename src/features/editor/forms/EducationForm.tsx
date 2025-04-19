@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { FiTrash } from "react-icons/fi";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdMic } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
@@ -64,10 +64,14 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import toast from "react-hot-toast";
-import { LuLoaderCircle } from "react-icons/lu";
+import { LuAudioLines, LuLoaderCircle } from "react-icons/lu";
 import { generateEducationDetails } from "./action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -472,6 +476,29 @@ const AIEdicationDetailsGenerator = ({
     }
   }
 
+  const { finalTranscript, listening, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+  if (!browserSupportsSpeechRecognition) {
+    toast.error("Browswer doesn't support speech recognition");
+  }
+
+  const toggleListening = () => {
+    if (!listening) {
+      SpeechRecognition.startListening();
+    } else {
+      SpeechRecognition.stopListening();
+    }
+  };
+
+  const promptExistingText = descForm.watch("description");
+  console.log(promptExistingText);
+  useEffect(() => {
+    descForm.setValue(
+      "description",
+      (promptExistingText + " " + finalTranscript).trim(),
+    );
+  }, [finalTranscript]);
+
   return canUseAI ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
@@ -507,6 +534,16 @@ const AIEdicationDetailsGenerator = ({
           </Form>
         </div>
         <DialogFooter>
+          <Button
+            size={"icon"}
+            onClick={toggleListening}
+            className={cn(
+              "rounded-full bg-foreground duration-150",
+              listening && "bg-primary",
+            )}
+          >
+            {!listening ? <IoMdMic /> : <LuAudioLines />}
+          </Button>
           <Button
             disabled={loading}
             onClick={() => {

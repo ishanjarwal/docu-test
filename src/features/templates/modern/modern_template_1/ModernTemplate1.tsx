@@ -68,9 +68,8 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
             style={{ color: template.accentHex }}
             className="text-center text-xl font-bold capitalize"
           >
-            {personalDetails.firstName &&
-              personalDetails.firstName + " " + personalDetails.lastName &&
-              personalDetails.lastName}
+            {personalDetails.firstName && personalDetails.firstName}
+            {personalDetails.lastName && " " + personalDetails.lastName}
           </h1>
           <p
             style={{ color: template.accentHex }}
@@ -116,18 +115,21 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
             >
               Core skills
             </h1>
-            <div className="flex flex-col gap-y-1">
+            <div className="flex flex-wrap gap-1">
               {hardSkills?.map((item, index) => (
                 <div
                   key={"hardSkills+" + index}
-                  className="flex flex-wrap items-start justify-start gap-2"
+                  className="flex items-start justify-start"
                 >
                   <span
                     style={{
                       borderColor: template.accentHex,
                       borderRadius: borderRadiusValue,
                     }}
-                    className={cn(styles.para, `border px-[8px] py-[2px]`)}
+                    className={cn(
+                      styles.para,
+                      `inline-flex border px-[8px] py-[2px]`,
+                    )}
                   >
                     {item.name}
                   </span>
@@ -386,29 +388,33 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
                         className={styles.progress_line}
                       ></span>
 
-                      <p className={styles.subHeading}>
-                        {item.degree && <span>{item.degree}</span>}
-                      </p>
-                      <p className={styles.para}>
+                      <div className="flex items-center justify-between">
+                        <p className={styles.subHeading}>
+                          {item.degree && <span>{item.degree}</span>}
+                        </p>
+                        <p className={styles.para}>
+                          {item.startDate && (
+                            <span>
+                              {" • "}
+                              {item.startDate}
+                            </span>
+                          )}
+                          {item.endDate && !item.current && (
+                            <span>
+                              {" - "}
+                              {item.endDate}
+                            </span>
+                          )}
+                          {item.current && (
+                            <span>
+                              {" - "}
+                              {"Studying"}
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                      <p className={cn(styles.para, "font-semibold")}>
                         {item.institution && <span>{item.institution}</span>}
-                        {item.startDate && (
-                          <span>
-                            {" • "}
-                            {item.startDate}
-                          </span>
-                        )}
-                        {item.endDate && !item.current && (
-                          <span>
-                            {" - "}
-                            {item.endDate}
-                          </span>
-                        )}
-                        {item.current && (
-                          <span>
-                            {" - "}
-                            {"Studying"}
-                          </span>
-                        )}
                       </p>
                       <p className={styles.para}>
                         {item.score && (

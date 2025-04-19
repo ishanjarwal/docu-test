@@ -265,8 +265,13 @@ export type GenerateEducationDetailsValues = z.infer<
 >;
 
 export const GenerateSkillsSchema = z.object({
-  description: optionalString,
-  type: z.enum(["hard", "soft"]).default("hard"),
+  description: z
+    .string()
+    .min(1, "Required")
+    .min(20, "Minimum 20 characters")
+    .max(300, "Max 300 characters allowed")
+    .optional(),
+  type: z.enum(["hard", "soft"]).default("hard").optional(),
 });
 
 export type GenerateSkillsValues = z.infer<typeof GenerateSkillsSchema>;

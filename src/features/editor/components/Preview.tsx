@@ -4,8 +4,6 @@ import { ResumeDataContext } from "../providers/ResumeData";
 
 import currentTemplate from "@/features/templates/currentTemplate";
 import useDimensions from "@/hooks/useDimensions";
-import clsx from "clsx";
-import PreviewHeader from "./PreviewHeader";
 
 const Preview = ({ className }: { className?: string }) => {
   const { resumeData, setResumeData } = useContext(ResumeDataContext);
@@ -14,6 +12,7 @@ const Preview = ({ className }: { className?: string }) => {
     null,
   ) as React.RefObject<HTMLElement>;
   const { width } = useDimensions(containerRef);
+
   const Template = currentTemplate(resumeData);
 
   return (
@@ -23,7 +22,8 @@ const Preview = ({ className }: { className?: string }) => {
       style={{ minHeight: `${(297 / 210) * width}px` }}
     >
       <div
-        className="h-full min-h-full"
+        id="resumePreviewContent"
+        className="h-full min-h-full select-none"
         style={{
           zoom: (1 / 794) * width,
         }}

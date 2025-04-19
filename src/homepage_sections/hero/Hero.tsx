@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import PromptInput from "@/features/ai_prompt/components/PromptInput";
+import { canUseAI } from "@/features/premium/actions";
+import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
+import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
@@ -17,6 +20,8 @@ import "swiper/css/effect-cards";
 const Hero = () => {
   const { isSignedIn } = useUser();
   const { theme, systemTheme } = useTheme();
+  const subscriptionLevel = useSubscriptionLevel();
+  const { canUseAI } = usePremiumFeatures(subscriptionLevel);
 
   return (
     <div className="relative flex justify-center">
@@ -30,7 +35,7 @@ const Hero = () => {
       <div className="relative left-0 top-0 w-full max-w-limit">
         <div className="flex flex-col items-center justify-between px-4 pb-16 pt-32 lg:pt-36 limit:px-0">
           {/* check condition then render prompt input */}
-          {false ? (
+          {canUseAI ? (
             <div className="flex w-full flex-col items-center justify-center">
               <div className="mb-32">
                 <h1 className="mb-4 text-center text-3xl text-foreground sm:text-4xl lg:text-5xl">

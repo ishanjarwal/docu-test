@@ -12,8 +12,11 @@ import { FaArrowUp } from "react-icons/fa6";
 import { LuAudioLines } from "react-icons/lu";
 import { z } from "zod";
 import { generateResumeFromPrompt } from "../actions";
-import { SpeechRecognitionErrorEvent, SpeechRecognitionEvent } from "../types";
 import UploadButton from "./UploadButton";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { IoMdMic } from "react-icons/io";
 
 const PromptSchema = z.object({
   prompt: z.string().trim().min(20).max(500),
@@ -46,58 +49,34 @@ const PromptInput = () => {
     }
   };
 
-  const [listening, setListening] = useState<boolean>(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    finalTranscript,
+  } = useSpeechRecognition();
 
-  // useEffect(() => {
-  //   const SpeechRecognition =
-  //     (window as any).webkitSpeechRecognition ||
-  //     (window as any).SpeechRecognition;
-
-  //   if (!SpeechRecognition) {
-  //     alert("Speech Recognition not supported in this browser!");
-  //     return;
-  //   }
-
-  //   const recognition = new SpeechRecognition();
-  //   recognition.continuous = false;
-  //   recognition.interimResults = false;
-  //   recognition.lang = "en-US";
-
-  //   recognition.onresult = (event: SpeechRecognitionEvent) => {
-  //     const transcript: string = event.results[0][0].transcript;
-  //     const prev = form.watch("prompt");
-  //     form.setValue("prompt", prev + " " + transcript);
-  //     // console.log("Transcript:", transcript); // for testing
-  //   };
-
-  //   recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-  //     alert("Recognition Error : " + event.error);
-  //     console.error("Speech recognition error:", event.error);
-  //   };
-
-  //   recognition.onend = () => {
-  //     setListening(false);
-  //   };
-
-  //   if (listening) {
-  //     recognition.start();
-
-  //     // Stop after 30 seconds
-  //     setTimeout(() => {
-  //       recognition.stop();
-  //     }, 30000);
-  //   } else {
-  //     recognition.stop();
-  //   }
-
-  //   return () => {
-  //     recognition.stop();
-  //   };
-  // }, [listening]);
+  if (!browserSupportsSpeechRecognition) {
+    toast.error("Browser doesn't support voice recognition");
+  }
 
   const toggleListening = () => {
-    setListening((prev) => !prev);
+    if (!listening) {
+      SpeechRecognition.startListening();
+    } else {
+      SpeechRecognition.stopListening();
+    }
   };
+
+  const promptExistingText = form.watch("prompt");
+
+  useEffect(() => {
+    console.log(transcript);
+    form.setValue(
+      "prompt",
+      (promptExistingText + " " + finalTranscript).trim(),
+    );
+  }, [finalTranscript]);
 
   return (
     <Form {...form}>
@@ -114,7 +93,7 @@ const PromptInput = () => {
               <textarea
                 value={field.value}
                 onChange={field.onChange}
-                className="relative h-32 w-full resize-none bg-transparent text-foreground/75 outline-none"
+                className="relative h-32 w-full resize-none bg-transparent text-base text-foreground/75 outline-none md:text-lg"
                 placeholder={
                   'Try "Create a professional resume for software developer tailored for google"'
                 }
@@ -134,7 +113,7 @@ const PromptInput = () => {
                 listening && "bg-primary",
               )}
             >
-              <LuAudioLines />
+              {listening ? <LuAudioLines /> : <IoMdMic />}
               <span className="hidden md:block">
                 {listening ? "Listening" : "Voice"}
               </span>
