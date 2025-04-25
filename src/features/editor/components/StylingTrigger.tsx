@@ -11,11 +11,11 @@ const StylingTrigger = () => {
   return (
     <CustomTooltip text="Style the resume">
       <Button
-        className="ml-auto bg-white text-xs text-black lg:text-sm"
+        className="ml-auto w-9 border border-border bg-white text-xs text-black shadow-md sm:w-auto lg:text-sm"
         onClick={toggleSidebar}
       >
         <IoColorPaletteOutline />
-        Styling
+        <span className="hidden sm:block">Styling</span>
       </Button>
     </CustomTooltip>
   );

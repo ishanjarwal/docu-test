@@ -127,41 +127,21 @@ export const SkillSchema = z.object({
 
 export type SkillType = z.infer<typeof SkillSchema>;
 
-export const CerificationsSchema = z.object({
-  certifications: z
-    .array(
-      z.object({
-        title: optionalString,
-        organization: optionalString,
-        link: optionalString,
-        score: optionalString,
-        description: z.string().max(300).optional(),
-        startDate: optionalString,
-        endDate: optionalString,
-      }),
-    )
-    .optional(),
-});
+export const CommonAchievementSchema = z
+  .array(
+    z.object({
+      title: optionalString,
+      organization: optionalString,
+      link: optionalString,
+      score: optionalString,
+      description: z.string().max(300).optional(),
+      startDate: optionalString,
+      endDate: optionalString,
+    }),
+  )
+  .optional();
 
-export type CertificationType = z.infer<typeof CerificationsSchema>;
-
-export const CourseSchema = z.object({
-  courses: z
-    .array(
-      z.object({
-        title: optionalString,
-        organization: optionalString,
-        link: optionalString,
-        score: optionalString,
-        description: z.string().max(300).optional(),
-        startDate: optionalString,
-        endDate: optionalString,
-      }),
-    )
-    .optional(),
-});
-
-export type CourseValues = z.infer<typeof CourseSchema>;
+export type CommonAchievementValues = z.infer<typeof CommonAchievementSchema>;
 
 export const HobbySchema = z.object({
   hobbies: z
@@ -212,8 +192,10 @@ export const resumeSchema = z.object({
   ...EducationDetailsSchema.shape,
   ...WorkExperienceSchema.shape,
   ...SkillSchema.shape,
-  ...CerificationsSchema.shape,
-  ...CourseSchema.shape,
+  courses: CommonAchievementSchema,
+  certifications: CommonAchievementSchema,
+  achievements: CommonAchievementSchema,
+  awards: CommonAchievementSchema,
   ...HobbySchema.shape,
   ...ProjectSchema.shape,
   ...projectTitleSchema.shape,
@@ -238,7 +220,7 @@ export const GenerateSummarySchema = z.object({
 
 export type GenerateSummaryValues = z.infer<typeof GenerateSummarySchema>;
 
-export const GenerateWorkExperienceSchema = z.object({
+export const GenerateFromAISchema = z.object({
   description: z
     .string()
     .min(1, "Required")
@@ -247,42 +229,4 @@ export const GenerateWorkExperienceSchema = z.object({
     .optional(),
 });
 
-export type GenerateWorkExperienceValues = z.infer<
-  typeof GenerateWorkExperienceSchema
->;
-
-export const GenerateEducationDetailsSchema = z.object({
-  description: z
-    .string()
-    .min(1, "Required")
-    .min(20, "Minimum 20 characters")
-    .max(300, "Max 300 characters allowed")
-    .optional(),
-});
-
-export type GenerateEducationDetailsValues = z.infer<
-  typeof GenerateEducationDetailsSchema
->;
-
-export const GenerateSkillsSchema = z.object({
-  description: z
-    .string()
-    .min(1, "Required")
-    .min(20, "Minimum 20 characters")
-    .max(300, "Max 300 characters allowed")
-    .optional(),
-  type: z.enum(["hard", "soft"]).default("hard").optional(),
-});
-
-export type GenerateSkillsValues = z.infer<typeof GenerateSkillsSchema>;
-
-export const GenerateHobbiesSchema = z.object({
-  description: z
-    .string()
-    .min(1, "Required")
-    .min(20, "Minimum 20 characters")
-    .max(300, "Max 300 characters allowed")
-    .optional(),
-});
-
-export type GenerateHobbiesValues = z.infer<typeof GenerateHobbiesSchema>;
+export type GenerateFromAIValues = z.infer<typeof GenerateFromAISchema>;

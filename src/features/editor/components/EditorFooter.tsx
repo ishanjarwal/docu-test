@@ -34,27 +34,28 @@ const EditorFooter = ({ currStep, setCurrStep, resumeId }: FooterProps) => {
     window.history.pushState(null, "", `?${newSearchParams.toString()}`);
   };
 
-  const prevStep = steps.find(
-    (_, idx) => steps[idx + 1]?.key === currStep,
-  )?.key;
+  const prevStep = steps.find((_, idx) => steps[idx + 1]?.key === currStep);
 
-  const nextStep = steps.find(
-    (_, idx) => steps[idx - 1]?.key === currStep,
-  )?.key;
+  const nextStep = steps.find((_, idx) => steps[idx - 1]?.key === currStep);
 
   return (
-    <div className="fixed bottom-0 flex w-full items-center justify-between border-t bg-background p-4 lg:relative lg:bottom-auto">
-      <div className={cn("step3", "flex items-center justify-start space-x-2")}>
+    <div className="fixed bottom-0 flex w-full items-center justify-between border-t bg-background px-1 py-4 sm:px-4 lg:relative lg:bottom-auto">
+      <div
+        className={cn(
+          "step3",
+          "flex items-center justify-start space-x-1 sm:space-x-2",
+        )}
+      >
         {prevStep && (
           <Button
             onClick={
               prevStep
                 ? () => {
-                    setCurrStep(prevStep);
+                    setCurrStep(prevStep.key);
                   }
                 : undefined
             }
-            className="px-2 py-1 text-xs lg:px-4 lg:py-2 lg:text-sm"
+            className="px-2 py-1 text-xs shadow-md lg:px-4 lg:py-2 lg:text-sm"
             variant={"outline"}
           >
             <IoMdArrowBack />
@@ -63,27 +64,31 @@ const EditorFooter = ({ currStep, setCurrStep, resumeId }: FooterProps) => {
         )}
         {nextStep && (
           <Button
+            variant={"secondary"}
             onClick={
               nextStep
                 ? () => {
-                    setCurrStep(nextStep);
+                    setCurrStep(nextStep.key);
                   }
                 : undefined
             }
-            className="bg-foreground px-2 py-1 text-xs hover:bg-foreground/90 lg:px-4 lg:py-2 lg:text-sm"
+            className="border border-border bg-white px-2 py-1 text-xs text-black shadow-md lg:px-4 lg:py-2 lg:text-sm"
           >
-            <span className="hidden lg:block">Next</span>
+            <span className="">Add {nextStep.title}</span>
             <IoMdArrowForward />
           </Button>
         )}
       </div>
-      <div className="flex items-center justify-start space-x-2">
+      <div className="flex items-center justify-start space-x-1 sm:space-x-2">
         <div className="step4">
           <StylingTrigger />
         </div>
         <Button
           onClick={addPreviewParam}
-          className={cn("step5", "py-1 text-xs lg:px-4 lg:py-2 lg:text-sm")}
+          className={cn(
+            "step5",
+            "w-9 border border-border py-1 text-xs shadow-md sm:w-auto lg:px-4 lg:py-2 lg:text-sm",
+          )}
           variant={"secondary"}
         >
           <FaRegEye />
@@ -91,7 +96,11 @@ const EditorFooter = ({ currStep, setCurrStep, resumeId }: FooterProps) => {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size={"icon"} variant={"secondary"}>
+            <Button
+              className="border border-border shadow-md"
+              size={"icon"}
+              variant={"secondary"}
+            >
               <IoMdMore />
             </Button>
           </DropdownMenuTrigger>

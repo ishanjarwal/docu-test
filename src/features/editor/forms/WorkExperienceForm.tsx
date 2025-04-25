@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -17,13 +18,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import VoiceButton from "@/features/ai_prompt/components/VoiceButton";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
 import { workExperienceDefValues } from "@/validations/defaultValues";
 import {
-  GenerateWorkExperienceSchema,
-  GenerateWorkExperienceValues,
+  GenerateFromAISchema,
+  GenerateFromAIValues,
   WorkExperienceSchema,
   WorkExperienceType,
 } from "@/validations/validation";
@@ -58,18 +61,15 @@ import {
   FaWandMagicSparkles,
 } from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
-import { IoMdAdd, IoMdMic } from "react-icons/io";
-import { LuAudioLines, LuLoaderCircle } from "react-icons/lu";
+import { IoMdAdd } from "react-icons/io";
+import { LuLoaderCircle } from "react-icons/lu";
 import { MdDragIndicator } from "react-icons/md";
-import CustomFormField from "../components/CustomFormField";
-import { EditorFormProps } from "../constants/types";
-import { generateWorkExperience } from "./action";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { cn } from "@/lib/utils";
+import CustomFormField from "../components/CustomFormField";
+import { EditorFormProps } from "../constants/types";
+import { generateWorkExperience } from "./action";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -412,8 +412,8 @@ const AIWorkExperienceGenerator = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
   const { setOpen: setPremiumOpen } = usePremiumModal();
-  const descForm = useForm<GenerateWorkExperienceValues>({
-    resolver: zodResolver(GenerateWorkExperienceSchema),
+  const descForm = useForm<GenerateFromAIValues>({
+    resolver: zodResolver(GenerateFromAISchema),
     defaultValues: { description: "" },
     mode: "onChange",
   });
@@ -549,16 +549,10 @@ const AIWorkExperienceGenerator = ({
           </Form>
         </div>
         <DialogFooter>
-          <Button
-            size={"icon"}
-            onClick={toggleListening}
-            className={cn(
-              "rounded-full bg-foreground duration-150",
-              listening && "bg-primary",
-            )}
-          >
-            {!listening ? <IoMdMic /> : <LuAudioLines />}
-          </Button>
+          <VoiceButton
+            toggleListening={toggleListening}
+            listening={listening}
+          />
           <Button
             disabled={loading}
             onClick={() => {

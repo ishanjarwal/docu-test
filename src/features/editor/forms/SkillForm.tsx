@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
-  GenerateSkillsSchema,
-  GenerateSkillsValues,
+  GenerateFromAISchema,
+  GenerateFromAIValues,
   SkillSchema,
   SkillType,
 } from "@/validations/validation";
@@ -27,7 +27,7 @@ import {
 } from "react-hook-form";
 import { FaChevronDown, FaCrown, FaWandMagicSparkles } from "react-icons/fa6";
 import { FiTrash } from "react-icons/fi";
-import { IoMdAdd, IoMdMic } from "react-icons/io";
+import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
@@ -42,6 +42,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import VoiceButton from "@/features/ai_prompt/components/VoiceButton";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
@@ -67,12 +68,11 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import clsx from "clsx";
 import toast from "react-hot-toast";
-import { LuAudioLines, LuLoaderCircle } from "react-icons/lu";
-import { generateSkills } from "./action";
+import { LuLoaderCircle } from "react-icons/lu";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { cn } from "@/lib/utils";
+import { generateSkills } from "./action";
 
 const SkillForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -385,19 +385,19 @@ const AISkillGenerator = ({
   canUseAI,
 }: {
   form: UseFormReturn<SkillType>;
-  type: GenerateSkillsValues["type"];
+  type: "hard" | "soft";
   canUseAI: boolean;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { setOpen: setPremiumOpen } = usePremiumModal();
-  const descForm = useForm<GenerateSkillsValues>({
+  const descForm = useForm<GenerateFromAIValues>({
     mode: "onChange",
     defaultValues: { description: "" },
-    resolver: zodResolver(GenerateSkillsSchema),
+    resolver: zodResolver(GenerateFromAISchema),
   });
 
-  async function handleClick(description: GenerateSkillsValues["description"]) {
+  async function handleClick(description: GenerateFromAIValues["description"]) {
     try {
       try {
         setLoading(true);
@@ -515,16 +515,10 @@ const AISkillGenerator = ({
           </Form>
         </div>
         <DialogFooter>
-          <Button
-            size={"icon"}
-            onClick={toggleListening}
-            className={cn(
-              "rounded-full bg-foreground duration-150",
-              listening && "bg-primary",
-            )}
-          >
-            {!listening ? <IoMdMic /> : <LuAudioLines />}
-          </Button>
+          <VoiceButton
+            toggleListening={toggleListening}
+            listening={listening}
+          />
           <Button
             disabled={loading}
             onClick={async () => {

@@ -65,18 +65,7 @@ export const skillDefValues = {
   level: 0,
   levelDisabled: true,
 };
-
-export const certificationDefValues = {
-  title: "",
-  organization: "",
-  link: "",
-  score: "",
-  description: "",
-  startDate: "",
-  endDate: "",
-};
-
-export const courseDefValues = {
+export const commonAchievementDefValues = {
   title: "",
   organization: "",
   link: "",

@@ -1,8 +1,8 @@
 "use client";
 import { Form } from "@/components/ui/form";
 import {
-  CerificationsSchema,
-  CertificationType,
+  CommonAchievementSchema,
+  CommonAchievementValues,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
@@ -47,13 +47,21 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
-import { certificationDefValues } from "@/validations/defaultValues";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { z } from "zod";
+import { commonAchievementDefValues } from "@/validations/defaultValues";
+
+interface CertificationValues {
+  certifications?: CommonAchievementValues;
+}
+const CertificationSchema = z.object({
+  certifications: CommonAchievementSchema,
+});
 
 const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<CertificationType>({
-    resolver: zodResolver(CerificationsSchema),
+  const form = useForm<CertificationValues>({
+    resolver: zodResolver(CertificationSchema),
     defaultValues: {
       certifications: resumeData.certifications || [],
     },
@@ -129,7 +137,7 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           </div>
           <Button
             className="mt-4 w-full py-6 text-foreground"
-            onClick={() => append(certificationDefValues)}
+            onClick={() => append(commonAchievementDefValues)}
           >
             Add More
             <IoMdAdd />
@@ -142,10 +150,10 @@ const CertificationsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
 interface CertificationItemProps {
   id: string;
-  form: UseFormReturn<CertificationType>;
+  form: UseFormReturn<CertificationValues>;
   index: number;
   remove: UseFieldArrayRemove;
-  control: Control<CertificationType>;
+  control: Control<CertificationValues>;
 }
 
 const CertificationItem = ({

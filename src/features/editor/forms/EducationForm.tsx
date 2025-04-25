@@ -4,14 +4,14 @@ import { Form } from "@/components/ui/form";
 import {
   EducationDetailsSchema,
   EducationDetailsType,
-  GenerateEducationDetailsSchema,
-  GenerateEducationDetailsValues,
+  GenerateFromAISchema,
+  GenerateFromAIValues,
 } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { FiTrash } from "react-icons/fi";
-import { IoMdAdd, IoMdMic } from "react-icons/io";
+import { IoMdAdd } from "react-icons/io";
 import { MdDragIndicator } from "react-icons/md";
 import CustomFormField from "../components/CustomFormField";
 import { EditorFormProps } from "../constants/types";
@@ -31,6 +31,7 @@ import {
 } from "react-icons/fa6";
 
 import AIButton from "@/components/custom/AIButton";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -40,6 +41,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import VoiceButton from "@/features/ai_prompt/components/VoiceButton";
 import usePremiumFeatures from "@/features/premium/hooks/usePremiumFeatures";
 import usePremiumModal from "@/features/premium/hooks/usePremiumModal";
 import { useSubscriptionLevel } from "@/features/premium/providers/SubscriptionLevelProvider";
@@ -64,14 +67,11 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import toast from "react-hot-toast";
-import { LuAudioLines, LuLoaderCircle } from "react-icons/lu";
-import { generateEducationDetails } from "./action";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { LuLoaderCircle } from "react-icons/lu";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { generateEducationDetails } from "./action";
 
 const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const subscriptionLevel = useSubscriptionLevel();
@@ -401,8 +401,8 @@ const AIEdicationDetailsGenerator = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
   const { setOpen: setPremiumOpen } = usePremiumModal();
-  const descForm = useForm<GenerateEducationDetailsValues>({
-    resolver: zodResolver(GenerateEducationDetailsSchema),
+  const descForm = useForm<GenerateFromAIValues>({
+    resolver: zodResolver(GenerateFromAISchema),
     defaultValues: { description: "" },
     mode: "onChange",
   });
@@ -491,7 +491,6 @@ const AIEdicationDetailsGenerator = ({
   };
 
   const promptExistingText = descForm.watch("description");
-  console.log(promptExistingText);
   useEffect(() => {
     descForm.setValue(
       "description",
@@ -534,16 +533,10 @@ const AIEdicationDetailsGenerator = ({
           </Form>
         </div>
         <DialogFooter>
-          <Button
-            size={"icon"}
-            onClick={toggleListening}
-            className={cn(
-              "rounded-full bg-foreground duration-150",
-              listening && "bg-primary",
-            )}
-          >
-            {!listening ? <IoMdMic /> : <LuAudioLines />}
-          </Button>
+          <VoiceButton
+            toggleListening={toggleListening}
+            listening={listening}
+          />
           <Button
             disabled={loading}
             onClick={() => {

@@ -1,4 +1,5 @@
 import Navbar from "@/features/navbar/components/Navbar";
+import PDFView from "@/features/templates/pdf";
 import Contact from "@/homepage_sections/contact/Contact";
 import Features from "@/homepage_sections/features_section/Features";
 import Footer from "@/homepage_sections/footer/Footer";

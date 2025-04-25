@@ -19,7 +19,7 @@ const UploadButton = () => {
       text={file ? file.name : "Click to upload"}
       delayDuration={0}
     >
-      <div className="group flex max-w-[200px] cursor-pointer items-center justify-between rounded-full bg-foreground pe-4 text-background duration-150 hover:bg-primary sm:max-w-[250px]">
+      <div className="group flex max-w-[200px] cursor-pointer items-center justify-between rounded-full border bg-white pe-4 text-black shadow-xl duration-150 hover:bg-primary sm:max-w-[250px]">
         <Label className="flex cursor-pointer items-center justify-center truncate px-4 py-2 pe-0">
           <Input
             onChange={(e) => {

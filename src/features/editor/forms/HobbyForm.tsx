@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
-  GenerateHobbiesSchema,
-  GenerateHobbiesValues,
+  GenerateFromAISchema,
+  GenerateFromAIValues,
   HobbySchema,
   HobbyValues,
 } from "@/validations/validation";
@@ -275,14 +275,12 @@ const AIHobbiesGenerator = ({
   const { setOpen: setPremiumOpen } = usePremiumModal();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const descForm = useForm({
+  const descForm = useForm<GenerateFromAIValues>({
     mode: "onChange",
-    resolver: zodResolver(GenerateHobbiesSchema),
+    resolver: zodResolver(GenerateFromAISchema),
   });
 
-  async function handleClick(
-    description: GenerateHobbiesValues["description"],
-  ) {
+  async function handleClick(description: GenerateFromAIValues["description"]) {
     try {
       setLoading(true);
       const result = await generateHobbies({ description });

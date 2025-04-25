@@ -34,6 +34,8 @@ export function mapToResumeSchemaType(
     hobbies,
     template,
     projects,
+    awards,
+    achievements,
   } = data;
 
   const validJobTypes = ["on-site", "hybrid", "remote"] as const;
@@ -116,6 +118,24 @@ export function mapToResumeSchemaType(
       endDate: item.endDate || undefined,
     })),
     courses: courses.map((item) => ({
+      description: item.description || undefined,
+      link: item.link || undefined,
+      organization: item.organization || undefined,
+      score: item.score || undefined,
+      title: item.title || undefined,
+      startDate: item.startDate || undefined,
+      endDate: item.endDate || undefined,
+    })),
+    achievements: achievements.map((item) => ({
+      description: item.description || undefined,
+      link: item.link || undefined,
+      organization: item.organization || undefined,
+      score: item.score || undefined,
+      title: item.title || undefined,
+      startDate: item.startDate || undefined,
+      endDate: item.endDate || undefined,
+    })),
+    awards: awards.map((item) => ({
       description: item.description || undefined,
       link: item.link || undefined,
       organization: item.organization || undefined,

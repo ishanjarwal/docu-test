@@ -1,6 +1,5 @@
 "use client";
 import { Form } from "@/components/ui/form";
-import { CourseSchema, CourseValues } from "@/validations/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import {
@@ -44,9 +43,19 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
-import { courseDefValues } from "@/validations/defaultValues";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  CommonAchievementSchema,
+  CommonAchievementValues,
+} from "@/validations/validation";
+import { z } from "zod";
+import { commonAchievementDefValues } from "@/validations/defaultValues";
+
+interface CourseValues {
+  courses?: CommonAchievementValues;
+}
+const CourseSchema = z.object({ courses: CommonAchievementSchema });
 
 const CourseForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<CourseValues>({
@@ -125,7 +134,7 @@ const CourseForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           </div>
           <Button
             className="mt-4 w-full py-6 text-foreground"
-            onClick={() => append(courseDefValues)}
+            onClick={() => append(commonAchievementDefValues)}
           >
             Add More
             <IoMdAdd />

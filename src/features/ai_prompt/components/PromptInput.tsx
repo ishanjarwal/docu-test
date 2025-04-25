@@ -17,6 +17,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { IoMdMic } from "react-icons/io";
+import VoiceButton from "./VoiceButton";
 
 const PromptSchema = z.object({
   prompt: z.string().trim().min(20).max(500),
@@ -53,6 +54,7 @@ const PromptInput = () => {
     transcript,
     listening,
     browserSupportsSpeechRecognition,
+    isMicrophoneAvailable,
     finalTranscript,
   } = useSpeechRecognition();
 
@@ -80,7 +82,7 @@ const PromptInput = () => {
 
   return (
     <Form {...form}>
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-xl border border-border/75 bg-background/75 p-4 shadow-xl backdrop-blur-[2px]">
+      <div className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border/75 bg-background/75 p-4 shadow-xl backdrop-blur-[2px]">
         <span className="absolute top-0 h-20 w-20 rounded-full bg-primary blur-3xl"></span>
         <span className="absolute bottom-0 right-0 h-20 w-20 rounded-full bg-primary blur-3xl"></span>
         <FormField
@@ -93,7 +95,7 @@ const PromptInput = () => {
               <textarea
                 value={field.value}
                 onChange={field.onChange}
-                className="relative h-32 w-full resize-none bg-transparent text-base text-foreground/75 outline-none md:text-lg"
+                className="relative h-20 w-full resize-none bg-transparent text-base text-foreground/90 outline-none placeholder:text-foreground/75 md:text-lg"
                 placeholder={
                   'Try "Create a professional resume for software developer tailored for google"'
                 }
@@ -106,21 +108,13 @@ const PromptInput = () => {
           <UploadButton />
 
           <div className="flex items-center justify-end space-x-2">
-            <Button
-              onClick={toggleListening}
-              className={cn(
-                "rounded-full bg-foreground duration-150",
-                listening && "bg-primary",
-              )}
-            >
-              {listening ? <LuAudioLines /> : <IoMdMic />}
-              <span className="hidden md:block">
-                {listening ? "Listening" : "Voice"}
-              </span>
-            </Button>
+            <VoiceButton
+              toggleListening={toggleListening}
+              listening={listening}
+            />
             <Button
               onClick={handleSubmit}
-              className="rounded-full bg-foreground"
+              className="rounded-full border bg-white text-black shadow-xl"
               size={loading ? "default" : "icon"}
               disabled={loading}
             >

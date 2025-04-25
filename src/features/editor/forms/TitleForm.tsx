@@ -52,7 +52,7 @@ const TitleForm = () => {
                     >
                       <div className="flex items-center space-x-1 lg:space-x-2">
                         <GoPencil className="text-base lg:text-xl" />
-                        <div className="relative h-8 min-w-24 max-w-32 md:max-w-64 lg:max-w-72 xl:max-w-96">
+                        <div className="relative h-8 min-w-24 max-w-48 md:max-w-64 xl:max-w-72">
                           <input
                             {...field}
                             type="text"

@@ -81,17 +81,7 @@ type SkillItem {
   levelDisabled Boolean? @default(true)
 }
 
-type Certification {
-  title        String?
-  organization String?
-  link         String?
-  score        String?
-  description  String?
-  startDate    String?
-  endDate      String?
-}
-
-type Course {
+type CommonAchievement {
   title        String?
   organization String?
   link         String?
@@ -139,8 +129,10 @@ model Resume {
   projects         Project[]
   hardSkills       SkillItem[]
   softSkills       SkillItem[]
-  certifications   Certification[]
-  courses          Course[]
+  certifications   CommonAchievement[]
+  courses          CommonAchievement[]
+  achievements     CommonAchievement[]
+  awards           CommonAchievement[]
   hobbies          Hobby[]
 
   template TemplateDetails

@@ -48,26 +48,26 @@ const Hero = () => {
                   Write a prompt and provide basic details, it will auto
                   generate a resume which you can customize
                 </p>
+                <div className="mx-auto mt-8 flex items-center justify-center space-x-2">
+                  <Button
+                    asChild
+                    className={"bg-foreground hover:bg-foreground/90"}
+                  >
+                    <Link href={isSignedIn ? "/resumes" : "/sign-up"}>
+                      <span>{isSignedIn ? "Dashboard" : "Try it out"}</span>
+                      <span>
+                        <FaArrowRight />
+                      </span>
+                    </Link>
+                  </Button>
+                  <Button asChild variant={"secondary"} className={""}>
+                    <Link href={"/#explore"}>
+                      <span>Explore</span>
+                    </Link>
+                  </Button>
+                </div>
               </div>
               <PromptInput />
-              <div className="mx-auto mt-8 flex items-center justify-center space-x-2">
-                <Button
-                  asChild
-                  className={"bg-foreground hover:bg-foreground/90"}
-                >
-                  <Link href={isSignedIn ? "/resumes" : "/sign-up"}>
-                    <span>{isSignedIn ? "Dashboard" : "Try it out"}</span>
-                    <span>
-                      <FaArrowRight />
-                    </span>
-                  </Link>
-                </Button>
-                <Button asChild variant={"secondary"} className={""}>
-                  <Link href={"/#explore"}>
-                    <span>Explore</span>
-                  </Link>
-                </Button>
-              </div>
             </div>
           ) : (
             <div className="w-full">

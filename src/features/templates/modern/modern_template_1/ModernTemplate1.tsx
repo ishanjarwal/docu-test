@@ -45,67 +45,66 @@ const ModernTemplate1 = ({ resumeData }: TemplateProps) => {
         fontFamily: template?.fontFace || "Inter",
       }}
     >
-      {/* Header */}
-      <div className="flex flex-col items-center justify-center gap-y-2">
-        {photoURL && (
-          <div
-            className="relative aspect-square w-20 overflow-hidden border"
-            style={{
-              borderRadius: borderRadiusValue,
-              borderColor: template.accentHex,
-            }}
-          >
-            <Image
-              src={photoURL}
-              alt="Profile Image"
-              fill
-              className="object-cover"
-            />
-          </div>
-        )}
-        <div>
-          <h1
-            style={{ color: template.accentHex }}
-            className="text-center text-xl font-bold capitalize"
-          >
-            {personalDetails.firstName && personalDetails.firstName}
-            {personalDetails.lastName && " " + personalDetails.lastName}
-          </h1>
-          <p
-            style={{ color: template.accentHex }}
-            className={cn(styles.subHeading, "text-center")}
-          >
-            {personalDetails.jobTitle}
-          </p>
-          <p
-            className={cn(
-              styles.para,
-              "flex items-center justify-center gap-x-2 text-center",
-            )}
-          >
-            {personalDetails.email && (
-              <span className="flex items-center justify-center gap-x-1">
-                <Mail className="size-3" />
-                {personalDetails.email}
-              </span>
-            )}
-            {personalDetails.phone && (
-              <span className="flex items-center justify-center gap-x-1">
-                <Phone className="size-3" />
-                {personalDetails.phone}
-              </span>
-            )}
-          </p>
-          <p className={cn(styles.para, "text-center")}>
-            <span>{personalDetails.country}</span>
-            {personalDetails.city && <span>{", "}</span>}
-            <span>{personalDetails.city}</span>
-          </p>
-        </div>
-      </div>
-
       {/* content */}
-      <div className="mt-8 grid grid-cols-4">
+      <div className="grid grid-cols-4 gap-y-4">
+        {/* Header */}
+        <div className="col-span-4 flex flex-col items-center justify-center gap-y-2">
+          {photoURL && (
+            <div
+              className="relative aspect-square w-20 overflow-hidden border"
+              style={{
+                borderRadius: borderRadiusValue,
+                borderColor: template.accentHex,
+              }}
+            >
+              <Image
+                src={photoURL}
+                alt="Profile Image"
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div>
+            <h1
+              style={{ color: template.accentHex }}
+              className="text-center text-xl font-bold capitalize"
+            >
+              {personalDetails.firstName && personalDetails.firstName}
+              {personalDetails.lastName && " " + personalDetails.lastName}
+            </h1>
+            <p
+              style={{ color: template.accentHex }}
+              className={cn(styles.subHeading, "text-center")}
+            >
+              {personalDetails.jobTitle}
+            </p>
+            <p
+              className={cn(
+                styles.para,
+                "flex items-center justify-center gap-x-2 text-center",
+              )}
+            >
+              {personalDetails.email && (
+                <span className="flex items-center justify-center gap-x-1">
+                  <Mail className="size-3" />
+                  {personalDetails.email}
+                </span>
+              )}
+              {personalDetails.phone && (
+                <span className="flex items-center justify-center gap-x-1">
+                  <Phone className="size-3" />
+                  {personalDetails.phone}
+                </span>
+              )}
+            </p>
+            <p className={cn(styles.para, "text-center")}>
+              <span>{personalDetails.country}</span>
+              {personalDetails.city && <span>{", "}</span>}
+              <span>{personalDetails.city}</span>
+            </p>
+          </div>
+        </div>
         <div className="col-span-1">
           {/* skills */}
           <div>
