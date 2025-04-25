@@ -401,10 +401,12 @@ const AISkillGenerator = ({
     try {
       try {
         setLoading(true);
-        const result = await generateSkills({
-          description,
+        const result = await generateSkills(
+          {
+            description,
+          },
           type,
-        });
+        );
         if (result.error) {
           const tID = toast.error(
             <div className="flex items-center justify-between space-x-1 ps-1">

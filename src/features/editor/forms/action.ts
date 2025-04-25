@@ -4,15 +4,9 @@ import { env } from "@/env";
 import { canUseAI } from "@/features/premium/actions";
 import { isValidJSON } from "@/lib/utils";
 import {
-  GenerateEducationDetailsSchema,
-  GenerateEducationDetailsValues,
-  GenerateHobbiesSchema,
-  GenerateHobbiesValues,
-  GenerateSkillsSchema,
-  GenerateSkillsValues,
+  GenerateFromAISchema,
+  GenerateFromAIValues,
   GenerateSummaryValues,
-  GenerateWorkExperienceSchema,
-  GenerateWorkExperienceValues,
 } from "@/validations/validation";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -95,9 +89,7 @@ export async function generateSummary(input: GenerateSummaryValues) {
   }
 }
 
-export async function generateWorkExperience(
-  input: GenerateWorkExperienceValues,
-) {
+export async function generateWorkExperience(input: GenerateFromAIValues) {
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -108,7 +100,7 @@ export async function generateWorkExperience(
       return { error: "Upgrade your plan to Pro to use AI" };
     }
 
-    const { description } = GenerateWorkExperienceSchema.parse(input);
+    const { description } = GenerateFromAISchema.parse(input);
 
     const prompt = `
     You are an AI Resume generator. Create a work experience object based on the description provided by the user. keep the language very professional and concise.
@@ -166,9 +158,7 @@ export async function generateWorkExperience(
   }
 }
 
-export async function generateEducationDetails(
-  input: GenerateEducationDetailsValues,
-) {
+export async function generateEducationDetails(input: GenerateFromAIValues) {
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -179,7 +169,7 @@ export async function generateEducationDetails(
       return { error: "Upgrade your plan to Pro to use AI" };
     }
 
-    const { description } = GenerateEducationDetailsSchema.parse(input);
+    const { description } = GenerateFromAISchema.parse(input);
 
     const prompt = `
     You are an AI Resume generator. Create a educational qualifications object based on the description provided by the user. keep the language very professional and concise.
@@ -236,7 +226,10 @@ export async function generateEducationDetails(
   }
 }
 
-export async function generateSkills(input: GenerateSkillsValues) {
+export async function generateSkills(
+  input: GenerateFromAIValues,
+  type: "hard" | "soft",
+) {
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -247,7 +240,7 @@ export async function generateSkills(input: GenerateSkillsValues) {
       return { error: "Upgrade your plan to Pro to use AI" };
     }
 
-    const { description, type } = GenerateSkillsSchema.parse(input);
+    const { description } = GenerateFromAISchema.parse(input);
     const prompt = `
     You are an AI Resume generator. Create a ${type} skills array based on the description and/or data provided by the user. keep the language very professional and concise.
 
@@ -299,7 +292,7 @@ export async function generateSkills(input: GenerateSkillsValues) {
   }
 }
 
-export async function generateHobbies(input: GenerateHobbiesValues) {
+export async function generateHobbies(input: GenerateFromAIValues) {
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -310,7 +303,7 @@ export async function generateHobbies(input: GenerateHobbiesValues) {
       return { error: "Upgrade your plan to Pro to use AI" };
     }
 
-    const { description } = GenerateHobbiesSchema.parse(input);
+    const { description } = GenerateFromAISchema.parse(input);
     const prompt = `
     You are an AI Resume generator. Create a hobbies array based on the description provided by the user. keep the language very professional and concise.
 
