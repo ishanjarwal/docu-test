@@ -29,6 +29,7 @@ const SearchInput = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const debouncedQuery = useDebounce(query, 250);
+  const [show, setShow] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     Prisma.ResumeGetPayload<{}>[] | null
@@ -38,11 +39,7 @@ const SearchInput = () => {
     try {
       setLoading(true);
       const result = await fetchResumes(query);
-      if (result.length > 0) {
-        setSearchResults(result);
-      } else {
-        setSearchResults(null);
-      }
+      setSearchResults(result);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -60,20 +57,19 @@ const SearchInput = () => {
   }, [debouncedQuery]);
 
   return (
-    <div
-      onBlur={(e) => {
-        console.log(e.target);
-        if (e.target === document.getElementById("searchResultBox")) return;
-        setSearchResults(null);
-      }}
-      className="relative z-[1] w-full sm:w-auto"
-    >
+    <div className="relative z-[1] w-full sm:w-auto">
       <div className="flex w-full items-center justify-between overflow-hidden rounded-lg border border-border bg-foreground/5 px-2 focus-within:ring-[1px] focus-within:ring-primary sm:min-w-[320px]">
         <FaMagnifyingGlass />
         <Input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => {
+            setShow(true);
+          }}
+          onBlur={() => {
+            setShow(false);
+          }}
           placeholder="Search your documents"
           className="h-auto w-full rounded-none border-none bg-transparent px-2 py-2 text-xs outline-none focus-visible:ring-0 md:px-4 lg:text-sm"
         />
@@ -91,13 +87,13 @@ const SearchInput = () => {
       </div>
 
       <AnimatePresence>
-        {debouncedQuery.trim() !== "" && (
+        {show && query && searchResults && (
           <AnimateUpOnAppear duration={0.2} exit={{ y: "100px", opacity: 0 }}>
             <div
               id="searchResultBox"
               className="absolute left-1/2 top-[calc(100%+8px)] flex w-[calc(100vw-32px)] -translate-x-1/2 flex-col space-y-2 rounded-lg border border-border bg-background p-2 shadow-xl sm:w-full"
             >
-              {!loading && searchResults != null ? (
+              {searchResults.length > 0 ? (
                 <div className="h-auto max-h-72 overflow-auto scrollbar-thin scrollbar-thumb-foreground/5 scrollbar-thumb-rounded-full">
                   {searchResults.map((listItem, idx) => {
                     const Template =
