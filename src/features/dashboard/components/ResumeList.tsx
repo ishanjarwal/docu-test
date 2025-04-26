@@ -67,9 +67,7 @@ const ResumeList = ({ resumes }: ResumeListProps) => {
         </Link>
       )}
       {resumes.map((item, idx) => (
-        <AnimateUpOnAppear key={idx} delay={idx * 0.1}>
-          <ResumeItem resumeData={item} />
-        </AnimateUpOnAppear>
+        <ResumeItem key={"resume-item-" + idx} resumeData={item} />
       ))}
     </div>
   );
@@ -94,7 +92,7 @@ const ResumeItem = ({
   const { width } = useDimensions(containerRef);
   return (
     <div className="rounded-lg bg-foreground/5 p-2 md:p-4">
-      <div className="group relative aspect-[210/297] overflow-hidden rounded-md bg-background">
+      <div className="group relative z-0 aspect-[210/297] overflow-hidden rounded-md bg-background">
         <div
           className="h-full"
           ref={containerRef as React.RefObject<HTMLDivElement>}

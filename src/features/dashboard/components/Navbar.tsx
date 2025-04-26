@@ -14,7 +14,7 @@ const Navbar = () => {
   const { isSignedIn } = useUser();
   const { isMobile } = useSidebar();
   return (
-    <div className="sticky top-0 flex h-16 items-center border-b bg-background">
+    <div className="flex h-16 items-center border-b bg-background">
       <nav className="mx-auto flex w-full max-w-screen-2xl items-center justify-between space-x-4 px-4">
         <div>
           <div className="flex items-center space-x-2">
@@ -35,9 +35,9 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className="flex items-center justify-end gap-x-2 md:gap-x-4">
+        <div className="flex flex-1 items-center justify-end gap-x-2 sm:flex-auto md:gap-x-4">
           <SearchInput />
-          <div className="flex-1">
+          <div>
             <ThemeToggleButton />
           </div>
           {!isSignedIn && (
