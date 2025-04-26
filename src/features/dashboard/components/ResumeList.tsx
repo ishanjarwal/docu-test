@@ -141,13 +141,16 @@ const ResumeItem = ({
             ></span>
           </div>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex space-x-1 sm:space-x-2">
           <Link
             href={`/editor?id=${id}`}
-            className={cn(buttonVariants({ variant: "outline" }), "w-full")}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "w-full px-2 sm:px-4",
+            )}
           >
             <MdOutlineEdit />
-            Edit
+            <span className="text-sm md:text-base">Edit</span>
           </Link>
           <CustomTooltip text="Download PDF" delayDuration={0}>
             <Button variant="ghost" className="bg-foreground/5 px-2" asChild>
