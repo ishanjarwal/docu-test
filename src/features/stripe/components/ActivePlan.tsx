@@ -120,13 +120,14 @@ const ActivePlan = () => {
             </div>
           )}
           <div className="mt-8">
-            {currPlan.id ? (
+            <ManageSubscriptionButton />
+            {/* {currPlan.id ? (
               <ManageSubscriptionButton />
             ) : (
               <Button asChild>
                 <Link href={"/plans"}>Buy Subscription</Link>
               </Button>
-            )}
+            )} */}
           </div>
         </div>
       )}
