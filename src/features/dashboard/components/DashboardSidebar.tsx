@@ -28,13 +28,13 @@ import {
 
 const data = [
   {
-    title: "Resumes",
+    title: "Documents",
     url: "/resumes",
     icon: <IoDocumentTextOutline />,
     slug: "resumes",
   },
   {
-    title: "Cover Letters",
+    title: "Customization",
     url: "/resumes/cover-letters",
     icon: <IoMailOutline />,
     slug: "cover-letters",
@@ -52,7 +52,7 @@ const data = [
     slug: "templates",
   },
   {
-    title: "Sample Resumes",
+    title: "Samples",
     url: "/resumes/sample-resumes",
     icon: <IoDocumentsOutline />,
     slug: "sample-resumes",

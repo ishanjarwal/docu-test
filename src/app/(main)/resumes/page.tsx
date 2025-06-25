@@ -24,12 +24,12 @@ const page = async () => {
         <div className="flex flex-col gap-y-2">
           <AnimateUpOnAppear>
             <h1 className="text-3xl font-semibold">
-              My Resumes&nbsp;&#40;{count}&#41;
+              My Documents&nbsp;&#40;{count}&#41;
             </h1>
           </AnimateUpOnAppear>
           <AnimateUpOnAppear delay={0.1}>
             <p className="text-muted-foreground">
-              Edit, customize or download your resumes here.
+              Edit, customize or download your documents here.
             </p>
           </AnimateUpOnAppear>
           {count > 0 && (

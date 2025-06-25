@@ -57,7 +57,7 @@ const ResumeList = ({ resumes }: ResumeListProps) => {
             )}
           />
           <h2 className="text-center text-xl font-bold text-primary underline">
-            Draft your First Resume
+            Draft your First Document
           </h2>
           <ul className="mx-auto mt-4 w-max list-disc ps-4 text-xs text-primary/75">
             <li>45+ templates</li>
