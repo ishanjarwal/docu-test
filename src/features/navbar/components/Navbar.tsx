@@ -109,7 +109,6 @@ const Navbar = () => {
               <div>
                 <h1 className="text-xl font-bold lg:text-2xl">
                   <span>DOCU</span>
-                  <span className="text-primary">Resumes</span>
                 </h1>
               </div>
             </div>

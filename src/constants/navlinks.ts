@@ -8,15 +8,15 @@ const navlinks = [
   //   href: "/",
   // },
   {
-    display: "Resume Examples",
+    display: "Use cases",
     href: "/#examples",
   },
   {
-    display: "Plans",
+    display: "Pricing",
     href: "/plans",
   },
   {
-    display: "Testimonials",
+    display: "Products",
     href: "/#testimonials",
   },
   {

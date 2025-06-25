@@ -73,11 +73,11 @@ const links: Array<LinkType> = [
         link: "#contact",
       },
       {
-        name: "Resume Templates",
+        name: "Templates",
         link: "#contact",
       },
       {
-        name: "Resume Examples",
+        name: "Examples",
         link: "#contact",
       },
     ],
@@ -107,8 +107,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <p className="mt-4 max-w-xs text-sm text-gray-600">
-              Create a Professional Resume and stand out the crowd. Our
-              professional resume templates are designed to impress!
+              Create a Professional Documents and stand out the crowd. Our
+              professional toolkit is designed to impress!
             </p>
             <div className="mt-8 flex space-x-2">
               <Button

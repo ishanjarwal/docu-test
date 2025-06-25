@@ -28,7 +28,7 @@ const steps = [
     dark_img: "/home-steps-3.png",
   },
   {
-    title: "Download your resume",
+    title: "Download your Document",
     desc: "Export your resume in a high-quality PDF format with just one click.",
     light_img: "/home-steps-4-light.png",
     dark_img: "/home-steps-4.png",

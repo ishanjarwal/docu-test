@@ -35,96 +35,58 @@ const Hero = () => {
       <div className="relative left-0 top-0 w-full max-w-limit">
         <div className="flex flex-col items-center justify-between px-4 pb-16 pt-32 lg:pt-36 limit:px-0">
           {/* check condition then render prompt input */}
-          {canUseAI ? (
-            <div className="flex w-full flex-col items-center justify-center">
-              <div className="mb-32">
-                <h1 className="mb-4 text-center text-3xl text-foreground sm:text-4xl lg:text-5xl">
-                  Create Resume with{" "}
-                  <span className="text-center font-semibold text-primary">
-                    AI
+          <div className="w-full">
+            <div className="mb-4 text-center">
+              <AnimateUpOnAppear>
+                <Badge
+                  className={
+                    "gap-1 rounded-full border-primary bg-background px-3 py-1 text-primary"
+                  }
+                  variant={"outline"}
+                >
+                  <span>
+                    <LuPartyPopper />
                   </span>
-                </h1>
-                <p className="text-center">
-                  Write a prompt and provide basic details, it will auto
-                  generate a resume which you can customize
-                </p>
-                <div className="mx-auto mt-8 flex items-center justify-center space-x-2">
-                  <Button
-                    asChild
-                    className={"bg-foreground hover:bg-foreground/90"}
-                  >
-                    <Link href={isSignedIn ? "/resumes" : "/sign-up"}>
-                      <span>{isSignedIn ? "Dashboard" : "Try it out"}</span>
-                      <span>
-                        <FaArrowRight />
-                      </span>
-                    </Link>
-                  </Button>
-                  <Button asChild variant={"secondary"} className={""}>
-                    <Link href={"/#explore"}>
-                      <span>Explore</span>
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-              <PromptInput />
+                  &nbsp;
+                  <span>Try for Free, Hurry Up ! !</span>
+                </Badge>
+              </AnimateUpOnAppear>
             </div>
-          ) : (
-            <div className="w-full">
-              <div className="mb-4 text-center">
-                <AnimateUpOnAppear>
-                  <Badge
-                    className={
-                      "gap-1 rounded-full border-primary bg-background px-3 py-1 text-primary"
-                    }
-                    variant={"outline"}
-                  >
+            <AnimateUpOnAppear delay={0.1}>
+              <h1 className="mx-auto mb-8 max-w-2xl text-balance text-center text-3xl md:text-5xl">
+                Create
+                <span className="text-primary">&nbsp;Documents&nbsp;</span>
+                in Minutes with
+                <span className="text-primary">&nbsp;AI</span>
+              </h1>
+            </AnimateUpOnAppear>
+            <AnimateUpOnAppear delay={0.2}>
+              <p className="mx-auto mb-8 max-w-xl text-center text-base text-foreground/75 lg:text-lg">
+                Our AI-Driven Tookit helps you craft standout documents for your
+                work and education.
+              </p>
+            </AnimateUpOnAppear>
+            <AnimateUpOnAppear delay={0.3}>
+              <div className="mx-auto flex items-center justify-center space-x-2">
+                <Button
+                  asChild
+                  className={"bg-foreground hover:bg-foreground/90"}
+                >
+                  <Link href={isSignedIn ? "/resumes" : "/sign-up"}>
+                    <span>{isSignedIn ? "Dashboard" : "Try it out"}</span>
                     <span>
-                      <LuPartyPopper />
+                      <FaArrowRight />
                     </span>
-                    &nbsp;
-                    <span>First resume is free to try, Hurry Up ! !</span>
-                  </Badge>
-                </AnimateUpOnAppear>
+                  </Link>
+                </Button>
+                <Button asChild variant={"secondary"} className={""}>
+                  <Link href={"/#explore"}>
+                    <span>Explore</span>
+                  </Link>
+                </Button>
               </div>
-              <AnimateUpOnAppear delay={0.1}>
-                <h1 className="mx-auto mb-8 max-w-2xl text-center text-3xl md:text-5xl">
-                  Create
-                  <span className="text-primary">
-                    &nbsp;Professional Resumes&nbsp;
-                  </span>
-                  in Minutes with
-                  <span className="text-primary">&nbsp;AI</span>
-                </h1>
-              </AnimateUpOnAppear>
-              <AnimateUpOnAppear delay={0.2}>
-                <p className="mx-auto mb-8 max-w-xl text-center text-base text-foreground/75 lg:text-lg">
-                  Use our AI Resume Builder to craft a standout resume for your
-                  career goals.
-                </p>
-              </AnimateUpOnAppear>
-              <AnimateUpOnAppear delay={0.3}>
-                <div className="mx-auto flex items-center justify-center space-x-2">
-                  <Button
-                    asChild
-                    className={"bg-foreground hover:bg-foreground/90"}
-                  >
-                    <Link href={isSignedIn ? "/resumes" : "/sign-up"}>
-                      <span>{isSignedIn ? "Dashboard" : "Try it out"}</span>
-                      <span>
-                        <FaArrowRight />
-                      </span>
-                    </Link>
-                  </Button>
-                  <Button asChild variant={"secondary"} className={""}>
-                    <Link href={"/#explore"}>
-                      <span>Explore</span>
-                    </Link>
-                  </Button>
-                </div>
-              </AnimateUpOnAppear>
-            </div>
-          )}
+            </AnimateUpOnAppear>
+          </div>
           <div className="relative w-full pt-16">
             <AnimateUpOnAppear>
               <div id="explore" className="mx-auto w-full max-w-6xl">

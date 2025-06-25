@@ -54,8 +54,9 @@ const Features = () => {
             <span>Features</span>
           </Badge>
         </div>
-        <h2 className="mb-8 mt-4 text-center text-4xl font-bold md:text-6xl md:font-normal">
-          Build the Perfect Resume in Minutes
+        <h2 className="mb-8 mt-4 text-balance text-center text-4xl font-bold md:text-6xl md:font-normal">
+          The <span className="text-primary">Perfect </span> software suite for
+          your <span className="text-primary">Workspace </span>
         </h2>
         <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => (
